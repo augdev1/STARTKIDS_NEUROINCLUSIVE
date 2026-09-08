@@ -1,0 +1,33 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "aug1",
+      "password_hash": "$2b$10$hPkQmAQHGDeQexrolQqYOuFxLepGhyLycMBpyE8znp7I7G2mggndy",
+      "created_at": "2026-09-08T19:54:29.000Z"
+    }
+  ],
+  "progression": {
+    "1": {
+      "unlocked_accessories": [
+        "leaf_hat",
+        "star_glasses",
+        "pet_ladybug",
+        "pink_bow",
+        "aura_soft_rainbow",
+        "pet_frog",
+        "aura_magic_crystals"
+      ],
+      "equipped_accessories": {
+        "hats": "pink_bow",
+        "face": null,
+        "clothes": null,
+        "pets": "pet_frog",
+        "auras": "aura_soft_rainbow"
+      },
+      "games_completed": [],
+      "stars": 35,
+      "updated_at": "2026-09-08T20:58:35.535Z"
+    }
+  }
+}

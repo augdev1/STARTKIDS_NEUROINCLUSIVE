@@ -1,0 +1,3374 @@
+/* ==========================================================================
+   DESIGN SYSTEM LÚDICO & SLIM MODERNO - STARKIDS
+   Logo estilo PaRappa The Rapper (colorido, expressivo e cartunesco),
+   tipografia slim formatada (Quicksand 500/600), sem contornos grossos,
+   visual limpo, acolhedor e sem sobrecarga sensorial.
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Permanent+Marker&family=Gochi+Hand&family=Quicksand:wght@400;500;600;700&display=swap');
+
+:root {
+  /* Paleta 2ª Escolha - Deep Calm & Warm Sand (Linha 1, Coluna 4) */
+  /* Cores: Azul Ardósia, Azul Noturno, Areia Quente, Bege e Creme */
+  --bg-main: #F7F3EC;
+  --bg-card: #FFFFFF;
+  --bg-card-subtle: #F3ECE2;
+  
+  --primary: #2B4263; /* Azul Ardósia Sereno & Focado */
+  --primary-light: #4A6991; /* Azul Ardósia Suave */
+  --primary-soft: #E8EEF5; /* Creme Azulado Suave */
+  --primary-dark: #162438; /* Azul Noturno Profundo */
+  
+  --accent-warm: #C49E74; /* Areia Quente Acolhedor */
+  --accent-warm-soft: #FBF4EC; /* Creme Areia */
+  
+  --accent-lavender: #706F9E; /* Lavanda Ardósia */
+  --accent-lavender-soft: #F0EFF8;
+  
+  --accent-sky: #5B84B1; /* Céu Suave */
+  --accent-sky-soft: #EDF3FA;
+  
+  --accent-yellow: #D9A454; /* Areia Dourada para Estrelas */
+  --accent-yellow-soft: #FDF7ED;
+
+  --accent-rose: #C27685; /* Rosa Antigo Acolhedor */
+  --accent-rose-soft: #FBF0F2;
+  
+  /* Textos Noturnos & Suaves (Sem Preto Puro) */
+  --text-main: #192538; /* Azul Noturno Legível */
+  --text-muted: #516378; /* Ardósia Médio */
+  --text-light: #8294A8; /* Ardósia Claro */
+  
+  /* Bordas Finas e Delicadas (Sem Contornos Grossos) */
+  --border-subtle: rgba(25, 37, 56, 0.08);
+  --border-card: transparent;
+  --border-focus: #2B4263;
+  
+  --radius-sm: 16px;
+  --radius-md: 22px;
+  --radius-lg: 28px;
+  --radius-xl: 36px;
+  --radius-pill: 9999px;
+  --radius-full: 9999px;
+  
+  /* Sombras Suaves e Naturais (Sem Bevels 3D Pesados) */
+  --shadow-sm: 0 2px 8px rgba(25, 37, 56, 0.04);
+  --shadow-card: 0 6px 20px rgba(25, 37, 56, 0.06);
+  --shadow-card-hover: 0 12px 30px rgba(25, 37, 56, 0.09);
+  --shadow-modal: 0 16px 48px rgba(25, 37, 56, 0.14);
+  
+  /* Tipografia: PaRappa Style no Logo, Quicksand Slim na Interface, Lexend Acolhedora */
+  --font-logo: 'Caveat Brush', 'Permanent Marker', 'Gochi Hand', cursive;
+  --font-game-display: 'Quicksand', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-game-ui: 'Quicksand', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-title: 'Quicksand', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'Quicksand', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-neurodiversity: 'Lexend', 'Quicksand', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-dyslexia: 'Lexend', 'Quicksand', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* Transições Fluidas */
+  --transition-smooth: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  --transition-press: all 0.1s ease-out;
+}
+
+/* Modo Alto Contraste Acolhedor */
+body.high-contrast {
+  --bg-main: #EFE8DD;
+  --bg-card: #FFFFFF;
+  --primary: #162438;
+  --primary-soft: #D3E0EE;
+  --text-main: #0B1320;
+  --text-muted: #24354C;
+}
+
+/* Respeito à redução de movimento */
+body.reduced-motion * {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+}
+
+/* Reset Amigável */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100vh;
+  font-family: var(--font-body);
+  background: #F7F3EC url('../assets/startkids_bg.jpg') no-repeat center center fixed;
+  background-size: cover;
+  color: var(--text-main);
+  line-height: 1.55;
+  letter-spacing: 0.01em;
+  overflow-x: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Fundo Iluminado com Véu Suave para Apoio Visual e Anti-Sobrecarga */
+.background-ambient {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: linear-gradient(135deg, rgba(247, 243, 236, 0.92) 0%, rgba(255, 255, 255, 0.88) 50%, rgba(234, 241, 248, 0.92) 100%);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+/* Container Principal */
+.app-container {
+  position: relative;
+  z-index: 1;
+  max-width: 1180px;
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 16px 24px 44px;
+}
+
+/* ==========================================================================
+   BARRA SUPERIOR DE ACESSIBILIDADE E NAVEGAÇÃO (CLEAN SLIM HUD)
+   ========================================================================== */
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  padding: 4px 0 10px;
+  border-radius: 0;
+  border: none;
+  box-shadow: none;
+  margin-bottom: 24px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.brand-section {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.brand-section:hover {
+  transform: scale(1.02);
+}
+
+.brand-logo-wrap {
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  border: none;
+  background: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.brand-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 25%;
+}
+
+/* ==========================================================================
+   LOGO STARKIDS ESTILO PARAPPA THE RAPPER (PARTE DE CIMA DA IMAGEM)
+   Letras vibrantes, estilo cartum/graffiti feito à mão, arco icônico e TM
+   ========================================================================== */
+.brand-title.parappa-logo {
+  font-family: var(--font-logo);
+  font-size: 2.6rem;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 1.5px;
+  letter-spacing: 0.02em;
+  user-select: none;
+  padding: 4px 0;
+}
+
+.parappa-logo .p-letter {
+  display: inline-block;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  font-weight: 400;
+  -webkit-text-stroke: 1.2px #181818;
+  filter: drop-shadow(2px 3.5px 0px #181818);
+  transform-origin: center bottom;
+}
+
+.brand-section:hover .parappa-logo .p-letter {
+  animation: parappa-bounce 0.45s ease alternate infinite;
+}
+
+/* Arco curvo inspirado na curvatura do título do PaRappa The Rapper */
+.parappa-logo .l-s { 
+  color: #C49E74; 
+  transform: translateY(3px) rotate(-8deg) scale(1.12); 
+  animation-delay: 0.04s;
+}
+.parappa-logo .l-t { 
+  color: #D9A454; 
+  transform: translateY(-2px) rotate(-4deg) scale(1.04); 
+  animation-delay: 0.08s;
+}
+.parappa-logo .l-a { 
+  color: #6B91B8; 
+  transform: translateY(-6px) rotate(-1deg); 
+  animation-delay: 0.12s;
+}
+.parappa-logo .l-r { 
+  color: #4A6991; 
+  transform: translateY(-8px) rotate(1deg); 
+  animation-delay: 0.16s;
+}
+.parappa-logo .l-t2 { 
+  color: #2B4263; 
+  transform: translateY(-9px) rotate(0deg) scale(1.06); 
+  animation-delay: 0.20s;
+}
+.parappa-logo .l-k { 
+  color: #C49E74; 
+  transform: translateY(-8px) rotate(-2deg) scale(1.15); 
+  margin-left: 2px; 
+  animation-delay: 0.24s;
+}
+.parappa-logo .l-i { 
+  color: #5B84B1; 
+  transform: translateY(-6px) rotate(2deg); 
+  animation-delay: 0.28s;
+}
+.parappa-logo .l-d { 
+  color: #D9A454; 
+  transform: translateY(-3px) rotate(4deg); 
+  animation-delay: 0.32s;
+}
+.parappa-logo .l-s:last-of-type { 
+  color: #2B4263; 
+  transform: translateY(3px) rotate(8deg) scale(1.08); 
+  animation-delay: 0.36s;
+}
+
+.parappa-tm {
+  font-family: var(--font-logo);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #181818;
+  margin-left: 4px;
+  align-self: flex-start;
+  transform: translateY(-4px) rotate(4deg);
+  filter: none;
+  -webkit-text-stroke: 0.5px #181818;
+}
+
+@keyframes parappa-bounce {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-4px); }
+}
+
+.brand-subtitle {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  display: block;
+  letter-spacing: 0.02em;
+}
+
+.accessibility-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* Botões Limpos e Slim (Sem contornos grossos) */
+.btn-icon {
+  background: #FFFFFF;
+  border: none;
+  color: var(--text-main);
+  padding: 8px 16px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 42px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  transition: var(--transition-press);
+}
+
+.btn-icon .hud-emoji {
+  font-size: 1.05rem;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ==========================================================================
+   ESTILOS DE EMOJIS VETORIAIS ACOLHEDORES (TWEMOJI & VECTOR ART)
+   Substitui os emojis nativos rígidos do Windows por arte vetorial suave e amigável.
+   ========================================================================== */
+img.emoji {
+  height: 1.25em;
+  width: 1.25em;
+  margin: 0 0.08em 0 0.1em;
+  vertical-align: -0.16em;
+  display: inline-block;
+  pointer-events: none;
+  filter: drop-shadow(0 1px 2px rgba(22, 36, 56, 0.08));
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+button:hover img.emoji,
+.btn-icon:hover img.emoji,
+.game-hub-card:hover img.emoji {
+  transform: scale(1.12);
+}
+
+.hud-emoji img.emoji {
+  width: 22px;
+  height: 22px;
+}
+
+.portal-emoji img.emoji {
+  width: 46px;
+  height: 46px;
+}
+
+.emotion-btn-emoji img.emoji {
+  width: 44px;
+  height: 44px;
+}
+
+.pattern-choice-btn img.emoji,
+.train-car img.emoji {
+  width: 46px;
+  height: 46px;
+}
+
+.balance-fruit img.emoji {
+  width: 32px;
+  height: 32px;
+}
+
+/* Ilustrações Vetoriais Customizadas dos Jogos (Alta Definição e Encanto) */
+.game-vector-art {
+  width: 92px;
+  height: 92px;
+  max-width: 100%;
+  max-height: 100%;
+  filter: drop-shadow(0 4px 14px rgba(25, 37, 56, 0.12));
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.game-vector-art:hover {
+  transform: scale(1.08) rotate(3deg);
+}
+
+.fruit-vector-art {
+  width: 34px;
+  height: 34px;
+  display: inline-block;
+  vertical-align: middle;
+  filter: drop-shadow(0 2px 5px rgba(25, 37, 56, 0.14));
+}
+
+.btn-icon:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+}
+
+.btn-icon:active {
+  transform: translateY(1px);
+}
+
+.btn-icon.active {
+  background: var(--primary-soft);
+  color: var(--primary-dark);
+}
+
+.btn-wardrobe-pill {
+  background: #FFF2E5;
+  color: #9C5212;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(156, 82, 18, 0.1);
+}
+
+.btn-wardrobe-pill:hover {
+  background: #FFE8D1;
+  box-shadow: 0 4px 12px rgba(156, 82, 18, 0.16);
+}
+
+.collection-counter-badge {
+  background: #FFB703;
+  color: #4A2B00;
+  border: none;
+  padding: 2px 10px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+}
+
+.btn-calm-pill {
+  background: #F4ECFD;
+  color: #5B2C96;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(91, 44, 150, 0.1);
+}
+
+.btn-calm-pill:hover {
+  background: #EADEFC;
+  box-shadow: 0 4px 12px rgba(91, 44, 150, 0.16);
+}
+
+.btn-auth-pill {
+  background: #FFF8E6;
+  color: #8C5A00;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(140, 90, 0, 0.08);
+}
+
+.btn-auth-pill:hover {
+  background: #FFF0CC;
+  box-shadow: 0 4px 14px rgba(140, 90, 0, 0.15);
+}
+
+.btn-auth-pill.user-logged-in {
+  background: #E8F5EF;
+  color: #1E5E44;
+  box-shadow: 0 2px 8px rgba(30, 94, 68, 0.1);
+}
+
+/* ==========================================================================
+   TELA INICIAL / HUB DO JARDIM DO PIP (FORMATADO SLIM)
+   ========================================================================== */
+.view-section {
+  display: none;
+  flex: 1;
+  flex-direction: column;
+}
+
+.view-section.active {
+  display: flex;
+}
+
+/* PALCO DO MASCOTE PIP & CENTRAL DE CONQUISTAS (HERO STAGE) */
+.hero-game-showcase {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: 24px;
+  align-items: stretch;
+  margin-bottom: 34px;
+}
+
+@media (max-width: 960px) {
+  .hero-game-showcase {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Ilha do Pip (Clean & Slim, sem bordas pesadas) */
+.pip-hero-pedestal-card {
+  background: #FFFFFF;
+  border-radius: 28px;
+  padding: 24px 20px;
+  border: none;
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+/* Balão de Fala Bubbly Suave & Compacto (Sem sobrepor auras ou chapéus) */
+.pip-speech-bubble {
+  background: #F4FAF7;
+  border: 1px solid rgba(43, 66, 99, 0.08);
+  color: var(--primary-dark);
+  padding: 8px 14px;
+  border-radius: 18px;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  line-height: 1.32;
+  font-weight: 600;
+  position: relative;
+  margin-bottom: 24px;
+  max-width: 245px;
+  width: auto;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  z-index: 2;
+}
+
+.pip-speech-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -7px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 7px 7px 0;
+  border-style: solid;
+  border-color: #F4FAF7 transparent transparent;
+}
+
+.btn-speak-inline {
+  background: #FFFFFF;
+  border: none;
+  cursor: pointer;
+  font-size: 1.05rem;
+  color: var(--primary-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  transition: var(--transition-press);
+  flex-shrink: 0;
+}
+
+.btn-speak-inline:hover {
+  transform: scale(1.08);
+  background: var(--primary-soft);
+}
+
+.btn-speak-inline:active {
+  transform: translateY(1px);
+}
+
+/* Palco / Chão do Mascote */
+.pip-avatar-stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 4px 0 10px;
+  width: 100%;
+}
+
+.pip-avatar-container {
+  width: 200px;
+  height: 200px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 1;
+  filter: drop-shadow(0 8px 14px rgba(0,0,0,0.06));
+  transition: transform 0.2s ease;
+  overflow: visible;
+  border-radius: 20px;
+}
+
+.pip-avatar-container svg {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.pip-avatar-container:hover {
+  transform: scale(1.04);
+}
+
+.pip-ground-shadow {
+  position: absolute;
+  bottom: 2px;
+  width: 136px;
+  height: 16px;
+  background: radial-gradient(ellipse at center, rgba(33, 106, 77, 0.22) 0%, rgba(33, 106, 77, 0) 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Botão Camarim Slim & Atraente */
+.btn-open-wardrobe {
+  width: 100%;
+  position: relative;
+  z-index: 5;
+  margin-top: 8px;
+  background: linear-gradient(135deg, #FF9F43 0%, #FF7F27 100%);
+  color: #FFFFFF;
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 12px 20px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 1.02rem;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  box-shadow: 0 4px 14px rgba(255, 127, 39, 0.25);
+  transition: var(--transition-press);
+}
+
+.btn-open-wardrobe:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 127, 39, 0.35);
+}
+
+.btn-open-wardrobe:active {
+  transform: translateY(1px);
+}
+
+/* Card de Missões e Baú de Tesouros (Quest Card - Slim) */
+.hero-quest-card {
+  background: #FFFFFF;
+  border-radius: 28px;
+  padding: 28px 32px;
+  border: none;
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.quest-card-header {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.quest-chest-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 20px;
+  background: #FFF8E6;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  box-shadow: 0 4px 12px rgba(255, 183, 3, 0.15);
+  flex-shrink: 0;
+}
+
+.quest-tag {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #B35B00;
+  background: #FFF2E5;
+  border: none;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  display: inline-block;
+  margin-bottom: 4px;
+  letter-spacing: 0.04em;
+}
+
+.quest-title {
+  font-family: var(--font-game-display);
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: var(--text-main);
+  line-height: 1.15;
+}
+
+.quest-description {
+  font-size: 0.98rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  line-height: 1.55;
+}
+
+.quest-progress-box {
+  background: #F8FAF9;
+  border: none;
+  border-radius: 18px;
+  padding: 14px 18px;
+}
+
+.quest-progress-labels {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.quest-progress-title {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.quest-progress-count {
+  font-family: var(--font-body);
+  font-size: 0.96rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.quest-progress-track {
+  width: 100%;
+  height: 12px;
+  background: #E8EFEA;
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+  border: none;
+}
+
+.quest-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #FFC024 0%, #FF9F43 100%);
+  border-radius: var(--radius-pill);
+  transition: width 0.6s ease;
+}
+
+.btn-hero-collection {
+  align-self: flex-start;
+  background: var(--primary);
+  color: #FFFFFF;
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 10px 24px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.96rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 4px 14px rgba(43, 66, 99, 0.25);
+  transition: var(--transition-press);
+}
+
+.btn-hero-collection:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(61, 163, 123, 0.32);
+}
+
+.btn-hero-collection:active {
+  transform: translateY(1px);
+}
+
+/* ==========================================================================
+   SEÇÃO DE SELEÇÃO DE MUNDOS / FASES (SLIM & CLEAN)
+   ========================================================================== */
+.world-selection-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.world-selection-header {
+  text-align: left;
+}
+
+.world-title-badge {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #1B6647;
+  background: #EAF5F0;
+  border: none;
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  display: inline-block;
+  margin-bottom: 6px;
+  letter-spacing: 0.04em;
+}
+
+.world-main-title {
+  font-family: var(--font-game-display);
+  font-size: 1.95rem;
+  font-weight: 700;
+  color: var(--text-main);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+.world-subtitle {
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+/* GRADE DE JOGOS SLIM (Sem contornos pesados) */
+.educational-games-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+  gap: 22px;
+}
+
+.game-hub-card {
+  border-radius: 26px;
+  padding: 24px 22px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 16px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.22s ease;
+  text-align: left;
+  border: none;
+  box-shadow: var(--shadow-card);
+}
+
+.game-hub-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-card-hover);
+}
+
+.game-hub-card:active {
+  transform: translateY(1px);
+}
+
+/* Temas com Fundos Suaves e Limpos */
+.game-hub-card.theme-rose {
+  background: linear-gradient(180deg, #FFFFFF 0%, #FFF5F7 100%);
+}
+
+.game-hub-card.theme-mint {
+  background: linear-gradient(180deg, #FFFFFF 0%, #F2FBF7 100%);
+}
+
+.game-hub-card.theme-honey {
+  background: linear-gradient(180deg, #FFFFFF 0%, #FFFDF2 100%);
+}
+
+.game-hub-card.theme-sky {
+  background: linear-gradient(180deg, #FFFFFF 0%, #F3F8FF 100%);
+}
+
+.game-hub-card.theme-violet {
+  background: linear-gradient(180deg, #FFFFFF 0%, #F9F5FF 100%);
+}
+
+/* Barra do Topo do Card */
+.game-card-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.game-stage-tag {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 3px 12px;
+  border-radius: var(--radius-pill);
+  letter-spacing: 0.03em;
+  background: rgba(0, 0, 0, 0.04);
+  border: none;
+  color: var(--text-muted);
+  box-shadow: none;
+}
+
+.game-stars-badge {
+  font-size: 0.98rem;
+  opacity: 0.9;
+}
+
+/* Ícone Portal Limpo */
+.game-portal-visual {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 4px 0;
+}
+
+.portal-badge-frame {
+  width: 72px;
+  height: 72px;
+  border-radius: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #FFFFFF;
+  border: none;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+  transition: transform 0.25s ease;
+}
+
+.game-hub-card:hover .portal-badge-frame {
+  transform: scale(1.1);
+}
+
+.portal-emoji {
+  font-size: 36px;
+}
+
+/* Corpo do Card */
+.game-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.game-card-title {
+  font-family: var(--font-game-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+}
+
+.game-pedagogy-pill {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  letter-spacing: 0.02em;
+  width: fit-content;
+  border: none;
+  box-shadow: none;
+}
+
+.pill-emotion { background: #FFE4EA; color: #B31940; }
+.pill-phonics { background: #DCF5EA; color: #1B6647; }
+.pill-math { background: #FFF4C7; color: #9C6600; }
+.pill-patterns { background: #DBEFFF; color: #0B61A4; }
+.pill-routine { background: #EFE4FD; color: #5B2C96; }
+
+.game-card-desc {
+  font-size: 0.94rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* Rodapé do Card com Botão Slim */
+.game-card-footer {
+  margin-top: 4px;
+}
+
+.btn-play-game {
+  width: 100%;
+  padding: 11px 22px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-game-display);
+  font-weight: 600;
+  font-size: 0.96rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #FFFFFF;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  transition: var(--transition-press);
+}
+
+.btn-play-arrow {
+  font-size: 0.88rem;
+  transition: transform 0.2s ease;
+}
+
+.game-hub-card:hover .btn-play-arrow {
+  transform: translateX(3px);
+}
+
+.btn-play-rose {
+  background: #FF5E7E;
+  box-shadow: 0 4px 14px rgba(255, 94, 126, 0.35);
+}
+
+.btn-play-mint {
+  background: var(--primary);
+  box-shadow: 0 4px 14px rgba(43, 66, 99, 0.35);
+}
+
+.btn-play-honey {
+  background: #FFB703;
+  color: #4A2B00;
+  box-shadow: 0 4px 14px rgba(255, 183, 3, 0.35);
+}
+
+.btn-play-sky {
+  background: #38A3F5;
+  box-shadow: 0 4px 14px rgba(56, 163, 245, 0.35);
+}
+
+.btn-play-violet {
+  background: #9B72CF;
+  box-shadow: 0 4px 14px rgba(155, 114, 207, 0.35);
+}
+
+.btn-play-game:hover {
+  transform: translateY(-2px);
+  opacity: 0.95;
+}
+
+.btn-play-game:active {
+  transform: translateY(1px);
+}
+
+/* ==========================================================================
+   TELA DO JOGO EDUCATIVO EM ANDAMENTO (GAME ARENA SLIM & CLEAN)
+   ========================================================================== */
+.game-arena {
+  background: #FFFFFF;
+  border-radius: 28px;
+  padding: 26px 32px;
+  border: none;
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: relative;
+  min-height: 560px;
+}
+
+@media (max-width: 768px) {
+  .game-arena {
+    padding: 18px 16px;
+    border-radius: 24px;
+  }
+}
+
+.game-arena-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  padding-bottom: 14px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.btn-back-hub {
+  background: #F4FAF7;
+  border: none;
+  color: var(--primary-dark);
+  padding: 8px 18px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: var(--transition-press);
+}
+
+.btn-back-hub:hover {
+  background: #E8F5EF;
+  transform: translateY(-1px);
+}
+
+.btn-back-hub:active {
+  transform: translateY(1px);
+}
+
+.game-title-header {
+  font-family: var(--font-game-display);
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: -0.01em;
+}
+
+.game-steps-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.game-step-dot {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-pill);
+  background: #F4FAF7;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  transition: var(--transition-smooth);
+}
+
+.game-step-dot.active {
+  background: var(--primary);
+  color: #FFFFFF;
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(61, 163, 123, 0.3);
+}
+
+.game-step-dot.done {
+  background: #E8F5EF;
+  color: var(--primary-dark);
+}
+
+.game-instruction-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: #F2FAF6;
+  border: none;
+  padding: 14px 22px;
+  border-radius: 18px;
+  color: var(--primary-dark);
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.game-stage-viewport {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 340px;
+  position: relative;
+}
+
+/* ==========================================================================
+   COMPONENTES: JOGO 1 (O Espelho das Emoções)
+   ========================================================================== */
+.emotion-game-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  width: 100%;
+  max-width: 680px;
+}
+
+.emotion-scene-card {
+  background: #F8FAF9;
+  border: none;
+  border-radius: 24px;
+  padding: 24px 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.emotion-choices-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  width: 100%;
+}
+
+@media (max-width: 640px) {
+  .emotion-choices-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.emotion-btn {
+  background: #FFFFFF;
+  border: none;
+  border-radius: 22px;
+  padding: 18px 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-press);
+}
+
+.emotion-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+.emotion-btn:active {
+  transform: translateY(1px);
+}
+
+.emotion-btn.correct {
+  background: #E8F5EF;
+  box-shadow: 0 4px 14px rgba(61, 163, 123, 0.2);
+}
+
+.emotion-btn-emoji {
+  font-size: 46px;
+}
+
+.emotion-btn-label {
+  font-family: var(--font-body);
+  font-size: 0.96rem;
+  font-weight: 600;
+  color: var(--text-main);
+  text-align: center;
+}
+
+/* ==========================================================================
+   COMPONENTES: JOGO 2 (Construtor de Palavrinhas)
+   ========================================================================== */
+.phonics-game-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  width: 100%;
+}
+
+/* Barra de Acomodações Neurodivergentes (Tipografia, Caixa de Letras, Tamanho) */
+.phonics-accommodations-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  box-shadow: 0 2px 8px rgba(25, 37, 56, 0.04);
+}
+
+.phonics-accom-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-dyslexia);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--primary);
+  background: var(--primary-soft);
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+}
+
+.phonics-accom-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-dyslexia);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: #FFFFFF;
+  border: 1px solid var(--border-subtle);
+  padding: 5px 12px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: var(--transition-press);
+}
+
+.phonics-accom-btn:hover {
+  background: var(--bg-main);
+  color: var(--text-main);
+  border-color: var(--primary-light);
+}
+
+.phonics-accom-btn.active {
+  background: var(--primary);
+  color: #FFFFFF;
+  border-color: var(--primary);
+}
+
+.phonics-illustration {
+  background: #FFF8E6;
+  border: none;
+  width: 110px;
+  height: 110px;
+  border-radius: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(255, 183, 3, 0.15);
+}
+
+.phonics-slots-row {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* Caixinha receptora (Slot correspondente) */
+.phonics-slot {
+  width: clamp(64px, 14vw, 80px);
+  height: clamp(64px, 14vw, 80px);
+  border-radius: 22px;
+  border: 2.5px dashed rgba(43, 66, 99, 0.3);
+  background: rgba(43, 66, 99, 0.03);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-dyslexia);
+  font-size: clamp(2rem, 5vw, 2.6rem);
+  color: var(--primary-dark);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  position: relative;
+  transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-sizing: border-box;
+}
+
+/* Âncora de orientação de base para apoiar orientação espacial */
+.phonics-slot::after {
+  content: '';
+  position: absolute;
+  bottom: 8px;
+  width: 22px;
+  height: 3px;
+  background: rgba(43, 66, 99, 0.12);
+  border-radius: 2px;
+  transition: all 0.2s ease;
+}
+
+/* Feedback visual imediato ao segurar e passar a letra por cima da caixinha */
+.phonics-slot.drag-over {
+  border-style: solid;
+  border-color: var(--accent-warm);
+  background: var(--accent-warm-soft);
+  box-shadow: 0 0 0 6px rgba(196, 158, 116, 0.28);
+  transform: scale(1.08);
+}
+
+.phonics-slot.drag-over::after {
+  background: var(--accent-warm);
+  width: 32px;
+}
+
+/* Caixinha preenchida com sucesso */
+.phonics-slot.filled {
+  border-style: solid;
+  border-color: var(--primary);
+  background: var(--primary-soft);
+  color: var(--primary-dark);
+  box-shadow: 0 4px 14px rgba(43, 66, 99, 0.12);
+}
+
+.phonics-slot.filled::after {
+  background: var(--accent-warm);
+  opacity: 0.9;
+}
+
+.phonics-letters-tray {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 6px;
+  min-height: 86px;
+  align-items: center;
+}
+
+/* Letrinha acomodada para crianças neurodivergentes (Lexend, pegável, anti-espelhamento) */
+.phonics-letter-tile {
+  width: clamp(66px, 14vw, 82px);
+  height: clamp(66px, 14vw, 82px);
+  border-radius: 22px;
+  background: #FFFFFF;
+  border: 1.5px solid rgba(43, 66, 99, 0.12);
+  box-shadow: 0 4px 14px rgba(22, 36, 56, 0.08);
+  font-family: var(--font-dyslexia);
+  font-size: clamp(2rem, 5vw, 2.6rem);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--primary-dark);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease, border-color 0.2s ease;
+  box-sizing: border-box;
+}
+
+/* Âncora de base física na letrinha (reduz confusão b/d, p/q, n/u) */
+.phonics-letter-tile::after {
+  content: '';
+  position: absolute;
+  bottom: 8px;
+  width: 22px;
+  height: 3.5px;
+  background: var(--accent-warm);
+  border-radius: 2px;
+  opacity: 0.9;
+  transition: all 0.2s ease;
+}
+
+.phonics-letter-tile:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 22px rgba(43, 66, 99, 0.16);
+  border-color: var(--primary-light);
+}
+
+.phonics-letter-tile:active {
+  cursor: grabbing;
+}
+
+/* Estado ativo durante o clique e arraste contínuo */
+.phonics-letter-tile.is-dragging {
+  cursor: grabbing !important;
+  z-index: 1000 !important;
+  box-shadow: 0 16px 36px rgba(22, 36, 56, 0.28) !important;
+  border-color: var(--accent-warm) !important;
+  opacity: 0.96;
+  pointer-events: auto;
+}
+
+.phonics-letter-tile.returning {
+  transition: transform 0.26s cubic-bezier(0.2, 0.9, 0.3, 1) !important;
+}
+
+/* Modos acomodáveis selecionáveis */
+.phonics-game-wrapper.mode-lowercase .phonics-letter-tile,
+.phonics-game-wrapper.mode-lowercase .phonics-slot {
+  text-transform: lowercase;
+}
+
+.phonics-game-wrapper.mode-large-letters .phonics-letter-tile,
+.phonics-game-wrapper.mode-large-letters .phonics-slot {
+  font-size: clamp(2.4rem, 6vw, 3.1rem);
+}
+
+/* ==========================================================================
+   COMPONENTES: JOGO 3 (Balança das Quantidades)
+   ========================================================================== */
+.balance-game-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 36px;
+  width: 100%;
+  max-width: 620px;
+}
+
+.balance-scale-device {
+  width: 100%;
+  height: 220px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.balance-beam {
+  width: 380px;
+  height: 14px;
+  background: #A87D59;
+  border-radius: 7px;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  transform-origin: center center;
+  transition: transform 0.4s ease;
+}
+
+.balance-beam::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: -8px;
+  transform: translateX(-50%);
+  width: 18px;
+  height: 30px;
+  background: #7A5638;
+  border-radius: 5px;
+}
+
+.balance-stand {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 110px;
+  background: #7A5638;
+  border-radius: 5px;
+}
+
+.balance-stand::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 130px;
+  height: 16px;
+  background: #583E28;
+  border-radius: 8px;
+}
+
+.balance-pan {
+  position: absolute;
+  top: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 120px;
+}
+
+.balance-pan.left { left: 0; }
+.balance-pan.right { right: 0; }
+
+.pan-contents {
+  min-height: 50px;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 6px;
+}
+
+.balance-fruit {
+  font-size: 28px;
+}
+
+.pan-label {
+  background: #A37651;
+  color: #FFFFFF;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 1.15rem;
+  width: 84px;
+  height: 28px;
+  border-radius: 0 0 14px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.balance-controls {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+.balance-btn {
+  padding: 11px 24px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-body);
+  font-size: 0.98rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: var(--transition-press);
+}
+
+.balance-btn.add {
+  background: var(--primary);
+  color: #FFFFFF;
+  box-shadow: 0 4px 14px rgba(43, 66, 99, 0.25);
+}
+
+.balance-btn.add:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(61, 163, 123, 0.32);
+}
+
+.balance-btn.add:active {
+  transform: translateY(1px);
+}
+
+.balance-btn.remove {
+  background: #FFFFFF;
+  color: var(--text-main);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.balance-btn.remove:hover {
+  transform: translateY(-2px);
+  color: #C62828;
+}
+
+.balance-btn.remove:active {
+  transform: translateY(1px);
+}
+
+/* ==========================================================================
+   COMPONENTES: JOGO 4 (O Trem dos Padrões)
+   ========================================================================== */
+.train-game-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 36px;
+  width: 100%;
+}
+
+.train-track {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #F8FAF9;
+  padding: 22px 30px;
+  border-radius: 26px;
+  border: none;
+  border-bottom: 4px solid #A87D59;
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+.train-locomotive {
+  font-size: 56px;
+  margin-right: 8px;
+}
+
+.train-car {
+  width: 78px;
+  height: 78px;
+  border-radius: 20px;
+  background: #FFFFFF;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 38px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  position: relative;
+}
+
+.train-car::after {
+  content: '● ●';
+  position: absolute;
+  bottom: -16px;
+  font-size: 11px;
+  color: #777777;
+}
+
+.train-car.target {
+  border: 2.5px dashed var(--accent-warm);
+  background: var(--accent-warm-soft);
+  color: var(--accent-warm);
+  font-family: var(--font-body);
+  font-weight: 600;
+  box-shadow: none;
+  transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.train-car.target.drag-over {
+  border-style: solid;
+  border-color: var(--accent-warm);
+  background: #FFE8D6;
+  box-shadow: 0 0 0 6px rgba(196, 158, 116, 0.3);
+  transform: scale(1.1);
+}
+
+.pattern-options-row {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 8px;
+}
+
+.pattern-choice-btn {
+  width: 78px;
+  height: 78px;
+  border-radius: 22px;
+  background: #FFFFFF;
+  border: 1.5px solid rgba(43, 66, 99, 0.12);
+  font-size: 38px;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  box-shadow: 0 4px 14px rgba(43, 66, 99, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
+}
+
+.pattern-choice-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 22px rgba(43, 66, 99, 0.18);
+  border-color: var(--primary-light);
+}
+
+.pattern-choice-btn:active {
+  cursor: grabbing;
+}
+
+.pattern-choice-btn.is-dragging {
+  cursor: grabbing !important;
+  z-index: 1000 !important;
+  box-shadow: 0 16px 36px rgba(22, 36, 56, 0.28) !important;
+  border-color: var(--accent-warm) !important;
+  opacity: 0.96;
+  pointer-events: auto;
+}
+
+.pattern-choice-btn.returning {
+  transition: transform 0.26s cubic-bezier(0.2, 0.9, 0.3, 1) !important;
+}
+  transform: translateY(1px);
+}
+
+/* ==========================================================================
+   COMPONENTES: JOGO 5 (A Rotina Encantada)
+   ========================================================================== */
+.routine-game-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  width: 100%;
+  max-width: 720px;
+}
+
+.routine-timeline-slots {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  width: 100%;
+}
+
+@media (max-width: 640px) {
+  .routine-timeline-slots {
+    grid-template-columns: 1fr;
+  }
+}
+
+.routine-slot {
+  background: #FFFFFF;
+  border: 2px dashed rgba(61, 163, 123, 0.25);
+  border-radius: 22px;
+  padding: 14px;
+  min-height: 140px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.slot-num {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--primary-dark);
+  background: #E8F5EF;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  width: fit-content;
+  margin-bottom: 8px;
+}
+
+.slot-card-holder {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.placed-routine-card {
+  background: #E8F5EF;
+  border: none;
+  border-radius: 16px;
+  padding: 10px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 4px;
+  box-shadow: 0 2px 8px rgba(61, 163, 123, 0.1);
+}
+
+.placed-routine-card span { font-size: 28px; }
+.placed-routine-card p { font-family: var(--font-body); font-size: 0.9rem; font-weight: 600; color: var(--text-main); }
+
+.routine-cards-pool {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+}
+
+.routine-card-btn {
+  background: #FFFFFF;
+  border: none;
+  border-radius: 22px;
+  padding: 14px 18px;
+  max-width: 210px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-press);
+}
+
+.routine-card-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+.routine-card-btn:active {
+  transform: translateY(1px);
+}
+
+.routine-card-icon { font-size: 34px; }
+.routine-card-desc { font-family: var(--font-body); font-size: 0.92rem; color: var(--text-main); font-weight: 600; line-height: 1.3; }
+
+/* ==========================================================================
+   MODAL DO CAMARIM DO PIP (CLEAN & SLIM)
+   ========================================================================== */
+.wardrobe-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(29, 53, 45, 0.35);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.wardrobe-modal.active {
+  display: flex;
+}
+
+.wardrobe-box {
+  background: #FFFFFF;
+  border-radius: 28px;
+  max-width: 960px;
+  width: 100%;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  border: none;
+  box-shadow: var(--shadow-modal);
+  overflow: hidden;
+}
+
+.wardrobe-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 28px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  gap: 16px;
+}
+
+.wardrobe-header-title {
+  font-family: var(--font-game-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.btn-close-modal {
+  background: #FEE8E8;
+  border: none;
+  color: #DC2626;
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-full);
+  font-family: var(--font-body);
+  font-size: 1.2rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition-press);
+}
+
+.btn-close-modal:hover {
+  transform: scale(1.08);
+}
+
+.wardrobe-body {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  flex: 1;
+  overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  .wardrobe-body {
+    grid-template-columns: 1fr;
+    overflow-y: auto;
+  }
+}
+
+.wardrobe-preview-pane {
+  background: #F8FAF9;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.wardrobe-catalog-pane {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.wardrobe-tabs-bar {
+  display: flex;
+  gap: 8px;
+  padding: 14px 20px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  overflow-x: auto;
+}
+
+.wardrobe-tab-btn {
+  background: #F4FAF7;
+  border: none;
+  padding: 7px 16px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  transition: var(--transition-press);
+}
+
+.wardrobe-tab-btn:hover {
+  background: #E8F5EF;
+  color: var(--primary-dark);
+}
+
+.wardrobe-tab-btn.active {
+  background: var(--primary);
+  color: #FFFFFF;
+}
+
+.wardrobe-progress-bar-row {
+  padding: 12px 20px;
+  background: #F8FAF9;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.progress-track {
+  flex: 1;
+  height: 10px;
+  background: #E0EAE5;
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--primary);
+  border-radius: var(--radius-pill);
+  width: 0%;
+  transition: width 0.4s ease;
+}
+
+.wardrobe-items-grid {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 14px;
+}
+
+/* Card dos Acessórios */
+.wardrobe-item-card {
+  background: #FFFFFF;
+  border: none;
+  border-radius: 20px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-press);
+  gap: 6px;
+}
+
+.wardrobe-item-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+.wardrobe-item-card.equipped {
+  background: #E8F5EF;
+  box-shadow: 0 4px 14px rgba(61, 163, 123, 0.2);
+}
+
+.wardrobe-item-card.locked {
+  opacity: 0.6;
+  background: #F8FAF9;
+  cursor: not-allowed;
+}
+
+.item-icon-box {
+  font-size: 38px;
+}
+
+.item-name {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text-main);
+}
+
+.item-desc {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  line-height: 1.35;
+}
+
+.item-action-tag {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+}
+
+.tag-equip {
+  background: #F4FAF7;
+  color: var(--text-main);
+}
+
+.tag-equipped {
+  background: var(--primary);
+  color: #FFFFFF;
+}
+
+/* ==========================================================================
+   MODAL DO BAÚ MÁGICO DE RECOMPENSAS (SLIM & CLEAN)
+   ========================================================================== */
+.treasure-chest-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(29, 53, 45, 0.4);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  z-index: 110;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.treasure-chest-modal.active {
+  display: flex;
+}
+
+.chest-box {
+  background: #FFFFFF;
+  border-radius: 30px;
+  max-width: 520px;
+  width: 100%;
+  padding: 36px 30px;
+  text-align: center;
+  border: none;
+  box-shadow: var(--shadow-modal);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.chest-badge-anim {
+  font-size: 64px;
+  margin-bottom: 8px;
+}
+
+.chest-title {
+  font-family: var(--font-game-display);
+  font-size: 1.85rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 4px;
+}
+
+.chest-praise {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+}
+
+.unlocked-item-spotlight {
+  background: #FFF8E6;
+  border: none;
+  border-radius: 22px;
+  padding: 20px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 22px;
+  box-shadow: 0 4px 14px rgba(255, 183, 3, 0.15);
+}
+
+.spotlight-icon {
+  font-size: 52px;
+}
+
+.spotlight-name {
+  font-family: var(--font-game-display);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #8C4B18;
+}
+
+.spotlight-category {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #B3682E;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.spotlight-desc {
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: #555555;
+  max-width: 380px;
+  line-height: 1.4;
+}
+
+.chest-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+}
+
+.btn-chest-primary {
+  background: var(--primary);
+  color: #FFFFFF;
+  border: none;
+  padding: 12px 26px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(43, 66, 99, 0.25);
+  transition: var(--transition-press);
+}
+
+.btn-chest-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(61, 163, 123, 0.32);
+}
+
+.btn-chest-primary:active {
+  transform: translateY(1px);
+}
+
+.btn-chest-secondary {
+  background: #F4FAF7;
+  border: none;
+  color: var(--text-main);
+  padding: 12px 22px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: var(--transition-press);
+}
+
+.btn-chest-secondary:hover {
+  background: #E8F5EF;
+  transform: translateY(-1px);
+}
+
+.btn-chest-secondary:active {
+  transform: translateY(1px);
+}
+
+/* ==========================================================================
+   MODAL DO MODO CALMA (SLIM & CLEAN)
+   ========================================================================== */
+.calm-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(29, 53, 45, 0.35);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.calm-modal.active {
+  display: flex;
+}
+
+.calm-box {
+  background: #FFFFFF;
+  border-radius: 30px;
+  max-width: 560px;
+  width: 100%;
+  padding: 40px 32px;
+  text-align: center;
+  border: none;
+  box-shadow: var(--shadow-modal);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.calm-header-title {
+  font-family: var(--font-game-display);
+  font-size: 1.85rem;
+  font-weight: 700;
+  color: var(--accent-lavender);
+  margin-bottom: 6px;
+}
+
+.calm-header-subtitle {
+  font-size: 1.02rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-bottom: 28px;
+}
+
+.breathing-bubble-wrapper {
+  width: 210px;
+  height: 210px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 28px;
+}
+
+.breathing-bubble-outer {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-full);
+  background: var(--accent-lavender-soft);
+  opacity: 0.6;
+}
+
+.breathing-bubble-core {
+  width: 115px;
+  height: 115px;
+  border-radius: var(--radius-full);
+  background: radial-gradient(circle, #BDB0D6 0%, #9C8EB9 100%);
+  box-shadow: 0 0 30px rgba(156, 142, 185, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  font-size: 34px;
+  transition: transform 0.2s ease;
+}
+
+.breathing-instruction-text {
+  font-family: var(--font-game-display);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--primary-dark);
+  min-height: 40px;
+  margin-bottom: 24px;
+}
+
+.calm-exit-btn {
+  background: #FFFFFF;
+  border: none;
+  color: var(--text-main);
+  padding: 12px 32px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.98rem;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-press);
+}
+
+.calm-exit-btn:hover {
+  background: var(--primary-soft);
+  color: var(--primary-dark);
+}
+
+.calm-exit-btn:active {
+  transform: translateY(1px);
+}
+
+/* ==========================================================================
+   CONVITE DO PIP PARA PAUSA (Frustration / Inactivity detector)
+   ========================================================================== */
+.gentle-prompt-toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: #FFFFFF;
+  border-radius: var(--radius-md);
+  border: none;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  padding: 16px 20px;
+  display: none;
+  align-items: center;
+  gap: 16px;
+  z-index: 90;
+  max-width: 390px;
+}
+
+.gentle-prompt-toast.active {
+  display: flex;
+}
+
+.toast-pip-icon { font-size: 32px; }
+.toast-text { font-size: 0.92rem; color: var(--text-main); font-weight: 500; }
+.toast-buttons { display: flex; gap: 8px; margin-top: 8px; }
+
+.toast-btn-yes {
+  background: var(--accent-lavender);
+  color: #FFFFFF;
+  border: none;
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  font-size: 0.82rem;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.toast-btn-no {
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--border-subtle);
+  padding: 6px 12px;
+  border-radius: var(--radius-full);
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+
+/* ==========================================================================
+   SISTEMA DE RESPONSIVIDADE & FORMATAÇÃO MOBILE COMPLETA
+   Projetado para telas de smartphones (320px a 768px), tablets e touch UI.
+   Preserva 100% da integridade da versão Desktop e adapta todos os 5 jogos,
+   camarim, modais e controles com alvos de toque generosos (>= 44px).
+   ========================================================================== */
+
+/* --- TABLETS E TELAS INTERMEDIÁRIAS (<= 960px) --- */
+@media (max-width: 960px) {
+  .hero-game-showcase {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+/* --- SMARTPHONES E TELAS PEQUENAS (<= 768px) --- */
+@media (max-width: 768px) {
+  /* Layout Base */
+  .app-container {
+    padding: 10px 14px 32px;
+    min-height: 100vh;
+  }
+
+  /* Barra Superior HUD Mobile */
+  .top-bar {
+    padding: 4px 0 8px;
+    border-radius: 0;
+    margin-bottom: 18px;
+    gap: 12px;
+    flex-direction: column;
+    align-items: stretch;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .brand-section {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 2px;
+    text-align: left;
+  }
+
+  .brand-logo-wrap {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+  }
+
+  .brand-title.parappa-logo {
+    font-size: 2.1rem;
+  }
+
+  .brand-subtitle {
+    font-size: 0.74rem;
+  }
+
+  /* ==========================================================================
+     BARRA DE CONTROLES NO MOBILE: FORMATADA, ALINHADA E 100% VISÍVEL
+     Linha 1 (Principais): Camarim (50%) + Entrar/Perfil (50%)
+     Linha 2 (Relaxamento): Modo Calma (100% de largura)
+     Linha 3 (Ajustes): Sons, Voz Guia, Movimento, Contraste (25% cada)
+     ========================================================================== */
+  .accessibility-controls {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    width: 100%;
+    overflow: visible;
+    padding: 0;
+  }
+
+  /* Botão Camarim (Linha 1 - Ocupa 2 colunas) */
+  .accessibility-controls #btnOpenWardrobeTop {
+    grid-column: span 2;
+    order: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    font-weight: 700;
+  }
+
+  /* Botão Entrar / Perfil (Linha 1 - Ocupa 2 colunas) */
+  .accessibility-controls #btnOpenAuth {
+    grid-column: span 2;
+    order: 2;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    font-weight: 700;
+  }
+
+  /* Botão Modo Calma (Linha 2 - Ocupa as 4 colunas) */
+  .accessibility-controls #btnTriggerCalm {
+    grid-column: span 4;
+    order: 3;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 42px;
+    padding: 8px 12px;
+    font-size: 0.92rem;
+    font-weight: 700;
+  }
+
+  /* Botões Sensoriais Compactos (Linha 3 - 1 coluna cada) */
+  .accessibility-controls #btnToggleSound {
+    grid-column: span 1;
+    order: 4;
+  }
+
+  .accessibility-controls #btnToggleSpeech {
+    grid-column: span 1;
+    order: 5;
+  }
+
+  .accessibility-controls #btnToggleMotion {
+    grid-column: span 1;
+    order: 6;
+  }
+
+  .accessibility-controls #btnToggleContrast {
+    grid-column: span 1;
+    order: 7;
+  }
+
+  .accessibility-controls #btnToggleSound,
+  .accessibility-controls #btnToggleSpeech,
+  .accessibility-controls #btnToggleMotion,
+  .accessibility-controls #btnToggleContrast {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    padding: 6px 2px;
+    min-height: 50px;
+    border-radius: 16px;
+    text-align: center;
+    line-height: 1.15;
+    background: #FFFFFF;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  }
+
+  .accessibility-controls #btnToggleSound span:first-child,
+  .accessibility-controls #btnToggleSpeech span:first-child,
+  .accessibility-controls #btnToggleMotion span:first-child,
+  .accessibility-controls #btnToggleContrast span:first-child {
+    font-size: 1.15rem;
+    line-height: 1;
+  }
+
+  .accessibility-controls #btnToggleSound span:last-child,
+  .accessibility-controls #btnToggleSpeech span:last-child,
+  .accessibility-controls #btnToggleMotion span:last-child,
+  .accessibility-controls #btnToggleContrast span:last-child {
+    font-size: 0.74rem;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+
+  /* Palco Diorama do Pip no Mobile */
+  .pip-hero-pedestal-card {
+    padding: 20px 16px;
+    border-radius: 24px;
+  }
+
+  .pip-speech-bubble {
+    font-size: 0.82rem;
+    line-height: 1.3;
+    padding: 7px 12px;
+    border-radius: 14px;
+    margin-bottom: 20px;
+    max-width: 230px;
+  }
+
+  .pip-avatar-stage {
+    margin: 4px 0 8px;
+  }
+
+  .pip-avatar-container {
+    width: 170px;
+    height: 170px;
+    border-radius: 18px;
+    overflow: hidden;
+  }
+
+  .pip-ground-shadow {
+    width: 120px;
+    height: 14px;
+  }
+
+  .btn-open-wardrobe {
+    padding: 12px 18px;
+    font-size: 0.98rem;
+    min-height: 48px;
+    position: relative;
+    z-index: 5;
+    margin-top: 6px;
+  }
+
+  /* Card de Missões e Baú */
+  .hero-quest-card {
+    padding: 22px 18px;
+    border-radius: 24px;
+    gap: 14px;
+  }
+
+  .quest-card-header {
+    gap: 14px;
+  }
+
+  .quest-chest-icon {
+    width: 52px;
+    height: 52px;
+    font-size: 26px;
+    border-radius: 16px;
+  }
+
+  .quest-title {
+    font-size: 1.35rem;
+  }
+
+  .quest-description {
+    font-size: 0.92rem;
+    line-height: 1.45;
+  }
+
+  .btn-hero-collection {
+    width: 100%;
+    justify-content: center;
+    padding: 12px 20px;
+    min-height: 48px;
+  }
+
+  /* Cabeçalho da Seção de Mundos */
+  .world-main-title {
+    font-size: 1.65rem;
+    line-height: 1.2;
+  }
+
+  .world-subtitle {
+    font-size: 0.96rem;
+  }
+
+  /* Grade de Jogos Mobile */
+  .educational-games-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .game-hub-card {
+    padding: 20px 18px;
+    border-radius: 24px;
+    gap: 14px;
+  }
+
+  .btn-play-game {
+    min-height: 48px;
+    font-size: 0.96rem;
+  }
+
+  /* Game Arena (Tela do Jogo em Andamento) */
+  .game-arena {
+    padding: 18px 14px;
+    border-radius: 22px;
+    gap: 16px;
+    min-height: 480px;
+  }
+
+  .game-arena-top {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    padding-bottom: 12px;
+  }
+
+  .game-title-header {
+    font-size: 1.3rem;
+    text-align: center;
+  }
+
+  .game-steps-indicator {
+    justify-content: center;
+  }
+
+  .game-step-dot {
+    width: 28px;
+    height: 28px;
+    font-size: 0.85rem;
+  }
+
+  .game-instruction-banner {
+    font-size: 0.95rem;
+    padding: 12px 14px;
+    border-radius: 16px;
+    line-height: 1.4;
+  }
+
+  .game-stage-viewport {
+    min-height: 300px;
+    width: 100%;
+  }
+
+  /* Jogo 1: O Espelho das Emoções */
+  .emotion-choices-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    width: 100%;
+  }
+
+  .emotion-btn {
+    padding: 14px 10px;
+    border-radius: 18px;
+    min-height: 110px;
+  }
+
+  .emotion-btn-emoji {
+    font-size: 40px;
+  }
+
+  .emotion-btn-label {
+    font-size: 0.9rem;
+  }
+
+  /* Jogo 2: Construtor de Palavrinhas */
+  .phonics-game-wrapper {
+    gap: 22px;
+  }
+
+  .phonics-illustration {
+    width: 95px;
+    height: 95px;
+    border-radius: 20px;
+    font-size: 42px;
+  }
+
+  .phonics-slots-row {
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .phonics-slot {
+    width: 58px;
+    height: 58px;
+    font-size: 1.8rem;
+    border-radius: 16px;
+  }
+
+  .phonics-letters-tray {
+    gap: 10px;
+  }
+
+  .phonics-letter-tile {
+    width: 60px;
+    height: 60px;
+    font-size: 1.8rem;
+    border-radius: 18px;
+    min-height: 60px;
+  }
+
+  /* Jogo 3: Balança das Quantidades */
+  .balance-game-wrapper {
+    gap: 24px;
+    width: 100%;
+  }
+
+  .balance-scale-device {
+    height: 180px;
+  }
+
+  .balance-beam {
+    width: 290px;
+    max-width: 92vw;
+  }
+
+  .balance-pan {
+    width: 90px;
+  }
+
+  .balance-fruit {
+    font-size: 24px;
+  }
+
+  .pan-label {
+    width: 70px;
+    height: 26px;
+    font-size: 1rem;
+  }
+
+  .balance-stand {
+    height: 90px;
+  }
+
+  .balance-controls {
+    width: 100%;
+    gap: 12px;
+  }
+
+  .balance-btn {
+    flex: 1;
+    justify-content: center;
+    padding: 12px;
+    font-size: 0.94rem;
+    min-height: 48px;
+  }
+
+  /* Jogo 4: O Trem dos Padrões */
+  .train-game-wrapper {
+    gap: 24px;
+    width: 100%;
+  }
+
+  .train-track {
+    padding: 14px 16px;
+    border-radius: 20px;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .train-locomotive {
+    font-size: 42px;
+    margin-right: 4px;
+  }
+
+  .train-car {
+    width: 64px;
+    height: 64px;
+    font-size: 30px;
+    border-radius: 16px;
+    flex-shrink: 0;
+  }
+
+  .train-car::after {
+    bottom: -14px;
+    font-size: 9px;
+  }
+
+  .pattern-options-row {
+    gap: 14px;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .pattern-choice-btn {
+    width: 66px;
+    height: 66px;
+    font-size: 32px;
+    border-radius: 18px;
+    min-height: 66px;
+  }
+
+  /* Jogo 5: A Rotina Encantada */
+  .routine-game-wrapper {
+    gap: 22px;
+  }
+
+  .routine-timeline-slots {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .routine-slot {
+    min-height: 90px;
+    padding: 10px 14px;
+    border-radius: 18px;
+  }
+
+  .routine-cards-pool {
+    gap: 10px;
+    width: 100%;
+  }
+
+  .routine-card-btn {
+    max-width: 100%;
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 18px;
+    flex-direction: row;
+    text-align: left;
+    gap: 14px;
+    min-height: 52px;
+  }
+
+  .routine-card-icon {
+    font-size: 28px;
+  }
+
+  /* Modais no Mobile (Sheet Acolhedor) */
+  .wardrobe-modal,
+  .calm-modal,
+  .treasure-chest-modal {
+    padding: 12px;
+    align-items: flex-end;
+  }
+
+  .wardrobe-box {
+    border-radius: 26px 26px 18px 18px;
+    max-height: 92vh;
+  }
+
+  .wardrobe-header {
+    padding: 14px 18px;
+  }
+
+  .wardrobe-header-title {
+    font-size: 1.25rem;
+  }
+
+  .wardrobe-body {
+    grid-template-columns: 1fr;
+    overflow-y: auto;
+  }
+
+  .wardrobe-preview-pane {
+    padding: 14px;
+  }
+
+  .wardrobe-preview-pane .pip-avatar-container {
+    width: 130px;
+    height: 130px;
+  }
+
+  .wardrobe-tabs-bar {
+    padding: 10px 14px;
+    gap: 6px;
+  }
+
+  .wardrobe-tab-btn {
+    padding: 6px 12px;
+    font-size: 0.84rem;
+    min-height: 38px;
+  }
+
+  .wardrobe-progress-bar-row {
+    padding: 10px 14px;
+    font-size: 0.84rem;
+  }
+
+  .wardrobe-items-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    padding: 14px;
+  }
+
+  .wardrobe-item-card {
+    padding: 12px 8px;
+    border-radius: 16px;
+  }
+
+  .item-icon-box {
+    font-size: 32px;
+  }
+
+  .item-name {
+    font-size: 0.88rem;
+  }
+
+  .item-desc {
+    font-size: 0.76rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .item-action-tag {
+    font-size: 0.74rem;
+    padding: 3px 10px;
+  }
+
+  /* Modal do Modo Calma */
+  .calm-box {
+    padding: 28px 18px;
+    border-radius: 26px;
+  }
+
+  .calm-header-title {
+    font-size: 1.5rem;
+  }
+
+  .calm-header-subtitle {
+    font-size: 0.94rem;
+    margin-bottom: 20px;
+  }
+
+  .breathing-bubble-wrapper {
+    width: 170px;
+    height: 170px;
+    margin-bottom: 20px;
+  }
+
+  .breathing-bubble-core {
+    width: 95px;
+    height: 95px;
+    font-size: 30px;
+  }
+
+  .breathing-instruction-text {
+    font-size: 1.15rem;
+    min-height: 36px;
+    margin-bottom: 20px;
+  }
+
+  .calm-exit-btn {
+    width: 100%;
+    min-height: 48px;
+  }
+
+  /* Modal do Baú de Tesouros */
+  .chest-box {
+    padding: 26px 18px;
+    border-radius: 26px;
+  }
+
+  .chest-badge-anim {
+    font-size: 50px;
+  }
+
+  .chest-title {
+    font-size: 1.55rem;
+  }
+
+  .spotlight-icon {
+    font-size: 46px;
+  }
+
+  .spotlight-name {
+    font-size: 1.2rem;
+  }
+
+  .chest-actions {
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+  }
+
+  .btn-chest-primary,
+  .btn-chest-secondary {
+    width: 100%;
+    min-height: 48px;
+  }
+
+  /* Toast de Inatividade */
+  .gentle-prompt-toast {
+    left: 12px;
+    right: 12px;
+    bottom: 14px;
+    max-width: none;
+    border-radius: 20px;
+    padding: 14px 16px;
+  }
+}
+
+/* --- TELAS MUITO ESTREITAS (Smartphones Compactos <= 400px) --- */
+@media (max-width: 400px) {
+  .app-container {
+    padding: 8px 10px 24px;
+  }
+
+  .top-bar {
+    padding: 2px 0 6px;
+  }
+
+  .brand-title.parappa-logo {
+    font-size: 1.85rem;
+  }
+
+  .brand-logo-wrap {
+    width: 38px;
+    height: 38px;
+  }
+
+  .accessibility-controls {
+    gap: 6px;
+  }
+
+  .accessibility-controls #btnOpenWardrobeTop,
+  .accessibility-controls #btnTriggerCalm {
+    font-size: 0.82rem;
+    padding: 6px 8px;
+    gap: 4px;
+    min-height: 42px;
+  }
+
+  .accessibility-controls #btnToggleSound,
+  .accessibility-controls #btnToggleSpeech,
+  .accessibility-controls #btnToggleMotion,
+  .accessibility-controls #btnToggleContrast {
+    padding: 5px 2px;
+    min-height: 48px;
+  }
+
+  .accessibility-controls #btnToggleSound span:last-child,
+  .accessibility-controls #btnToggleSpeech span:last-child,
+  .accessibility-controls #btnToggleMotion span:last-child,
+  .accessibility-controls #btnToggleContrast span:last-child {
+    font-size: 0.68rem;
+  }
+
+  .pip-avatar-container {
+    width: 145px;
+    height: 145px;
+  }
+
+  .balance-beam {
+    width: 250px;
+  }
+
+  .balance-pan {
+    width: 78px;
+  }
+
+  .phonics-accommodations-bar {
+    padding: 6px 12px;
+    gap: 6px;
+  }
+
+  .phonics-accom-btn,
+  .phonics-accom-tag {
+    font-size: 0.74rem;
+    padding: 4px 8px;
+  }
+
+  .phonics-slot {
+    width: 56px;
+    height: 56px;
+    font-size: 1.7rem;
+    border-radius: 16px;
+  }
+
+  .phonics-letter-tile {
+    width: 58px;
+    height: 58px;
+    font-size: 1.7rem;
+    border-radius: 16px;
+    min-height: 58px;
+  }
+
+/* ==========================================================================
+   MODAL DE LOGIN / CADASTRO ACOLHEDOR (STARKIDS AUTH)
+   ========================================================================== */
+.auth-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(29, 53, 45, 0.4);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  z-index: 120;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.auth-modal.active {
+  display: flex;
+}
+
+.auth-box {
+  background: #FFFFFF;
+  border-radius: 28px;
+  max-width: 440px;
+  width: 100%;
+  padding: 28px 24px;
+  border: none;
+  box-shadow: var(--shadow-modal);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  animation: auth-pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes auth-pop {
+  0% { transform: scale(0.92) translateY(10px); opacity: 0; }
+  100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+.auth-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.auth-tabs {
+  display: flex;
+  gap: 8px;
+  background: #F4FAF7;
+  padding: 4px;
+  border-radius: var(--radius-pill);
+}
+
+.auth-tab-btn {
+  background: transparent;
+  border: none;
+  padding: 8px 18px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: var(--transition-press);
+}
+
+.auth-tab-btn.active {
+  background: #FFFFFF;
+  color: var(--primary-dark);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.auth-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.auth-avatar-sparkle {
+  font-size: 40px;
+  margin-bottom: 4px;
+  animation: gentle-float 3s ease-in-out infinite;
+}
+
+.auth-title {
+  font-family: var(--font-game-display);
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 4px;
+}
+
+.auth-subtitle {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+  line-height: 1.45;
+}
+
+.auth-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  text-align: left;
+}
+
+.auth-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.auth-label {
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.auth-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.auth-input-icon {
+  position: absolute;
+  left: 14px;
+  font-size: 1.1rem;
+  pointer-events: none;
+  opacity: 0.75;
+}
+
+.auth-input {
+  width: 100%;
+  padding: 13px 14px 13px 44px;
+  border-radius: 18px;
+  border: 1.5px solid rgba(0, 0, 0, 0.08);
+  background: #F8FAF9;
+  font-family: var(--font-body);
+  font-size: 0.98rem;
+  color: var(--text-main);
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.auth-input:focus {
+  border-color: var(--primary);
+  background: #FFFFFF;
+  box-shadow: 0 0 0 3px rgba(61, 163, 123, 0.15);
+}
+
+.auth-feedback-msg {
+  font-size: 0.88rem;
+  font-weight: 600;
+  min-height: 22px;
+  text-align: center;
+  border-radius: 12px;
+  padding: 4px 8px;
+}
+
+.auth-modal {
+  display: none !important;
+}
+
+.auth-feedback-msg.error {
+  color: #D32F2F;
+  background: #FFEBEE;
+}
+
+.auth-feedback-msg.success {
+  color: #2E7D32;
+  background: #E8F5E9;
+}
+
+.btn-auth-submit {
+  width: 100%;
+  background: var(--primary);
+  color: #FFFFFF;
+  border: none;
+  padding: 13px 20px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-game-display);
+  font-weight: 700;
+  font-size: 1.05rem;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(43, 66, 99, 0.28);
+  transition: var(--transition-press);
+}
+
+.btn-auth-submit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(61, 163, 123, 0.35);
+}
+
+.btn-auth-submit:active {
+  transform: translateY(1px);
+}
+
+.auth-footer-note {
+  font-size: 0.78rem;
+  color: var(--text-light);
+  margin-top: 16px;
+  line-height: 1.35;
+}
+
+
+

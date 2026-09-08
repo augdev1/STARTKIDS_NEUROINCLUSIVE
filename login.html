@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StartKids | Entrar ou Criar Conta</title>
+  <meta name="description" content="Página de login amigável e segura do StartKids para salvar acessórios e progressão em PostgreSQL.">
+
+  <!-- Fontes: PaRappa The Rapper Style + Quicksand Slim -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Permanent+Marker&family=Gochi+Hand&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Estilos -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+  <!-- Fundo Acolhedor Iluminado -->
+  <div class="background-ambient" aria-hidden="true"></div>
+
+  <div class="login-page-wrapper">
+    <!-- CARTÃO PRINCIPAL DE LOGIN E CADASTRO -->
+    <main class="login-card">
+      <div class="login-hero-header">
+        <div class="login-card-brand">
+          <h1 class="brand-title parappa-logo" aria-label="StartKids">
+            <span class="p-letter l-s">S</span><span class="p-letter l-t">t</span><span class="p-letter l-a">a</span><span class="p-letter l-r">r</span><span class="p-letter l-t2">t</span><span class="p-letter l-k">K</span><span class="p-letter l-i">i</span><span class="p-letter l-d">d</span><span class="p-letter l-s">s</span><span class="parappa-tm">™</span>
+          </h1>
+          <span class="brand-subtitle">Aventuras Educativas & Coleção</span>
+        </div>
+        <div class="login-speech-bubble" id="loginSpeechBubble">
+          Oba! Crie seu perfil mágico com seu nome e uma senha para começarmos nossa jornada!
+        </div>
+      </div>
+
+      <!-- Abas de Alternância -->
+      <div class="login-tabs-container" role="tablist">
+        <button class="login-tab-button active" id="tabRegister" role="tab" aria-selected="true" type="button">
+          Criar Minha Conta
+        </button>
+        <button class="login-tab-button" id="tabLogin" role="tab" aria-selected="false" type="button">
+          Já Tenho Conta
+        </button>
+      </div>
+
+      <!-- Formulário de Autenticação -->
+      <form class="login-form" id="loginForm" autocomplete="on">
+        <!-- Campo Nome de Usuário -->
+        <div class="login-input-group">
+          <label for="loginUsername" class="login-input-label">
+            <span>👤</span> Seu Nome ou Apelido
+          </label>
+          <div class="login-input-box">
+            <input 
+              type="text" 
+              id="loginUsername" 
+              name="username" 
+              class="login-input-field" 
+              placeholder="Ex: Pedro, Sofia, Lucas..." 
+              required 
+              maxlength="30" 
+              autocomplete="username"
+              autofocus
+            >
+          </div>
+        </div>
+
+        <!-- Campo Senha -->
+        <div class="login-input-group">
+          <label for="loginPassword" class="login-input-label">
+            <span>🔒</span> Sua Senha Mágica
+          </label>
+          <div class="login-input-box">
+            <input 
+              type="password" 
+              id="loginPassword" 
+              name="password" 
+              class="login-input-field" 
+              placeholder="Sua senha secreta..." 
+              required 
+              maxlength="50" 
+              autocomplete="current-password"
+            >
+            <button type="button" class="btn-toggle-password" id="btnTogglePassword" title="Mostrar ou ocultar senha" aria-label="Mostrar ou ocultar senha">
+              👁️
+            </button>
+          </div>
+        </div>
+
+        <!-- Área de Mensagem / Feedback Acolhedor -->
+        <div class="login-feedback-area" id="loginFeedbackArea" aria-live="polite"></div>
+
+        <!-- Botão de Ação -->
+        <button type="submit" class="btn-login-submit" id="btnSubmit">
+          Criar Meu Perfil Mágico ✨
+        </button>
+      </form>
+
+      <!-- Divisor -->
+      <div class="login-divider">
+        <span>ou</span>
+      </div>
+
+      <!-- Botão de Modo Visitante -->
+      <button type="button" class="btn-guest-mode" id="btnGuestMode" title="Jogar direto sem criar conta">
+        <span>🎈</span>
+        <span>Continuar como Visitante (Sem Salvar na Nuvem)</span>
+      </button>
+
+      <!-- Rodapé de Segurança -->
+      <div class="login-security-badge">
+        <span>🛡️</span>
+        <span>Senhas criptografadas com hash e progresso salvo em banco PostgreSQL.</span>
+      </div>
+    </main>
+  </div>
+
+  <!-- Aprimorador de Emojis Vetoriais (Twemoji) -->
+  <script src="https://cdn.jsdelivr.net/npm/@twemoji/api@15.1.0/dist/twemoji.min.js" crossorigin="anonymous"></script>
+  <script src="js/emojiEnhancer.js"></script>
+
+  <!-- Controlador Modular da Página de Login -->
+  <script type="module" src="js/login.js"></script>
+</body>
+</html>

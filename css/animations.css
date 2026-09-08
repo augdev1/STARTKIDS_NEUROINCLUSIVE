@@ -1,0 +1,205 @@
+/* ==========================================================================
+   ANIMAÇÕES SUAVES E ORGÂNICAS - PIP: AVENTURAS SENSORIAIS
+   Sem flashes, sem sobressaltos, baseadas em transform e opacity.
+   ========================================================================== */
+
+/* Flutuação Gentil */
+@keyframes gentle-float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.anim-float {
+  animation: gentle-float 4s ease-in-out infinite;
+}
+
+/* Respiração do Mascote Pip */
+@keyframes pip-breathe {
+  0%, 100% {
+    transform: scale(1) translateY(0);
+  }
+  50% {
+    transform: scale(1.025, 0.985) translateY(-3px);
+  }
+}
+
+.anim-pip-breathe {
+  animation: pip-breathe 4.5s ease-in-out infinite;
+}
+
+/* Piscar Lento e Amigável do Pip */
+@keyframes pip-blink {
+  0%, 90%, 100% {
+    transform: scaleY(1);
+  }
+  95% {
+    transform: scaleY(0.1);
+  }
+}
+
+.anim-pip-eye {
+  transform-origin: center;
+  animation: pip-blink 5s ease-in-out infinite;
+}
+
+/* Brilho Guia Suave (Scaffolding / Andaime após tentativa) */
+@keyframes guidance-glow {
+  0%, 100% {
+    box-shadow: 0 0 0 rgba(90, 143, 123, 0);
+    border-color: var(--primary-light);
+  }
+  50% {
+    box-shadow: 0 0 24px rgba(90, 143, 123, 0.45);
+    border-color: var(--primary);
+  }
+}
+
+.guidance-active {
+  animation: guidance-glow 2s ease-in-out infinite;
+}
+
+/* Bolha da Respiração Guiada (Modo Calma) */
+@keyframes breathe-expand-contract {
+  /* Ciclo 4s inspiração, 2s pausa, 4s expiração */
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  40% {
+    transform: scale(1.55);
+    opacity: 0.95;
+  }
+  60% {
+    transform: scale(1.55);
+    opacity: 0.95;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+}
+
+.anim-breathe-cycle {
+  animation: breathe-expand-contract 10s ease-in-out infinite;
+}
+
+/* Retorno Suave de Erro (Sem punição, apenas flutua de volta) */
+@keyframes gentle-reset {
+  0% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-4px) rotate(-1.5deg);
+  }
+  60% {
+    transform: translateY(2px) rotate(1.5deg);
+  }
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+}
+
+.anim-gentle-reset {
+  animation: gentle-reset 0.5s ease-out;
+}
+
+/* Desabrochar da Flor / Celebração Suave */
+@keyframes blossom-in {
+  0% {
+    transform: scale(0.4) translateY(20px);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.08) translateY(-4px);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+.anim-blossom {
+  animation: blossom-in 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Brilho Suave de Sucesso */
+@keyframes success-aura {
+  0% {
+    box-shadow: 0 0 0 0 rgba(90, 143, 123, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 20px rgba(90, 143, 123, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(90, 143, 123, 0);
+  }
+}
+
+.anim-success-pulse {
+  animation: success-aura 1.2s ease-out;
+}
+
+/* Brilho e Cintilação das Estrelas de Jogo */
+@keyframes star-twinkle {
+  0%, 100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 0.9;
+  }
+  50% {
+    transform: scale(1.18) rotate(6deg);
+    opacity: 1;
+  }
+}
+
+.anim-star-twinkle {
+  animation: star-twinkle 2.5s ease-in-out infinite;
+}
+
+/* Entrada Elástica dos Cards de Mundos */
+@keyframes game-card-pop {
+  0% {
+    opacity: 0;
+    transform: translateY(24px) scale(0.94);
+  }
+  70% {
+    opacity: 1;
+    transform: translateY(-4px) scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.game-hub-card {
+  animation: game-card-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.game-hub-card:nth-child(1) { animation-delay: 0.05s; }
+.game-hub-card:nth-child(2) { animation-delay: 0.12s; }
+.game-hub-card:nth-child(3) { animation-delay: 0.19s; }
+.game-hub-card:nth-child(4) { animation-delay: 0.26s; }
+.game-hub-card:nth-child(5) { animation-delay: 0.33s; }
+
+/* Suporte a Redução de Movimento Acessível */
+@media (prefers-reduced-motion: reduce) {
+  .anim-float,
+  .anim-pip-breathe,
+  .anim-pip-eye,
+  .guidance-active,
+  .anim-breathe-cycle,
+  .anim-gentle-reset,
+  .anim-blossom,
+  .anim-success-pulse,
+  .anim-star-twinkle,
+  .game-hub-card {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+

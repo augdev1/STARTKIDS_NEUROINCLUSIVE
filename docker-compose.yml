@@ -1,0 +1,39 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: starkids-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: starkids
+      POSTGRES_PASSWORD: starkids_pass
+      POSTGRES_DB: starkids_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U starkids -d starkids_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  web:
+    build: .
+    container_name: starkids-web
+    restart: unless-stopped
+    ports:
+      - "8085:8085"
+    environment:
+      - PORT=8085
+      - NODE_ENV=production
+      - DATABASE_URL=postgres://starkids:starkids_pass@postgres:5432/starkids_db
+      - SESSION_SECRET=starkids_super_secret_key_2026
+    volumes:
+      - .:/app
+      - /app/node_modules
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  pgdata:

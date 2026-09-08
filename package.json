@@ -1,0 +1,29 @@
+{
+  "name": "starkids",
+  "version": "1.0.0",
+  "description": "StarKids - Jogos Educativos e Acolhedores com Persistência em PostgreSQL",
+  "main": "server/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server/server.js",
+    "dev": "node server/server.js"
+  },
+  "keywords": [
+    "starkids",
+    "neurodivergent",
+    "education",
+    "games",
+    "postgresql",
+    "docker",
+    "vercel"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "pg": "^8.13.3"
+  }
+}
