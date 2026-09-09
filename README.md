@@ -1,58 +1,58 @@
 # StartKids: Plataforma Educacional Neuroinclusiva
 
-Plataforma web progressiva (PWA) desenvolvida para proporcionar experiências de aprendizagem acessíveis, cognitivamente confortáveis e sensorialmente equilibradas para crianças neurodivergentes, com ênfase no atendimento a perfis com Transtorno do Espectro Autista (TEA), TDAH, Dislexia e sensibilidades sensoriais. O projeto está alinhado ao Objetivo de Desenvolvimento Sustentável 4 (ODS 4: Educacao de Qualidade) da Organizacao das Nacoes Unidas (ONU).
+Plataforma web progressiva (PWA) desenvolvida para proporcionar experiências de aprendizagem acessíveis, cognitivamente confortáveis e sensorialmente equilibradas para crianças neurodivergentes, com ênfase no atendimento a perfis com Transtorno do Espectro Autista (TEA), TDAH, Dislexia e sensibilidades sensoriais. O projeto está alinhado ao Objetivo de Desenvolvimento Sustentável 4 (ODS 4: Educação de Qualidade) da Organização das Nações Unidas (ONU).
 
 ---
 
-## 1. Visao Geral e Proposito Tecnico-Pedagogico
+## 1. Visão Geral e Propósito Técnico-Pedagógico
 
-Aplicacoes convencionais de tecnologia educacional infantil frequentemente recorrem a hiperestimulos: paletas de cores saturadas, cronometros punitivos, efeitos sonoros estridentes de alta frequencia e interfaces carregadas de elementos competitivos. Embora atraentes para perfis neurotipicos padronizados, tais padroes atuam como barreiras severas para criancas com sobrecarga sensorial, disfuncoes executivas ou dificuldades no processamento visual.
+Aplicações convencionais de tecnologia educacional infantil frequentemente recorrem a hiperestímulos: paletas de cores saturadas, cronômetros punitivos, efeitos sonoros estridentes de alta frequência e interfaces carregadas de elementos competitivos. Embora atraentes para perfis neurotípicos padronizados, tais padrões atuam como barreiras severas para crianças com sobrecarga sensorial, disfunções executivas ou dificuldades no processamento visual.
 
-O StartKids foi concebido a partir de principios de Ergonomia Cognitiva e Design Universal para a Aprendizagem:
+O StartKids foi concebido a partir de princípios de Ergonomia Cognitiva e Design Universal para a Aprendizagem:
 
-- **Previsibilidade e Reducao de Ansiedade**: A interface nao possui telas de "Game Over", penalidades ou perdas de pontos. O erro e tratado como uma hipotese experimental em reformulacao, acompanhado de pistas contextuais graduais.
-- **Isolamento de Estimulos**: Cada cenario apresenta apenas as informacoes estritamente necessarias para a tomada de decisao pedagogica, mitigando o esforco atencional concorrente.
-- **Acomodacao Auditiva e Temporal**: Feedbacks sonoros e de voz sintetizada respeitam janelas de processamento cerebral. Apos qualquer leitura guiada ou explicacao, o sistema garante uma pausa de consolidacao antes de qualquer transicao de tela.
-- **Dinamica de Autonomia**: Um mascote guia (Pip) acompanha as jornadas, reforçando o vinculo afetivo e fornecendo reforco positivo consistente.
+- **Previsibilidade e Redução de Ansiedade**: A interface não possui telas de "Game Over", penalidades ou perdas de pontos. O erro é tratado como uma hipótese experimental em reformulação, acompanhado de pistas contextuais graduais.
+- **Isolamento de Estímulos**: Cada cenário apresenta apenas as informações estritamente necessárias para a tomada de decisão pedagógica, mitigando o esforço atencional concorrente.
+- **Acomodação Auditiva e Temporal**: Feedbacks sonoros e de voz sintetizada respeitam janelas de processamento cerebral. Após qualquer leitura guiada ou explicação, o sistema garante uma pausa de consolidação antes de qualquer transição de tela.
+- **Dinâmica de Autonomia**: Um mascote guia (Pip) acompanha as jornadas, reforçando o vínculo afetivo e fornecendo reforço positivo consistente.
 
 ---
 
 ## 2. Fundamentos de Acessibilidade e Ergonomia Sensorial
 
-### 2.1 Teoria Cromatica "Deep Calm"
-A paleta visual adota valores de reflectancia e saturacao calculados para mitigar a fadiga ocular e o estresse fotossensivel:
-- **Azul Ardosia e Noturno (#162438, #2B4263)**: Fornece estabilidade e ancora focal com contraste seguro sem a dureza do preto absoluto.
+### 2.1 Teoria Cromática "Deep Calm"
+A paleta visual adota valores de reflectância e saturação calculados para mitigar a fadiga ocular e o estresse fotossensível:
+- **Azul Ardósia e Noturno (#162438, #2B4263)**: Fornece estabilidade e âncora focal com contraste seguro sem a dureza do preto absoluto.
 - **Areia e Bege Suave (#C49E74, #F4EFEA)**: Substitui o fundo branco puro (#FFFFFF), atenuando reflexos intensos e desconfortos visuais comuns em salas iluminadas.
-- **Creme de Fundo (#FAF8F5)**: Proporciona uma superficie neutra, garantindo conformidade com os padroes WCAG AAA para relacao de contraste em elementos textuais.
+- **Creme de Fundo (#FAF8F5)**: Proporciona uma superfície neutra, garantindo conformidade com os padrões WCAG AAA para relação de contraste em elementos textuais.
 
 ### 2.2 Tipografia Lexend e Âncora Anti-Espelhamento
-A aplicacao utiliza a familia tipografica Lexend, projetada por especialistas para reduzir o efeito de aglomeracao visual (*visual crowding*) e acelerar a fluencia leitora em pessoas com dislexia:
-- **Espacamento Intercaractere e Entrelinha Calibrados**: Maior distanciamento entre glifos para evitar a fusao perceptual de letras contiguas.
-- **Base Anti-Espelhamento**: Letras moveis contam com microindicadores de sustentacao na base inferior, minimizando rotacoes e inversoes involuntarias frequentes (como entre b e d, p e q, n e u).
-- **Controle de Caixa**: O usuario pode alternar dinamicamente entre letras em caixa alta (bastao maiuscula) e caixa baixa conforme o nivel de letramento.
+A aplicação utiliza a família tipográfica Lexend, projetada por especialistas para reduzir o efeito de aglomeração visual (*visual crowding*) e acelerar a fluência leitora em pessoas com dislexia:
+- **Espaçamento Intercaractere e Entrelinha Calibrados**: Maior distanciamento entre glifos para evitar a fusão perceptual de letras contíguas.
+- **Base Anti-Espelhamento**: Letras móveis contam com microindicadores de sustentação na base inferior, minimizando rotações e inversões involuntárias frequentes (como entre b e d, p e q, n e u).
+- **Controle de Caixa**: O usuário pode alternar dinamicamente entre letras em caixa alta (bastão maiúscula) e caixa baixa conforme o nível de letramento.
 
-### 2.3 Engenharia de Voz Angelical e Síntese de Fala Acessivel
-Implementada sobre a Web Speech API (`SpeechSynthesis`) atraves de um motor dedicado (`SpeechEngine`):
-- **Curadoria de Voz**: Prioriza motores neurais e naturais femininos em portugues brasileiro (`Microsoft Francisca Online Natural`, `Microsoft Thalita Online Natural`, `Google portugues do Brasil`, `Luciana Siri`), eliminando timbres metalicos ou agressivos.
-- **Parametrizacao Acustica**: Taxa de elocucao reduzida para 0.88x (ritmo compassado de leitura compartilhada) e pitch ajustado para 1.15x (timbre suave e acolhedor).
-- **Delay Pós-Locucao de 2000ms**: No encerramento de cada resposta ou explicacao, o sistema aguarda o evento nativo de termino (`utterance.onend`) e aplica um atraso intencional de 2 segundos antes de mudar de exercicio, respeitando o tempo de absorcao cognitiva da crianca.
-- **Resiliencia de Execucao**: Protecao de referencia contra coleta prematura de lixo (Garbage Collection) no Chromium e temporizador de seguranca heuristico para prevencao de bloqueio de interface.
+### 2.3 Engenharia de Voz Angelical e Síntese de Fala Acessível
+Implementada sobre a Web Speech API (`SpeechSynthesis`) através de um motor dedicado (`SpeechEngine`):
+- **Curadoria de Voz**: Prioriza motores neurais e naturais femininos em português brasileiro (`Microsoft Francisca Online Natural`, `Microsoft Thalita Online Natural`, `Google português do Brasil`, `Luciana Siri`), eliminando timbres metálicos ou agressivos.
+- **Parametrização Acústica**: Taxa de elocução reduzida para 0.88x (ritmo compassado de leitura compartilhada) e pitch ajustado para 1.15x (timbre suave e acolhedor).
+- **Pausa Pós-Locução de 2000ms**: No encerramento de cada resposta ou explicação, o sistema aguarda o evento nativo de término (`utterance.onend`) e aplica um atraso intencional de 2 segundos antes de mudar de exercício, respeitando o tempo de absorção cognitiva da criança.
+- **Resiliência de Execução**: Proteção de referência contra coleta prematura de lixo (Garbage Collection) no Chromium e temporizador de segurança heurístico para prevenção de bloqueio de interface.
 
 ### 2.4 Síntese Sonora Pentatônica
 Implementada via Web Audio API (`AudioEngine`):
-- O sistema dispensa arquivos pesados de audio gravado, sintetizando ondas sonoras diretamente no hardware do cliente via osciladores em escala pentatonica maior.
-- A escala pentatonica elimina intervalos dissonantes (segundas menores e tritonos), garantindo que qualquer combinacao acidental de notas resulte em harmonias relaxantes e confortaveis.
+- O sistema dispensa arquivos pesados de áudio gravado, sintetizando ondas sonoras diretamente no hardware do cliente via osciladores em escala pentatônica maior.
+- A escala pentatônica elimina intervalos dissonantes (segundas menores e trítonos), garantindo que qualquer combinação acidental de notas resulte em harmonias relaxantes e confortáveis.
 
 ---
 
 ## 3. Arquitetura de Software
 
-O sistema adota uma arquitetura em camadas desacopladas, priorizando carregamento rapido, resiliencia a falhas de conectividade e baixo consumo de memoria.
+O sistema adota uma arquitetura em camadas desacopladas, priorizando carregamento rápido, resiliência a falhas de conectividade e baixo consumo de memória.
 
 ```
                     +-------------------------------------+
                     |       Cliente Web / PWA (SPA)       |
-                    |  - Modulos ES6 (App, Jogos, Sons)   |
+                    |  - Módulos ES6 (App, Jogos, Sons)   |
                     |  - Service Worker (Cache Offline)   |
                     |  - Web Audio API & Web Speech API   |
                     +-------------------+-----------------+
@@ -61,135 +61,135 @@ O sistema adota uma arquitetura em camadas desacopladas, priorizando carregament
                                         |
                     +-------------------v-----------------+
                     |     Servidor Node.js / Express      |
-                    |  - Rate Limiting e Sanitizacao      |
-                    |  - Seguranca HTTP (Headers / CORS)  |
-                    |  - Autenticacao com Criptografia    |
+                    |  - Rate Limiting e Sanitização      |
+                    |  - Segurança HTTP (Headers / CORS)  |
+                    |  - Autenticação com Criptografia    |
                     |  - Auditoria e Telemetria de Logs   |
                     +-------------------+-----------------+
                                         |
-                          Conexao Pool TCP (SSL Seguro)
+                          Conexão Pool TCP (SSL Seguro)
                                         |
                     +-------------------v-----------------+
                     |       PostgreSQL Gerenciado         |
                     |  - users (Credenciais Criptografadas)|
-                    |  - user_progression (JSONB Dinamico)|
-                    |  - audit_logs (Eventos e Seguranca) |
+                    |  - user_progression (JSONB Dinâmico)|
+                    |  - audit_logs (Eventos e Segurança) |
                     +-------------------------------------+
 ```
 
 ### 3.1 Camada Frontend
-- **Abordagem Vanilla e Modularidade**: Desenvolvido em JavaScript ES6 nativo, HTML5 semantico e CSS3 puro via variaveis (CSS Custom Properties). Elimina sobrecargas de frameworks densos, resultando em inicializacao instantanea mesmo em dispositivos escolares de baixa potencia.
-- **Tratamento Hibrido de Entrada (Pointer Events)**: Todas as mecanicas interativas (como arrastar pecas ou equilibrar balancas) suportam indistintamente eventos de mouse, caneta stylus e toque em tela capacitiva (touchscreens), disponibilizando tambem a alternativa de clique unico para criancas com comprometimento motor fino.
-- **PWA (Progressive Web App)**: Implementacao com `manifest.json` e Service Worker (`sw.js`). Permite instalacao standalone no Android, iOS, Windows e macOS, funcionando em tela cheia sem barras de navegacao que gerem distracao.
+- **Abordagem Vanilla e Modularidade**: Desenvolvido em JavaScript ES6 nativo, HTML5 semântico e CSS3 puro via variáveis (CSS Custom Properties). Elimina sobrecargas de frameworks densos, resultando em inicialização instantânea mesmo em dispositivos escolares de baixa potência.
+- **Tratamento Híbrido de Entrada (Pointer Events)**: Todas as mecânicas interativas (como arrastar peças ou equilibrar balanças) suportam indistintamente eventos de mouse, caneta stylus e toque em tela capacitiva (touchscreens), disponibilizando também a alternativa de clique único para crianças com comprometimento motor fino.
+- **PWA (Progressive Web App)**: Implementação com `manifest.json` e Service Worker (`sw.js`). Permite instalação standalone no Android, iOS, Windows e macOS, funcionando em tela cheia sem barras de navegação que gerem distração.
 
 ### 3.2 Camada Backend
-- **Node.js e Express**: API RESTful leve e deterministica.
-- **Seguranca Defensiva**:
-  - `Rate Limiting`: Limitador de requisicoes em memoria para prevencao de ataques de forca bruta em endpoints criticos (`/api/auth/login` e `/api/auth/register`).
-  - `Headers de Seguranca`: Politicas de protecao contra clickjacking (`X-Frame-Options: SAMEORIGIN`), prevencao de sniffing de MIME type (`X-Content-Type-Options: nosniff`) e mitigacao de XSS.
-  - `Criptografia Forte`: Geracao de hashes unidirecionais com `bcryptjs` utilizando salt rounds para armazenamento seguro de senhas.
-  - `Controle de Payload`: Limitacao estrita do tamanho do corpo das requisicoes a 100 KB para prevencao de indisponibilidade por esgotamento de memoria.
+- **Node.js e Express**: API RESTful leve e determinística.
+- **Segurança Defensiva**:
+  - `Rate Limiting`: Limitador de requisições em memória para prevenção de ataques de força bruta em endpoints críticos (`/api/auth/login` e `/api/auth/register`).
+  - `Headers de Segurança`: Políticas de proteção contra clickjacking (`X-Frame-Options: SAMEORIGIN`), prevenção de sniffing de MIME type (`X-Content-Type-Options: nosniff`) e mitigação de XSS.
+  - `Criptografia Forte`: Geração de hashes unidirecionais com `bcryptjs` utilizando salt rounds para armazenamento seguro de senhas.
+  - `Controle de Payload`: Limitação estrita do tamanho do corpo das requisições a 100 KB para prevenção de indisponibilidade por esgotamento de memória.
 
 ### 3.3 Camada de Dados e Persistência Resiliente
-- **PostgreSQL**: Utilizado como banco de dados primario relacional atraves do driver `pg` com pool de conexoes.
-  - Tabela `users`: Identificacao de usuarios, credenciais e timestamps de criacao.
-  - Tabela `user_progression`: Armazenamento do progresso, baus abertos, estrelas e customizacoes do personagem via coluna flexivel `JSONB`.
-  - Tabela `audit_logs`: Registro cronologico de acessos, criacao de contas e eventuais anomalias operacionais para governanca.
-- **Fallback Local Offline**: Caso o servidor remoto esteja indisponivel ou o cliente opere sem conexao de rede, o sistema redireciona a gravacao de estado para um mecanismo de persistencia local resiliente, assegurando que nenhuma crianca perca seus itens conquistados.
+- **PostgreSQL**: Utilizado como banco de dados primário relacional através do driver `pg` com pool de conexões.
+  - Tabela `users`: Identificação de usuários, credenciais e timestamps de criação.
+  - Tabela `user_progression`: Armazenamento do progresso, baús abertos, estrelas e customizações do personagem via coluna flexível `JSONB`.
+  - Tabela `audit_logs`: Registro cronológico de acessos, criação de contas e eventuais anomalias operacionais para governança.
+- **Fallback Local Offline**: Caso o servidor remoto esteja indisponível ou o cliente opere sem conexão de rede, o sistema redireciona a gravação de estado para um mecanismo de persistência local resiliente, assegurando que nenhuma criança perca seus itens conquistados.
 
 ---
 
-## 4. Modulos Educativos Disponiveis
+## 4. Módulos Educativos Disponíveis
 
-A plataforma disponibiliza cinco modulos de atividades estruturadas com progressao pedagogica:
+A plataforma disponibiliza cinco módulos de atividades estruturadas com progressão pedagógica:
 
-1. **O Espelho das Emocoes (Competencias Socioemocionais)**:
-   Apresentacao de cenarios cotidianos vivenciados pelo mascote Pip para identificacao e nomeacao de estados afetivos. Cada cenario conta com texto acessivel em destaque, botao de narracao em audio e feedback falado explicativo ao acertar, seguido de 2 segundos de pausa para consolidacao emocional.
-2. **Construtor de Palavrinhas (Consciencia Fonologica)**:
-   Atividade de associacao fonema-grafema onde a crianca constroi palavras significativas atraves de letras moveis com pistas visuais e retorno sonoro individual para cada letra posicionada.
-3. **Balanca das Quantidades (Raciocinio Concreto e Equidade)**:
-   Exploracao de nocoes de equivalencia, adicao e subtracao atraves de uma balanca de dois pratos responsiva em fisica de inclinacao angular.
-4. **O Trem dos Padroes (Funcoes Executivas e Sequenciamento)**:
-   Composicao de vagoes ferroviarios seguindo padroes logicos de cores, formas e ritmo de alternancia, fortalecendo a memoria de trabalho e a antecipacao cognitiva.
+1. **O Espelho das Emoções (Competências Socioemocionais)**:
+   Apresentação de cenários cotidianos vivenciados pelo mascote Pip para identificação e nomeação de estados afetivos. Cada cenário conta com texto acessível em destaque, botão de narração em áudio e feedback falado explicativo ao acertar, seguido de 2 segundos de pausa para consolidação emocional.
+2. **Construtor de Palavrinhas (Consciência Fonológica)**:
+   Atividade de associação fonema-grafema onde a criança constrói palavras significativas através de letras móveis com pistas visuais e retorno sonoro individual para cada letra posicionada.
+3. **Balança das Quantidades (Raciocínio Concreto e Equidade)**:
+   Exploração de noções de equivalência, adição e subtração através de uma balança de dois pratos responsiva em física de inclinação angular.
+4. **O Trem dos Padrões (Funções Executivas e Sequenciamento)**:
+   Composição de vagões ferroviários seguindo padrões lógicos de cores, formas e ritmo de alternância, fortalecendo a memória de trabalho e a antecipação cognitiva.
 5. **A Rotina Encantada (Planejamento e Autonomia)**:
-   Sequenciamento temporal de acoes cotidianas (acordar, higiene, alimentacao, brincadeiras e descanso), promovendo organizacao estruturada e seguranca emocional.
+   Sequenciamento temporal de ações cotidianas (acordar, higiene, alimentação, brincadeiras e descanso), promovendo organização estruturada e segurança emocional.
 
 ---
 
-## 5. Estrutura do Repositorio
+## 5. Estrutura do Repositório
 
 ```
 .
-|-- api/                       # Funcao serverless para execucao na borda (Vercel)
+|-- api/                       # Função serverless para execução na borda (Vercel)
 |   +-- index.js
-|-- css/                       # Folhas de estilo modulares e variaveis de design
+|-- css/                       # Folhas de estilo modulares e variáveis de design
 |   |-- login.css
 |   +-- style.css
-|-- js/                        # Modulos logicos da aplicacao cliente
-|   |-- app.js                 # Bootstrap da SPA e orquestracao global
-|   |-- audio.js               # Motor de sintese sonora pentatonica (Web Audio API)
-|   |-- authService.js         # Cliente de comunicacao com a API de autenticacao
-|   |-- calmMode.js            # Modulo de respiracao diafragmatica guiada
-|   |-- educationalGames.js    # Logica dos 5 modulos pedagogicos
-|   |-- emojiEnhancer.js       # Tratamento de renderizacao de glifos vetoriais
-|   |-- login.js               # Gerenciador da interface de autenticacao
-|   |-- mascot.js              # Sistema de renderizacao multicamada do Pip (52 itens)
-|   |-- missions.js            # Missoes diarias e trilhas de progressao
-|   |-- pwaInstaller.js        # Gerenciador de instalacao PWA standalone
-|   +-- speech.js              # Motor de fala neural angelical e controle de transicao
-|-- server/                    # Servidor de aplicacao e servicos de backend
+|-- js/                        # Módulos lógicos da aplicação cliente
+|   |-- app.js                 # Bootstrap da SPA e orquestração global
+|   |-- audio.js               # Motor de síntese sonora pentatônica (Web Audio API)
+|   |-- authService.js         # Cliente de comunicação com a API de autenticação
+|   |-- calmMode.js            # Módulo de respiração diafragmática guiada
+|   |-- educationalGames.js    # Lógica dos 5 módulos pedagógicos
+|   |-- emojiEnhancer.js       # Tratamento de renderização de glifos vetoriais
+|   |-- login.js               # Gerenciador da interface de autenticação
+|   |-- mascot.js              # Sistema de renderização multicamada do Pip (52 itens)
+|   |-- missions.js            # Missões diárias e trilhas de progressão
+|   |-- pwaInstaller.js        # Gerenciador de instalação PWA standalone
+|   +-- speech.js              # Motor de fala neural angelical e controle de transição
+|-- server/                    # Servidor de aplicação e serviços de backend
 |   |-- auth.js                # Controladores de registro e login
-|   |-- db.js                  # Camada de abstracao e pool PostgreSQL com fallback
-|   |-- logger.js              # Servico centralizado de auditoria e telemetria
-|   +-- server.js              # Inicializacao do Express, middlewares e rotas
-|-- docker-compose.yml         # Orquestracao de containers para desenvolvimento
-|-- Dockerfile                 # Definicao de imagem conteinerizada do servidor Node
-|-- manifest.json              # Configuracoes de manifesto PWA
-|-- package.json               # Gerenciamento de dependencias e scripts de automacao
+|   |-- db.js                  # Camada de abstração e pool PostgreSQL com fallback
+|   |-- logger.js              # Serviço centralizado de auditoria e telemetria
+|   +-- server.js              # Inicialização do Express, middlewares e rotas
+|-- docker-compose.yml         # Orquestração de containers para desenvolvimento
+|-- Dockerfile                 # Definição de imagem conteinerizada do servidor Node
+|-- manifest.json              # Configurações de manifesto PWA
+|-- package.json               # Gerenciamento de dependências e scripts de automação
 |-- sw.js                      # Service Worker para armazenamento em cache
-+-- vercel.json                # Configuracao de roteamento e deploy na plataforma Vercel
++-- vercel.json                # Configuração de roteamento e deploy na plataforma Vercel
 ```
 
 ---
 
-## 6. Instalacao e Execucao em Ambiente de Desenvolvimento
+## 6. Instalação e Execução em Ambiente de Desenvolvimento
 
-### 6.1 Pre-requisitos
-- Node.js versao 18 ou superior.
+### 6.1 Pré-requisitos
+- Node.js versão 18 ou superior.
 - Docker e Docker Compose (caso deseje executar em containers isolados).
-- PostgreSQL versao 14 ou superior (caso opte por execucao local direta sem Docker).
+- PostgreSQL versão 14 ou superior (caso opte por execução local direta sem Docker).
 
-### 6.2 Execucao via Docker Compose (Metodo Recomendado)
-A inicializacao conteinerizada provisiona automaticamente o servidor da aplicacao e uma instancia dedicada do PostgreSQL 17 com volume persistente:
+### 6.2 Execução via Docker Compose (Método Recomendado)
+A inicialização conteinerizada provisiona automaticamente o servidor da aplicação e uma instância dedicada do PostgreSQL 17 com volume persistente:
 
 ```bash
 docker compose up -d --build
 ```
 
-A aplicacao ficara disponivel em:
+A aplicação ficará disponível em:
 ```
 http://localhost:8085
 ```
 
-Para inspecionar os logs do container de aplicacao em tempo real:
+Para inspecionar os logs do container de aplicação em tempo real:
 ```bash
 docker compose logs -f web
 ```
 
-### 6.3 Execucao Manual sem Docker
-1. Instale as dependencias do projeto:
+### 6.3 Execução Manual sem Docker
+1. Instale as dependências do projeto:
    ```bash
    npm install
    ```
-2. Configure as variaveis de ambiente criando o arquivo `.env` a partir do modelo:
+2. Configure as variáveis de ambiente criando o arquivo `.env` a partir do modelo:
    ```bash
    cp .env.example .env
    ```
-3. Execute a validacao sintatica do codigo:
+3. Execute a validação sintática do código:
    ```bash
    npm run test:syntax
    ```
-4. Inicie o servidor de aplicacao:
+4. Inicie o servidor de aplicação:
    ```bash
    npm start
    ```
@@ -197,42 +197,42 @@ docker compose logs -f web
 
 ---
 
-## 7. Variaveis de Ambiente
+## 7. Variáveis de Ambiente
 
-As configuracoes sensiveis e parametros de infraestrutura devem ser definidos atraves de variaveis de ambiente:
+As configurações sensíveis e parâmetros de infraestrutura devem ser definidos através de variáveis de ambiente:
 
-| Variavel | Descricao | Obrigatoria | Exemplo |
+| Variável | Descrição | Obrigatória | Exemplo |
 | :--- | :--- | :--- | :--- |
-| `PORT` | Porta TCP de escuta do servidor HTTP | Nao (padrao 8085) | `8085` |
-| `NODE_ENV` | Modo de operacao do ambiente | Sim | `development` ou `production` |
-| `DATABASE_URL` | String de conexao SSL com o banco PostgreSQL | Recomendada | `postgres://usuario:senha@host:5432/starkids_db` |
-| `SESSION_SECRET` | Chave criptografica para assinatura de sessoes | Sim | `chave_criptografica_de_alta_entropia` |
+| `PORT` | Porta TCP de escuta do servidor HTTP | Não (padrão 8085) | `8085` |
+| `NODE_ENV` | Modo de operação do ambiente | Sim | `development` ou `production` |
+| `DATABASE_URL` | String de conexão SSL com o banco PostgreSQL | Recomendada | `postgres://usuario:senha@host:5432/starkids_db` |
+| `SESSION_SECRET` | Chave criptográfica para assinatura de sessões | Sim | `chave_criptografica_de_alta_entropia` |
 
 ---
 
-## 8. Arquitetura de Deploy e Producao
+## 8. Arquitetura de Deploy e Produção
 
-A solucao adota uma topologia hibrida para alta disponibilidade e baixa latencia:
+A solução adota uma topologia híbrida para alta disponibilidade e baixa latência:
 
-- **Borda Estatica e Funcoes Serverless (Vercel)**:
-  - O codigo frontend, assets estaticos, manifestos e service workers sao distribuidos globalmente pela rede de borda (CDN) da Vercel.
-  - O endpoint `/api/*` e roteado atraves do arquivo `vercel.json` para a funcao serverless `api/index.js`, conectada em modo seguro ao banco de dados remoto.
+- **Borda Estática e Funções Serverless (Vercel)**:
+  - O código frontend, assets estáticos, manifestos e service workers são distribuídos globalmente pela rede de borda (CDN) da Vercel.
+  - O endpoint `/api/*` é roteado através do arquivo `vercel.json` para a função serverless `api/index.js`, conectada em modo seguro ao banco de dados remoto.
 - **Banco de Dados Gerenciado (Render PostgreSQL)**:
-  - Banco relacional PostgreSQL em nuvem com backups regulares e comunicacao criptografada via TLS/SSL.
+  - Banco relacional PostgreSQL em nuvem com backups regulares e comunicação criptografada via TLS/SSL.
 - **Esteira de Entrega**:
-  - Validacao de sintaxe e testes de integridade previos ao versionamento.
-  - Deploy continuo ativado a cada sincronizacao de commits validados no branch principal (`main`).
+  - Validação de sintaxe e testes de integridade prévios ao versionamento.
+  - Deploy contínuo ativado a cada sincronização de commits validados no branch principal (`main`).
 
 ---
 
-## 9. Governanca de Codigo e Seguranca
+## 9. Governança de Código e Segurança
 
-- Nao ha exposicao de credenciais ou tokens em codigo-fonte versionado.
-- Os dados sensiveis trafegados em operacoes de autenticacao sao validados em formato e tamanho tanto no cliente quanto no servidor.
-- Os registros de auditoria disponibilizados em `/api/logs` mantêm isolamento de credenciais e senhas, limitando-se a registrar carimbos temporais, operacoes executadas e IPs mascarados em conformidade com principios de privacidade.
+- Não há exposição de credenciais ou tokens em código-fonte versionado.
+- Os dados sensíveis trafegados em operações de autenticação são validados em formato e tamanho tanto no cliente quanto no servidor.
+- Os registros de auditoria disponibilizados em `/api/logs` mantêm isolamento de credenciais e senhas, limitando-se a registrar carimbos temporais, operações executadas e IPs mascarados em conformidade com princípios de privacidade.
 
 ---
 
-## 10. Licenca
+## 10. Licença
 
-Este projeto e disponibilizado sob os termos da Licenca **MIT**. Consulte o arquivo `LICENSE` para informacoes completas.
+Este projeto é disponibilizado sob os termos da Licença **MIT**. Consulte o arquivo `LICENSE` para informações completas.
