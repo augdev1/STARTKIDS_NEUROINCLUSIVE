@@ -1,171 +1,238 @@
-# 🌟 StarKids: Aventuras Educativas & Coleção
-> **Plataforma Educativa Acolhedora, Sensorialmente Equilibrada e Neuroinclusiva**  
-> Repositório Oficial: [https://github.com/augdev1/STARKIDS_NEUROINCLUSIVE](https://github.com/augdev1/STARKIDS_NEUROINCLUSIVE)
+# StartKids: Plataforma Educacional Neuroinclusiva
+
+Plataforma web progressiva (PWA) desenvolvida para proporcionar experiências de aprendizagem acessíveis, cognitivamente confortáveis e sensorialmente equilibradas para crianças neurodivergentes, com ênfase no atendimento a perfis com Transtorno do Espectro Autista (TEA), TDAH, Dislexia e sensibilidades sensoriais. O projeto está alinhado ao Objetivo de Desenvolvimento Sustentável 4 (ODS 4: Educacao de Qualidade) da Organizacao das Nacoes Unidas (ONU).
 
 ---
 
-## 🎯 Objetivo do Projeto
+## 1. Visao Geral e Proposito Tecnico-Pedagogico
 
-O **StarKids** foi idealizado e construído com um propósito claro: **oferecer uma experiência de aprendizagem digital verdadeiramente acolhedora, respeitosa e acessível para crianças neurodivergentes**, abrangendo perfis com:
+Aplicacoes convencionais de tecnologia educacional infantil frequentemente recorrem a hiperestimulos: paletas de cores saturadas, cronometros punitivos, efeitos sonoros estridentes de alta frequencia e interfaces carregadas de elementos competitivos. Embora atraentes para perfis neurotipicos padronizados, tais padroes atuam como barreiras severas para criancas com sobrecarga sensorial, disfuncoes executivas ou dificuldades no processamento visual.
 
-- 🧩 **Transtorno do Espectro Autista (TEA)**: Previsibilidade nas transições, comandos claros, estímulos visuais controlados e ausência de ruídos estridentes ou piscantes.
-- ⚡ **TDAH (Atenção & Hiperatividade)**: Estímulo ao foco por meio de tarefas modulares, gratificação suave contínua e opção imediata de pausas guiadas.
-- 📖 **Dislexia e Dificuldades de Processamento Visual**: Tipografia científica, espaçamentos generosos e marcadores de base anti-espelhamento.
-- 🌿 **Hipersensibilidade Sensorial**: Ausência de cronômetros punitivos, telas de "Game Over" ou pontuações negativas; cada tentativa é acolhida como uma oportunidade de exploração.
+O StartKids foi concebido a partir de principios de Ergonomia Cognitiva e Design Universal para a Aprendizagem:
 
----
-
-## 🎨 Pilares Pedagógicos & Sensoriais
-
-### 1. Paleta de Cores *Deep Calm*
-Desenvolvida a partir de pesquisas cromáticas para neurodiversidade:
-- **Azul Ardósia & Azul Noturno (`#162438`, `#2B4263`)**: Foco e profundidade sem agressão visual.
-- **Areia Quente & Bege Suave (`#C49E74`, `#F4EFEA`)**: Aconchego e calor, reduzindo o brilho branco puro.
-- **Creme de Fundo (`#FAF8F5`)**: Baixa intensidade de reflexo de luz, evitando fadiga ocular.
-
-### 2. Tipografia Científica Acomodável (Lexend)
-- Utilização da família tipográfica **Lexend**, desenvolvida especificamente para diminuir o efeito de aglomeração de caracteres (*visual crowding*).
-- **Âncora de Base Anti-Espelhamento**: Linha sutil de sustentação na parte inferior de letras móveis, prevenindo confusão comum em crianças disléxicas (como *b/d*, *p/q*, *n/u*).
-- Alternador dinâmico de caixa (Letra Bastão Maiúscula vs. Minúscula) e modo ampliado (+25%).
-
-### 3. Mecânica Tátil de Arraste (Drag-and-Drop) & Toque Direto
-- Interação física suave de **clicar, segurar e puxar** pecinhas para suas caixinhas correspondentes.
-- Suporte unificado a Pointer Events em **Desktop (mouse), Tablets e Smartphones (toque)** a 60fps.
-- **Acessibilidade Motora Dupla**: Crianças que sintam dificuldade no movimento de arrastar podem simplesmente **dar um toque** na letrinha ou item para encaixe automático.
-
-### 4. Áudio Pentatônico & Locução com Voz Guia
-- **Web Audio API**: Síntese sonora harmônica em escala pentatônica maior, evitando frequências agudas estressantes.
-- **Web Speech API**: Locução clara e paciente com o mascote Pip lendo as orientações da fase para crianças em fase de pré-alfabetização.
-
-### 5. Modo Calma (Respiração Diafragmática)
-- Ferramenta integrada de regulação emocional com bolha respiratória suave inspirada em técnicas de *mindfulness* infantil.
-- Detecção gentil de inatividade ou agitação para sugerir momentos de relaxamento.
+- **Previsibilidade e Reducao de Ansiedade**: A interface nao possui telas de "Game Over", penalidades ou perdas de pontos. O erro e tratado como uma hipotese experimental em reformulacao, acompanhado de pistas contextuais graduais.
+- **Isolamento de Estimulos**: Cada cenario apresenta apenas as informacoes estritamente necessarias para a tomada de decisao pedagogica, mitigando o esforco atencional concorrente.
+- **Acomodacao Auditiva e Temporal**: Feedbacks sonoros e de voz sintetizada respeitam janelas de processamento cerebral. Apos qualquer leitura guiada ou explicacao, o sistema garante uma pausa de consolidacao antes de qualquer transicao de tela.
+- **Dinamica de Autonomia**: Um mascote guia (Pip) acompanha as jornadas, reforçando o vinculo afetivo e fornecendo reforco positivo consistente.
 
 ---
 
-## 👗 O Mascote Pip & Camarim de 52 Acessórios
+## 2. Fundamentos de Acessibilidade e Ergonomia Sensorial
 
-O Pip é o guia e companheiro do jogador. A cada fase completada, o **Baú das Descobertas** se abre com um novo item colecionável para vestir o Pip:
-- **5 Camadas Simultâneas em SVG**: Auras encantadas (arco-íris, cristais, constelação), Roupas/Capas, Óculos/Rosto, Chapéus/Tiaras e Amiguinhos/Pets de estimação.
-- Sem cortes visuais ou sobreposições indesejadas: proporções calculadas para total harmonia visual.
+### 2.1 Teoria Cromatica "Deep Calm"
+A paleta visual adota valores de reflectancia e saturacao calculados para mitigar a fadiga ocular e o estresse fotossensivel:
+- **Azul Ardosia e Noturno (#162438, #2B4263)**: Fornece estabilidade e ancora focal com contraste seguro sem a dureza do preto absoluto.
+- **Areia e Bege Suave (#C49E74, #F4EFEA)**: Substitui o fundo branco puro (#FFFFFF), atenuando reflexos intensos e desconfortos visuais comuns em salas iluminadas.
+- **Creme de Fundo (#FAF8F5)**: Proporciona uma superficie neutra, garantindo conformidade com os padroes WCAG AAA para relacao de contraste em elementos textuais.
+
+### 2.2 Tipografia Lexend e Âncora Anti-Espelhamento
+A aplicacao utiliza a familia tipografica Lexend, projetada por especialistas para reduzir o efeito de aglomeracao visual (*visual crowding*) e acelerar a fluencia leitora em pessoas com dislexia:
+- **Espacamento Intercaractere e Entrelinha Calibrados**: Maior distanciamento entre glifos para evitar a fusao perceptual de letras contiguas.
+- **Base Anti-Espelhamento**: Letras moveis contam com microindicadores de sustentacao na base inferior, minimizando rotacoes e inversoes involuntarias frequentes (como entre b e d, p e q, n e u).
+- **Controle de Caixa**: O usuario pode alternar dinamicamente entre letras em caixa alta (bastao maiuscula) e caixa baixa conforme o nivel de letramento.
+
+### 2.3 Engenharia de Voz Angelical e Síntese de Fala Acessivel
+Implementada sobre a Web Speech API (`SpeechSynthesis`) atraves de um motor dedicado (`SpeechEngine`):
+- **Curadoria de Voz**: Prioriza motores neurais e naturais femininos em portugues brasileiro (`Microsoft Francisca Online Natural`, `Microsoft Thalita Online Natural`, `Google portugues do Brasil`, `Luciana Siri`), eliminando timbres metalicos ou agressivos.
+- **Parametrizacao Acustica**: Taxa de elocucao reduzida para 0.88x (ritmo compassado de leitura compartilhada) e pitch ajustado para 1.15x (timbre suave e acolhedor).
+- **Delay Pós-Locucao de 2000ms**: No encerramento de cada resposta ou explicacao, o sistema aguarda o evento nativo de termino (`utterance.onend`) e aplica um atraso intencional de 2 segundos antes de mudar de exercicio, respeitando o tempo de absorcao cognitiva da crianca.
+- **Resiliencia de Execucao**: Protecao de referencia contra coleta prematura de lixo (Garbage Collection) no Chromium e temporizador de seguranca heuristico para prevencao de bloqueio de interface.
+
+### 2.4 Síntese Sonora Pentatônica
+Implementada via Web Audio API (`AudioEngine`):
+- O sistema dispensa arquivos pesados de audio gravado, sintetizando ondas sonoras diretamente no hardware do cliente via osciladores em escala pentatonica maior.
+- A escala pentatonica elimina intervalos dissonantes (segundas menores e tritonos), garantindo que qualquer combinacao acidental de notas resulte em harmonias relaxantes e confortaveis.
 
 ---
 
-## 🎮 Jogos Educativos Integrados
+## 3. Arquitetura de Software
 
-1. **O Espelho das Emoções**: Reconhecimento socioemocional e empatia através de expressões acolhedoras.
-2. **Construtor de Palavrinhas**: Consciência fonológica e ortografia com letras móveis e ilustrações vetoriais encantadoras.
-3. **Balança das Quantidades**: Raciocínio lógico e matemática concreta equilibrando frutinhas nos pratos.
-4. **O Trem dos Padrões**: Funções executivas, seriação e sequenciamento de cores e formas geométricas.
-5. **A Rotina Encantada**: Autonomia e organização da rotina diária em ordem temporal.
+O sistema adota uma arquitetura em camadas desacopladas, priorizando carregamento rapido, resiliencia a falhas de conectividade e baixo consumo de memoria.
+
+```
+                    +-------------------------------------+
+                    |       Cliente Web / PWA (SPA)       |
+                    |  - Modulos ES6 (App, Jogos, Sons)   |
+                    |  - Service Worker (Cache Offline)   |
+                    |  - Web Audio API & Web Speech API   |
+                    +-------------------+-----------------+
+                                        |
+                             HTTPS / JSON REST API
+                                        |
+                    +-------------------v-----------------+
+                    |     Servidor Node.js / Express      |
+                    |  - Rate Limiting e Sanitizacao      |
+                    |  - Seguranca HTTP (Headers / CORS)  |
+                    |  - Autenticacao com Criptografia    |
+                    |  - Auditoria e Telemetria de Logs   |
+                    +-------------------+-----------------+
+                                        |
+                          Conexao Pool TCP (SSL Seguro)
+                                        |
+                    +-------------------v-----------------+
+                    |       PostgreSQL Gerenciado         |
+                    |  - users (Credenciais Criptografadas)|
+                    |  - user_progression (JSONB Dinamico)|
+                    |  - audit_logs (Eventos e Seguranca) |
+                    +-------------------------------------+
+```
+
+### 3.1 Camada Frontend
+- **Abordagem Vanilla e Modularidade**: Desenvolvido em JavaScript ES6 nativo, HTML5 semantico e CSS3 puro via variaveis (CSS Custom Properties). Elimina sobrecargas de frameworks densos, resultando em inicializacao instantanea mesmo em dispositivos escolares de baixa potencia.
+- **Tratamento Hibrido de Entrada (Pointer Events)**: Todas as mecanicas interativas (como arrastar pecas ou equilibrar balancas) suportam indistintamente eventos de mouse, caneta stylus e toque em tela capacitiva (touchscreens), disponibilizando tambem a alternativa de clique unico para criancas com comprometimento motor fino.
+- **PWA (Progressive Web App)**: Implementacao com `manifest.json` e Service Worker (`sw.js`). Permite instalacao standalone no Android, iOS, Windows e macOS, funcionando em tela cheia sem barras de navegacao que gerem distracao.
+
+### 3.2 Camada Backend
+- **Node.js e Express**: API RESTful leve e deterministica.
+- **Seguranca Defensiva**:
+  - `Rate Limiting`: Limitador de requisicoes em memoria para prevencao de ataques de forca bruta em endpoints criticos (`/api/auth/login` e `/api/auth/register`).
+  - `Headers de Seguranca`: Politicas de protecao contra clickjacking (`X-Frame-Options: SAMEORIGIN`), prevencao de sniffing de MIME type (`X-Content-Type-Options: nosniff`) e mitigacao de XSS.
+  - `Criptografia Forte`: Geracao de hashes unidirecionais com `bcryptjs` utilizando salt rounds para armazenamento seguro de senhas.
+  - `Controle de Payload`: Limitacao estrita do tamanho do corpo das requisicoes a 100 KB para prevencao de indisponibilidade por esgotamento de memoria.
+
+### 3.3 Camada de Dados e Persistência Resiliente
+- **PostgreSQL**: Utilizado como banco de dados primario relacional atraves do driver `pg` com pool de conexoes.
+  - Tabela `users`: Identificacao de usuarios, credenciais e timestamps de criacao.
+  - Tabela `user_progression`: Armazenamento do progresso, baus abertos, estrelas e customizacoes do personagem via coluna flexivel `JSONB`.
+  - Tabela `audit_logs`: Registro cronologico de acessos, criacao de contas e eventuais anomalias operacionais para governanca.
+- **Fallback Local Offline**: Caso o servidor remoto esteja indisponivel ou o cliente opere sem conexao de rede, o sistema redireciona a gravacao de estado para um mecanismo de persistencia local resiliente, assegurando que nenhuma crianca perca seus itens conquistados.
 
 ---
 
-## 🛠️ Arquitetura Técnica
+## 4. Modulos Educativos Disponiveis
 
-- **Frontend**: HTML5 Semântico, CSS3 Moderno (Vanilla com Variáveis CSS), JavaScript ES6 Modular, Twemoji SVGs integrados.
-- **Backend**: Node.js, Express, CORS, autenticação segura com tokens e senhas criptografadas com `bcryptjs`.
-- **Banco de Dados**: PostgreSQL com pool de conexões (`pg`), tabelas relacionais `users` e `user_progression` com dados em JSONB. Possui fallback automático local (`local_db.json`) para uso offline ou desenvolvimento sem Docker.
-- **Containerização**: Docker e Docker Compose orquestrando o app web e o PostgreSQL 17 Alpine com volume persistente.
+A plataforma disponibiliza cinco modulos de atividades estruturadas com progressao pedagogica:
+
+1. **O Espelho das Emocoes (Competencias Socioemocionais)**:
+   Apresentacao de cenarios cotidianos vivenciados pelo mascote Pip para identificacao e nomeacao de estados afetivos. Cada cenario conta com texto acessivel em destaque, botao de narracao em audio e feedback falado explicativo ao acertar, seguido de 2 segundos de pausa para consolidacao emocional.
+2. **Construtor de Palavrinhas (Consciencia Fonologica)**:
+   Atividade de associacao fonema-grafema onde a crianca constroi palavras significativas atraves de letras moveis com pistas visuais e retorno sonoro individual para cada letra posicionada.
+3. **Balanca das Quantidades (Raciocinio Concreto e Equidade)**:
+   Exploracao de nocoes de equivalencia, adicao e subtracao atraves de uma balanca de dois pratos responsiva em fisica de inclinacao angular.
+4. **O Trem dos Padroes (Funcoes Executivas e Sequenciamento)**:
+   Composicao de vagoes ferroviarios seguindo padroes logicos de cores, formas e ritmo de alternancia, fortalecendo a memoria de trabalho e a antecipacao cognitiva.
+5. **A Rotina Encantada (Planejamento e Autonomia)**:
+   Sequenciamento temporal de acoes cotidianas (acordar, higiene, alimentacao, brincadeiras e descanso), promovendo organizacao estruturada e seguranca emocional.
 
 ---
 
-## 🚀 Como Rodar Localmente
+## 5. Estrutura do Repositorio
 
-### Opção 1: Via Docker Compose (Recomendado)
-Certifique-se de ter o Docker Desktop instalado e execute:
+```
+.
+|-- api/                       # Funcao serverless para execucao na borda (Vercel)
+|   +-- index.js
+|-- css/                       # Folhas de estilo modulares e variaveis de design
+|   |-- login.css
+|   +-- style.css
+|-- js/                        # Modulos logicos da aplicacao cliente
+|   |-- app.js                 # Bootstrap da SPA e orquestracao global
+|   |-- audio.js               # Motor de sintese sonora pentatonica (Web Audio API)
+|   |-- authService.js         # Cliente de comunicacao com a API de autenticacao
+|   |-- calmMode.js            # Modulo de respiracao diafragmatica guiada
+|   |-- educationalGames.js    # Logica dos 5 modulos pedagogicos
+|   |-- emojiEnhancer.js       # Tratamento de renderizacao de glifos vetoriais
+|   |-- login.js               # Gerenciador da interface de autenticacao
+|   |-- mascot.js              # Sistema de renderizacao multicamada do Pip (52 itens)
+|   |-- missions.js            # Missoes diarias e trilhas de progressao
+|   |-- pwaInstaller.js        # Gerenciador de instalacao PWA standalone
+|   +-- speech.js              # Motor de fala neural angelical e controle de transicao
+|-- server/                    # Servidor de aplicacao e servicos de backend
+|   |-- auth.js                # Controladores de registro e login
+|   |-- db.js                  # Camada de abstracao e pool PostgreSQL com fallback
+|   |-- logger.js              # Servico centralizado de auditoria e telemetria
+|   +-- server.js              # Inicializacao do Express, middlewares e rotas
+|-- docker-compose.yml         # Orquestracao de containers para desenvolvimento
+|-- Dockerfile                 # Definicao de imagem conteinerizada do servidor Node
+|-- manifest.json              # Configuracoes de manifesto PWA
+|-- package.json               # Gerenciamento de dependencias e scripts de automacao
+|-- sw.js                      # Service Worker para armazenamento em cache
++-- vercel.json                # Configuracao de roteamento e deploy na plataforma Vercel
+```
+
+---
+
+## 6. Instalacao e Execucao em Ambiente de Desenvolvimento
+
+### 6.1 Pre-requisitos
+- Node.js versao 18 ou superior.
+- Docker e Docker Compose (caso deseje executar em containers isolados).
+- PostgreSQL versao 14 ou superior (caso opte por execucao local direta sem Docker).
+
+### 6.2 Execucao via Docker Compose (Metodo Recomendado)
+A inicializacao conteinerizada provisiona automaticamente o servidor da aplicacao e uma instancia dedicada do PostgreSQL 17 com volume persistente:
+
 ```bash
 docker compose up -d --build
 ```
-Acesse a aplicação no navegador em:
-👉 **`http://localhost:8085`**
 
-Para visualizar os logs:
+A aplicacao ficara disponivel em:
+```
+http://localhost:8085
+```
+
+Para inspecionar os logs do container de aplicacao em tempo real:
 ```bash
 docker compose logs -f web
 ```
 
-### Opção 2: Via Node.js Local
-1. Instale as dependências:
+### 6.3 Execucao Manual sem Docker
+1. Instale as dependencias do projeto:
    ```bash
    npm install
    ```
-2. Copie o arquivo de exemplo de variáveis de ambiente:
+2. Configure as variaveis de ambiente criando o arquivo `.env` a partir do modelo:
    ```bash
    cp .env.example .env
    ```
-3. Inicie a aplicação:
+3. Execute a validacao sintatica do codigo:
+   ```bash
+   npm run test:syntax
+   ```
+4. Inicie o servidor de aplicacao:
    ```bash
    npm start
    ```
-4. Acesse: **`http://localhost:8085`**
+5. Acesse no navegador em `http://localhost:8085`.
 
 ---
 
-## ☁️ Guia de Deploy (Vercel & Render)
+## 7. Variaveis de Ambiente
 
-Este projeto está pronto para arquitetura dividida:
-- **Frontend**: Hospedado no **Vercel** (com CDN global ultrarrápida).
-- **Backend & Banco de Dados**: Hospedados no **Render** (Node Web Service + PostgreSQL Gerenciado).
+As configuracoes sensiveis e parametros de infraestrutura devem ser definidos atraves de variaveis de ambiente:
 
----
-
-### Passo 1: Subir o Banco e Backend no RENDER
-
-1. Acesse o [Render Dashboard](https://dashboard.render.com/) e faça login.
-2. **Criar o Banco PostgreSQL**:
-   - Clique em **New +** ➔ **PostgreSQL**.
-   - **Name**: `starkids-db`
-   - **Database**: `starkids_db`
-   - **User**: `starkids`
-   - **Plan**: **Free**
-   - Clique em **Create Database**.
-   - Após criado, copie a **External Database URL** (e a **Internal Database URL**).
-3. **Criar o Web Service (Backend Node)**:
-   - Clique em **New +** ➔ **Web Service**.
-   - Conecte o repositório GitHub `augdev1/STARKIDS_NEUROINCLUSIVE`.
-   - **Language**: `Node`
-   - **Branch**: `main`
-   - **Build Command**: `npm install`
-   - **Start Command**: `npm start`
-   - **Plan**: **Free**
-   - Adicione as variáveis em **Environment Variables**:
-     - `DATABASE_URL`: *(Cole a URL do PostgreSQL copiada acima)*
-     - `SESSION_SECRET`: *(Uma chave secreta longa, ex: `starkids_secret_chave_2026`)*
-     - `NODE_ENV`: `production`
-   - Clique em **Create Web Service**.
-   - Sua API estará no ar (ex: `https://starkids-api.onrender.com`).
+| Variavel | Descricao | Obrigatoria | Exemplo |
+| :--- | :--- | :--- | :--- |
+| `PORT` | Porta TCP de escuta do servidor HTTP | Nao (padrao 8085) | `8085` |
+| `NODE_ENV` | Modo de operacao do ambiente | Sim | `development` ou `production` |
+| `DATABASE_URL` | String de conexao SSL com o banco PostgreSQL | Recomendada | `postgres://usuario:senha@host:5432/starkids_db` |
+| `SESSION_SECRET` | Chave criptografica para assinatura de sessoes | Sim | `chave_criptografica_de_alta_entropia` |
 
 ---
 
-### Passo 2: Subir o Frontend no VERCEL
+## 8. Arquitetura de Deploy e Producao
 
-1. Acesse o [Vercel](https://vercel.com/) e clique em **Add New...** ➔ **Project**.
-2. Importe o repositório `augdev1/STARKIDS_NEUROINCLUSIVE`.
-3. Em **Configure Project**:
-   - **Framework Preset**: `Other`
-   - **Root Directory**: `./`
-4. Em **Environment Variables**:
-   - `DATABASE_URL`: *(A External Database URL do PostgreSQL do Render)*
-   - `SESSION_SECRET`: `starkids_secret_chave_2026`
-   *(O arquivo `vercel.json` e a função serverless `api/index.js` já vêm configurados para rodar a API nativamente no Vercel conectada ao banco do Render, ou você pode apontar as rotas para o seu Web Service do Render).*
-5. Clique em **Deploy**!
-   - Em segundos sua aplicação estará online com HTTPS automático: `https://starkids.vercel.app`.
+A solucao adota uma topologia hibrida para alta disponibilidade e baixa latencia:
 
----
-
-## 🔒 Variáveis de Ambiente
-
-Consulte o arquivo `.env.example`:
-| Variável | Descrição | Exemplo |
-| :--- | :--- | :--- |
-| `PORT` | Porta de escuta da aplicação | `8085` |
-| `NODE_ENV` | Modo de execução (`development` / `production`) | `production` |
-| `DATABASE_URL` | String de conexão com o PostgreSQL | `postgres://user:pass@host:5432/dbname` |
-| `SESSION_SECRET` | Chave de segurança para assinatura de tokens de sessão | `sua_chave_secreta_2026` |
+- **Borda Estatica e Funcoes Serverless (Vercel)**:
+  - O codigo frontend, assets estaticos, manifestos e service workers sao distribuidos globalmente pela rede de borda (CDN) da Vercel.
+  - O endpoint `/api/*` e roteado atraves do arquivo `vercel.json` para a funcao serverless `api/index.js`, conectada em modo seguro ao banco de dados remoto.
+- **Banco de Dados Gerenciado (Render PostgreSQL)**:
+  - Banco relacional PostgreSQL em nuvem com backups regulares e comunicacao criptografada via TLS/SSL.
+- **Esteira de Entrega**:
+  - Validacao de sintaxe e testes de integridade previos ao versionamento.
+  - Deploy continuo ativado a cada sincronizacao de commits validados no branch principal (`main`).
 
 ---
 
-## 📄 Licença
-Distribuído sob a licença **MIT**. Consulte `LICENSE` para mais detalhes.
-Criado com carinho e dedicação à educação inclusiva. 🌈✨
+## 9. Governanca de Codigo e Seguranca
+
+- Nao ha exposicao de credenciais ou tokens em codigo-fonte versionado.
+- Os dados sensiveis trafegados em operacoes de autenticacao sao validados em formato e tamanho tanto no cliente quanto no servidor.
+- Os registros de auditoria disponibilizados em `/api/logs` mantêm isolamento de credenciais e senhas, limitando-se a registrar carimbos temporais, operacoes executadas e IPs mascarados em conformidade com principios de privacidade.
+
+---
+
+## 10. Licenca
+
+Este projeto e disponibilizado sob os termos da Licenca **MIT**. Consulte o arquivo `LICENSE` para informacoes completas.
