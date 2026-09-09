@@ -402,60 +402,160 @@ export class EducationalGamesManager {
     const feedbackBubble = document.getElementById('emotionFeedbackBubble');
     const storyCard = document.getElementById('emotionStoryCard');
 
+    const sceneCard = stage.querySelector('.emotion-scene-card');
+
+    const handleEmotionChoice = (btn, id) => {
+      if (id === data.correctId) {
+        // Desabilita os botões para evitar toques acidentais durante a fala e a transição
+        stage.querySelectorAll('.emotion-btn').forEach(b => {
+          b.style.pointerEvents = 'none';
+        });
+
+        btn.classList.add('correct', 'anim-success-pulse');
+        sound.playChord([329.63, 392.00, 523.25]);
+
+        // Mostra o feedback explicativo em texto no balão
+        if (feedbackBubble && storyCard) {
+          storyCard.classList.add('story-success');
+          feedbackBubble.style.display = 'block';
+          feedbackBubble.className = 'emotion-feedback-bubble success';
+          feedbackBubble.innerHTML = `
+            <span class="feedback-icon">✨</span>
+            <span>${data.feedback}</span>
+          `;
+        }
+
+        // Fala o feedback com a voz angelical e aguarda exatamente 1 segundo após o término da fala
+        speech.speak(data.feedback, {
+          force: true,
+          delayAfterEnd: 1000,
+          onEnd: () => {
+            this.updateRoundStep(this.currentRound + 1);
+            this.loadRound();
+          }
+        });
+      } else {
+        this.attemptsOnCurrentRound++;
+        btn.classList.add('anim-gentle-reset');
+        sound.playTone(sound.pentatonicScale.D4, 0.4);
+        setTimeout(() => btn.classList.remove('anim-gentle-reset'), 500);
+
+        // Dica textual acolhedora
+        if (feedbackBubble) {
+          feedbackBubble.style.display = 'block';
+          feedbackBubble.className = 'emotion-feedback-bubble hint';
+          feedbackBubble.innerHTML = `
+            <span class="feedback-icon">💭</span>
+            <span>Como você se sentiria nessa situação? Dê uma olhadinha no desenho e tente novamente com calma!</span>
+          `;
+        }
+
+        if (this.attemptsOnCurrentRound >= 2) {
+          const correctBtn = stage.querySelector(`.emotion-btn[data-id="${data.correctId}"]`);
+          if (correctBtn) correctBtn.classList.add('guidance-active');
+          sound.playGuidance();
+        }
+      }
+    };
+
     stage.querySelectorAll('.emotion-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const id = btn.getAttribute('data-id');
-        if (id === data.correctId) {
-          // Desabilita os botões para evitar toques acidentais durante a fala e a transição
-          stage.querySelectorAll('.emotion-btn').forEach(b => {
-            b.style.pointerEvents = 'none';
-          });
+      let isDragging = false;
+      let startX = 0;
+      let startY = 0;
+      let currentPointerId = null;
 
-          btn.classList.add('correct', 'anim-success-pulse');
-          sound.playChord([329.63, 392.00, 523.25]);
+      const resetBtn = () => {
+        btn.classList.add('returning');
+        btn.style.transform = 'translate3d(0, 0, 0)';
+        setTimeout(() => {
+          btn.classList.remove('is-dragging', 'returning');
+          btn.style.transform = '';
+        }, 260);
+        if (sceneCard) sceneCard.classList.remove('drag-over');
+      };
 
-          // Mostra o feedback explicativo em texto no balão
-          if (feedbackBubble && storyCard) {
-            storyCard.classList.add('story-success');
-            feedbackBubble.style.display = 'block';
-            feedbackBubble.className = 'emotion-feedback-bubble success';
-            feedbackBubble.innerHTML = `
-              <span class="feedback-icon">✨</span>
-              <span>${data.feedback}</span>
-            `;
-          }
+      btn.addEventListener('pointerdown', (e) => {
+        isDragging = false;
+        startX = e.clientX;
+        startY = e.clientY;
+        currentPointerId = e.pointerId;
+        btn.classList.remove('returning');
+        try { btn.setPointerCapture(e.pointerId); } catch (_) {}
+      });
 
-          // Fala o feedback com a voz angelical e aguarda exatamente 1 segundo após o término da fala
-          speech.speak(data.feedback, {
-            force: true,
-            delayAfterEnd: 1000,
-            onEnd: () => {
-              this.updateRoundStep(this.currentRound + 1);
-              this.loadRound();
-            }
-          });
-        } else {
-          this.attemptsOnCurrentRound++;
-          btn.classList.add('anim-gentle-reset');
-          sound.playTone(sound.pentatonicScale.D4, 0.4);
-          setTimeout(() => btn.classList.remove('anim-gentle-reset'), 500);
+      btn.addEventListener('pointermove', (e) => {
+        if (currentPointerId !== e.pointerId) return;
+        const dx = e.clientX - startX;
+        const dy = e.clientY - startY;
 
-          // Dica textual acolhedora
-          if (feedbackBubble) {
-            feedbackBubble.style.display = 'block';
-            feedbackBubble.className = 'emotion-feedback-bubble hint';
-            feedbackBubble.innerHTML = `
-              <span class="feedback-icon">💭</span>
-              <span>Como você se sentiria nessa situação? Dê uma olhadinha no desenho e tente novamente com calma!</span>
-            `;
-          }
+        if (!isDragging && Math.hypot(dx, dy) > 6) {
+          isDragging = true;
+          btn.classList.add('is-dragging');
+        }
 
-          if (this.attemptsOnCurrentRound >= 2) {
-            const correctBtn = stage.querySelector(`.emotion-btn[data-id="${data.correctId}"]`);
-            if (correctBtn) correctBtn.classList.add('guidance-active');
-            sound.playGuidance();
+        if (isDragging) {
+          btn.style.transform = `translate3d(${dx}px, ${dy}px, 0) scale(1.08)`;
+          if (sceneCard) {
+            const rect = sceneCard.getBoundingClientRect();
+            const inside = (
+              e.clientX >= rect.left - 30 &&
+              e.clientX <= rect.right + 30 &&
+              e.clientY >= rect.top - 30 &&
+              e.clientY <= rect.bottom + 30
+            );
+            sceneCard.classList.toggle('drag-over', inside);
           }
         }
+      });
+
+      const handlePointerEnd = (e) => {
+        if (currentPointerId !== e.pointerId) return;
+        try { btn.releasePointerCapture(e.pointerId); } catch (_) {}
+        currentPointerId = null;
+
+        const id = btn.getAttribute('data-id');
+
+        if (isDragging) {
+          isDragging = false;
+          let droppedOnScene = false;
+          if (sceneCard) {
+            const rect = sceneCard.getBoundingClientRect();
+            if (
+              e.clientX >= rect.left - 30 &&
+              e.clientX <= rect.right + 30 &&
+              e.clientY >= rect.top - 30 &&
+              e.clientY <= rect.bottom + 30
+            ) {
+              droppedOnScene = true;
+            }
+            sceneCard.classList.remove('drag-over');
+          }
+
+          btn.classList.remove('is-dragging');
+          btn.style.transform = '';
+
+          if (droppedOnScene) {
+            handleEmotionChoice(btn, id);
+          } else {
+            resetBtn();
+          }
+        }
+      };
+
+      btn.addEventListener('pointerup', handlePointerEnd);
+      btn.addEventListener('pointercancel', (e) => {
+        if (currentPointerId === e.pointerId) {
+          try { btn.releasePointerCapture(e.pointerId); } catch (_) {}
+          currentPointerId = null;
+          isDragging = false;
+          resetBtn();
+        }
+      });
+
+      btn.addEventListener('click', () => {
+        if (isDragging) return;
+        const id = btn.getAttribute('data-id');
+        handleEmotionChoice(btn, id);
       });
     });
   }
@@ -747,8 +847,14 @@ export class EducationalGamesManager {
           <div class="balance-stand"></div>
         </div>
 
-        <!-- Controles de Colocar / Tirar Frutinhas -->
+        <!-- Controles de Colocar / Tirar Frutinhas com Arraste -->
         <div class="balance-controls">
+          <div class="balance-drag-box" title="Puxe a frutinha até a balança ou toque no botão">
+            <button class="balance-draggable-fruit" id="balanceDraggableFruit" type="button" aria-label="Fruta arrastável">
+              ${fruitItemHtml}
+            </button>
+            <span class="drag-hint-text">Puxe até o prato ➔</span>
+          </div>
           <button class="balance-btn add" id="btnAddFruit">
             <span>➕ Colocar ${data.icon}</span>
           </button>
@@ -762,8 +868,10 @@ export class EducationalGamesManager {
     window.EmojiEnhancer?.enhance(stage);
 
     const beam = document.getElementById('balanceBeam');
+    const panRight = document.getElementById('panRight');
     const panRightContents = document.getElementById('panRightContents');
     const panRightLabel = document.getElementById('panRightLabel');
+    const dragFruit = document.getElementById('balanceDraggableFruit');
 
     const updateScaleTilt = () => {
       const diff = data.target - currentRightCount;
@@ -782,6 +890,7 @@ export class EducationalGamesManager {
         const btnRemove = document.getElementById('btnRemoveFruit');
         if (btnAdd) btnAdd.style.pointerEvents = 'none';
         if (btnRemove) btnRemove.style.pointerEvents = 'none';
+        if (dragFruit) dragFruit.style.pointerEvents = 'none';
 
         sound.playChord([261.63, 329.63, 392.00, 523.25]);
         speech.speak(`Equilíbrio perfeito! São ${data.target} ${data.name} nos dois lados!`, {
@@ -797,12 +906,107 @@ export class EducationalGamesManager {
 
     updateScaleTilt();
 
-    document.getElementById('btnAddFruit').onclick = () => {
+    const addOneFruit = () => {
       if (currentRightCount < 6) {
         currentRightCount++;
         sound.playPop();
         updateScaleTilt();
       }
+    };
+
+    if (dragFruit && panRight) {
+      let isDragging = false;
+      let startX = 0;
+      let startY = 0;
+      let currentPointerId = null;
+
+      const resetFruit = () => {
+        dragFruit.classList.add('returning');
+        dragFruit.style.transform = 'translate3d(0, 0, 0)';
+        setTimeout(() => {
+          dragFruit.classList.remove('is-dragging', 'returning');
+          dragFruit.style.transform = '';
+        }, 260);
+        panRight.classList.remove('drag-over');
+      };
+
+      dragFruit.addEventListener('pointerdown', (e) => {
+        isDragging = false;
+        startX = e.clientX;
+        startY = e.clientY;
+        currentPointerId = e.pointerId;
+        dragFruit.classList.remove('returning');
+        try { dragFruit.setPointerCapture(e.pointerId); } catch (_) {}
+      });
+
+      dragFruit.addEventListener('pointermove', (e) => {
+        if (currentPointerId !== e.pointerId) return;
+        const dx = e.clientX - startX;
+        const dy = e.clientY - startY;
+
+        if (!isDragging && Math.hypot(dx, dy) > 6) {
+          isDragging = true;
+          dragFruit.classList.add('is-dragging');
+        }
+
+        if (isDragging) {
+          dragFruit.style.transform = `translate3d(${dx}px, ${dy}px, 0) scale(1.18)`;
+          const rect = panRight.getBoundingClientRect();
+          const inside = (
+            e.clientX >= rect.left - 25 &&
+            e.clientX <= rect.right + 25 &&
+            e.clientY >= rect.top - 25 &&
+            e.clientY <= rect.bottom + 25
+          );
+          panRight.classList.toggle('drag-over', inside);
+        }
+      });
+
+      const handlePointerEnd = (e) => {
+        if (currentPointerId !== e.pointerId) return;
+        try { dragFruit.releasePointerCapture(e.pointerId); } catch (_) {}
+        currentPointerId = null;
+
+        if (isDragging) {
+          isDragging = false;
+          const rect = panRight.getBoundingClientRect();
+          const droppedOnPan = (
+            e.clientX >= rect.left - 25 &&
+            e.clientX <= rect.right + 25 &&
+            e.clientY >= rect.top - 25 &&
+            e.clientY <= rect.bottom + 25
+          );
+          panRight.classList.remove('drag-over');
+
+          dragFruit.classList.remove('is-dragging');
+          dragFruit.style.transform = '';
+
+          if (droppedOnPan) {
+            addOneFruit();
+          } else {
+            resetFruit();
+          }
+        }
+      };
+
+      dragFruit.addEventListener('pointerup', handlePointerEnd);
+      dragFruit.addEventListener('pointercancel', (e) => {
+        if (currentPointerId === e.pointerId) {
+          try { dragFruit.releasePointerCapture(e.pointerId); } catch (_) {}
+          currentPointerId = null;
+          isDragging = false;
+          resetFruit();
+        }
+      });
+
+      dragFruit.addEventListener('click', () => {
+        if (isDragging) return;
+        addOneFruit();
+      });
+    }
+
+    document.getElementById('btnAddFruit').onclick = () => {
+      addOneFruit();
     };
 
     document.getElementById('btnRemoveFruit').onclick = () => {
@@ -1022,54 +1226,161 @@ export class EducationalGamesManager {
     window.EmojiEnhancer?.enhance(stage);
 
     const cards = stage.querySelectorAll('.routine-card-btn');
+    const slots = stage.querySelectorAll('.routine-slot');
+
+    const handleCardPlacement = (card, stepId) => {
+      const expectedStep = userOrder.length + 1;
+      if (stepId === expectedStep) {
+        userOrder.push(stepId);
+        card.style.display = 'none';
+
+        const holder = document.getElementById(`routineHolder-${expectedStep}`);
+        const stepData = currentRoutine.steps.find(s => s.id === stepId);
+        holder.innerHTML = `
+          <div class="placed-routine-card anim-success-pulse">
+            <span>${stepData.icon}</span>
+            <p>${stepData.text}</p>
+          </div>
+        `;
+        window.EmojiEnhancer?.enhance(holder);
+
+        sound.playTone(sound.pentatonicScale.C4 + expectedStep * 70, 0.8);
+        speech.speak(stepData.text);
+
+        if (userOrder.length === 3) {
+          stage.querySelectorAll('.routine-card-btn').forEach(b => b.style.pointerEvents = 'none');
+          setTimeout(() => {
+            sound.playChord([261.63, 329.63, 392.00, 523.25]);
+            speech.speak("Sensacional! Você organizou toda a rotina com perfeição!", {
+              force: true,
+              delayAfterEnd: 1000,
+              onEnd: () => {
+                this.updateRoundStep(this.currentRound + 1);
+                this.loadRound();
+              }
+            });
+          }, 400);
+        }
+      } else {
+        this.attemptsOnCurrentRound++;
+        card.classList.add('anim-gentle-reset');
+        sound.playTone(sound.pentatonicScale.D4, 0.4);
+        setTimeout(() => card.classList.remove('anim-gentle-reset'), 500);
+
+        if (this.attemptsOnCurrentRound >= 2) {
+          const correctCard = stage.querySelector(`.routine-card-btn[data-step-id="${expectedStep}"]`);
+          if (correctCard) correctCard.classList.add('guidance-active');
+          sound.playGuidance();
+        }
+      }
+    };
+
     cards.forEach(card => {
-      card.addEventListener('click', () => {
+      let isDragging = false;
+      let startX = 0;
+      let startY = 0;
+      let currentPointerId = null;
+
+      const resetCard = () => {
+        card.classList.add('returning');
+        card.style.transform = 'translate3d(0, 0, 0)';
+        setTimeout(() => {
+          card.classList.remove('is-dragging', 'returning');
+          card.style.transform = '';
+        }, 260);
+        slots.forEach(s => s.classList.remove('drag-over'));
+      };
+
+      card.addEventListener('pointerdown', (e) => {
+        if (card.style.display === 'none') return;
+        isDragging = false;
+        startX = e.clientX;
+        startY = e.clientY;
+        currentPointerId = e.pointerId;
+        card.classList.remove('returning');
+        try { card.setPointerCapture(e.pointerId); } catch (_) {}
+      });
+
+      card.addEventListener('pointermove', (e) => {
+        if (currentPointerId !== e.pointerId) return;
+        const dx = e.clientX - startX;
+        const dy = e.clientY - startY;
+
+        if (!isDragging && Math.hypot(dx, dy) > 6) {
+          isDragging = true;
+          card.classList.add('is-dragging');
+        }
+
+        if (isDragging) {
+          card.style.transform = `translate3d(${dx}px, ${dy}px, 0) scale(1.06)`;
+
+          let hitAny = false;
+          slots.forEach(slot => {
+            const rect = slot.getBoundingClientRect();
+            const inside = (
+              e.clientX >= rect.left - 20 &&
+              e.clientX <= rect.right + 20 &&
+              e.clientY >= rect.top - 20 &&
+              e.clientY <= rect.bottom + 20
+            );
+            if (inside && !hitAny) {
+              slot.classList.add('drag-over');
+              hitAny = true;
+            } else {
+              slot.classList.remove('drag-over');
+            }
+          });
+        }
+      });
+
+      const handlePointerEnd = (e) => {
+        if (currentPointerId !== e.pointerId) return;
+        try { card.releasePointerCapture(e.pointerId); } catch (_) {}
+        currentPointerId = null;
+
         const stepId = parseInt(card.getAttribute('data-step-id'), 10);
-        const expectedStep = userOrder.length + 1;
 
-        if (stepId === expectedStep) {
-          userOrder.push(stepId);
-          card.style.display = 'none';
+        if (isDragging) {
+          isDragging = false;
+          let droppedOnSlot = false;
+          slots.forEach(slot => {
+            const rect = slot.getBoundingClientRect();
+            if (
+              e.clientX >= rect.left - 20 &&
+              e.clientX <= rect.right + 20 &&
+              e.clientY >= rect.top - 20 &&
+              e.clientY <= rect.bottom + 20
+            ) {
+              droppedOnSlot = true;
+            }
+            slot.classList.remove('drag-over');
+          });
 
-          const holder = document.getElementById(`routineHolder-${expectedStep}`);
-          const stepData = currentRoutine.steps.find(s => s.id === stepId);
-          holder.innerHTML = `
-            <div class="placed-routine-card anim-success-pulse">
-              <span>${stepData.icon}</span>
-              <p>${stepData.text}</p>
-            </div>
-          `;
-          window.EmojiEnhancer?.enhance(holder);
+          card.classList.remove('is-dragging');
+          card.style.transform = '';
 
-          sound.playTone(sound.pentatonicScale.C4 + expectedStep * 70, 0.8);
-          speech.speak(stepData.text);
-
-          if (userOrder.length === 3) {
-            stage.querySelectorAll('.routine-card-btn').forEach(b => b.style.pointerEvents = 'none');
-            setTimeout(() => {
-              sound.playChord([261.63, 329.63, 392.00, 523.25]);
-              speech.speak("Sensacional! Você organizou toda a rotina com perfeição!", {
-                force: true,
-                delayAfterEnd: 1000,
-                onEnd: () => {
-                  this.updateRoundStep(this.currentRound + 1);
-                  this.loadRound();
-                }
-              });
-            }, 400);
-          }
-        } else {
-          this.attemptsOnCurrentRound++;
-          card.classList.add('anim-gentle-reset');
-          sound.playTone(sound.pentatonicScale.D4, 0.4);
-          setTimeout(() => card.classList.remove('anim-gentle-reset'), 500);
-
-          if (this.attemptsOnCurrentRound >= 2) {
-            const correctCard = stage.querySelector(`.routine-card-btn[data-step-id="${expectedStep}"]`);
-            if (correctCard) correctCard.classList.add('guidance-active');
-            sound.playGuidance();
+          if (droppedOnSlot) {
+            handleCardPlacement(card, stepId);
+          } else {
+            resetCard();
           }
         }
+      };
+
+      card.addEventListener('pointerup', handlePointerEnd);
+      card.addEventListener('pointercancel', (e) => {
+        if (currentPointerId === e.pointerId) {
+          try { card.releasePointerCapture(e.pointerId); } catch (_) {}
+          currentPointerId = null;
+          isDragging = false;
+          resetCard();
+        }
+      });
+
+      card.addEventListener('click', () => {
+        if (isDragging) return;
+        const stepId = parseInt(card.getAttribute('data-step-id'), 10);
+        handleCardPlacement(card, stepId);
       });
     });
   }

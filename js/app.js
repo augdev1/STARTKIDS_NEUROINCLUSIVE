@@ -131,6 +131,7 @@ class App {
     const btnBack = document.getElementById('btnBackToHub');
     if (btnBack) {
       btnBack.addEventListener('click', () => {
+        speech.stop();
         this.showView('hub');
         this.calmMode.setMissionState(false);
         sound.playPop();
@@ -140,6 +141,7 @@ class App {
     const brandSection = document.querySelector('.brand-section');
     if (brandSection) {
       brandSection.addEventListener('click', () => {
+        speech.stop();
         this.showView('hub');
         this.calmMode.setMissionState(false);
         sound.playPop();
@@ -151,6 +153,7 @@ class App {
     const gameCards = document.querySelectorAll('.game-hub-card');
     gameCards.forEach(card => {
       card.addEventListener('click', () => {
+        speech.stop();
         const gameId = parseInt(card.getAttribute('data-game-id'), 10);
         sound.playChord([261.63, 329.63, 392.00]);
         this.games.startGame(gameId);
@@ -190,6 +193,9 @@ class App {
   }
 
   showView(viewName) {
+    // Interrompe imediatamente qualquer locução anterior ao trocar de tela
+    speech.stop();
+
     document.querySelectorAll('.view-section').forEach(view => {
       view.classList.remove('active');
     });

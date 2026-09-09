@@ -215,9 +215,15 @@ class SpeechEngine {
       clearTimeout(this._fallbackTimer);
       this._fallbackTimer = null;
     }
-    this.currentUtterance = null;
+    if (this.currentUtterance) {
+      this.currentUtterance.onend = null;
+      this.currentUtterance.onerror = null;
+      this.currentUtterance = null;
+    }
     if (this.synth) {
-      this.synth.cancel();
+      try {
+        this.synth.cancel();
+      } catch (_) {}
     }
   }
 

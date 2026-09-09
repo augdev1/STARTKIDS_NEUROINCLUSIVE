@@ -3468,5 +3468,68 @@ button:hover img.emoji,
   line-height: 1.35;
 }
 
+/* ==========================================================================
+   MECÂNICA GLOBAL DE ARRASTO (DRAG & DROP SENSORIAL) - TODOS OS JOGOS
+   ========================================================================== */
+.is-dragging {
+  z-index: 9999 !important;
+  opacity: 0.92 !important;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.28) !important;
+  cursor: grabbing !important;
+  touch-action: none !important;
+  user-select: none !important;
+}
+
+.returning {
+  transition: transform 0.26s cubic-bezier(0.2, 0.9, 0.3, 1) !important;
+}
+
+.drag-over {
+  border-color: var(--primary) !important;
+  background-color: rgba(99, 102, 241, 0.12) !important;
+  transform: scale(1.05) !important;
+  box-shadow: 0 0 0 3px var(--primary-light), 0 8px 24px rgba(43, 66, 99, 0.18) !important;
+  transition: all 0.2s cubic-bezier(0.2, 0.9, 0.3, 1) !important;
+}
+
+/* Suporte à fruta arrastável na Balança */
+.balance-drag-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #FFFFFF;
+  padding: 8px 16px;
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-sm);
+  border: 2px dashed rgba(61, 163, 123, 0.3);
+}
+
+.balance-draggable-fruit {
+  background: transparent;
+  border: none;
+  cursor: grab;
+  font-size: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+  touch-action: none;
+}
+
+.balance-draggable-fruit:hover {
+  transform: scale(1.15);
+}
+
+.balance-draggable-fruit:active {
+  cursor: grabbing;
+}
+
+.drag-hint-text {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
 
 
