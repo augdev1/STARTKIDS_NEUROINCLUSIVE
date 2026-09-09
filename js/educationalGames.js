@@ -165,9 +165,13 @@ export class EducationalGamesManager {
       btn.addEventListener('click', () => {
         const id = btn.getAttribute('data-id');
         if (id === data.correctId) {
+          // Desabilita os botões para evitar toques acidentais durante a fala e a transição
+          stage.querySelectorAll('.emotion-btn').forEach(b => {
+            b.style.pointerEvents = 'none';
+          });
+
           btn.classList.add('correct', 'anim-success-pulse');
           sound.playChord([329.63, 392.00, 523.25]);
-          speech.speak(data.feedback);
 
           // Mostra o feedback explicativo em texto no balão
           if (feedbackBubble && storyCard) {
@@ -180,10 +184,15 @@ export class EducationalGamesManager {
             `;
           }
 
-          setTimeout(() => {
-            this.updateRoundStep(this.currentRound + 1);
-            this.loadRound();
-          }, 2200);
+          // Fala o feedback com a voz angelical e aguarda exatamente 2 segundos após o término da fala
+          speech.speak(data.feedback, {
+            force: true,
+            delayAfterEnd: 2000,
+            onEnd: () => {
+              this.updateRoundStep(this.currentRound + 1);
+              this.loadRound();
+            }
+          });
         } else {
           this.attemptsOnCurrentRound++;
           btn.classList.add('anim-gentle-reset');
@@ -316,15 +325,18 @@ export class EducationalGamesManager {
       speech.speak(letter);
 
       if (filledCount === targetLetters.length) {
+        tiles.forEach(t => t.style.pointerEvents = 'none');
         setTimeout(() => {
           sound.playChord([261.63, 329.63, 392.00, 523.25]);
-          speech.speak(`Muito bem! Você escreveu ${targetWord}!`);
+          speech.speak(`Muito bem! Você escreveu ${targetWord}!`, {
+            force: true,
+            delayAfterEnd: 2000,
+            onEnd: () => {
+              this.updateRoundStep(this.currentRound + 1);
+              this.loadRound();
+            }
+          });
         }, 350);
-
-        setTimeout(() => {
-          this.updateRoundStep(this.currentRound + 1);
-          this.loadRound();
-        }, 1600);
       }
     };
 
@@ -537,13 +549,20 @@ export class EducationalGamesManager {
       if (currentRightCount === data.target) {
         beam.style.transform = 'rotate(0deg)';
         panRightContents.classList.add('anim-success-pulse');
-        sound.playChord([261.63, 329.63, 392.00, 523.25]);
-        speech.speak(`Equilíbrio perfeito! São ${data.target} frutas nos dois lados!`);
+        const btnAdd = document.getElementById('btnAddFruit');
+        const btnRemove = document.getElementById('btnRemoveFruit');
+        if (btnAdd) btnAdd.style.pointerEvents = 'none';
+        if (btnRemove) btnRemove.style.pointerEvents = 'none';
 
-        setTimeout(() => {
-          this.updateRoundStep(this.currentRound + 1);
-          this.loadRound();
-        }, 1500);
+        sound.playChord([261.63, 329.63, 392.00, 523.25]);
+        speech.speak(`Equilíbrio perfeito! São ${data.target} frutas nos dois lados!`, {
+          force: true,
+          delayAfterEnd: 2000,
+          onEnd: () => {
+            this.updateRoundStep(this.currentRound + 1);
+            this.loadRound();
+          }
+        });
       }
     };
 
@@ -630,18 +649,21 @@ export class EducationalGamesManager {
 
     const handlePatternSelection = (btn, val) => {
       if (val === data.correct) {
+        choiceBtns.forEach(b => b.style.pointerEvents = 'none');
         targetCar.textContent = val;
         window.EmojiEnhancer?.enhance(targetCar);
         targetCar.classList.remove('target', 'drag-over');
         targetCar.classList.add('filled', 'anim-success-pulse');
 
         sound.playChord([293.66, 369.99, 440.00]);
-        speech.speak(`Muito inteligente! ${data.explanation}`);
-
-        setTimeout(() => {
-          this.updateRoundStep(this.currentRound + 1);
-          this.loadRound();
-        }, 1500);
+        speech.speak(`Muito inteligente! ${data.explanation}`, {
+          force: true,
+          delayAfterEnd: 2000,
+          onEnd: () => {
+            this.updateRoundStep(this.currentRound + 1);
+            this.loadRound();
+          }
+        });
       } else {
         this.attemptsOnCurrentRound++;
         btn.classList.add('anim-gentle-reset');
@@ -842,15 +864,18 @@ export class EducationalGamesManager {
           speech.speak(stepData.text);
 
           if (userOrder.length === 3) {
+            stage.querySelectorAll('.routine-card-btn').forEach(b => b.style.pointerEvents = 'none');
             setTimeout(() => {
               sound.playChord([261.63, 329.63, 392.00, 523.25]);
-              speech.speak("Sensacional! Você organizou toda a rotina com perfeição!");
+              speech.speak("Sensacional! Você organizou toda a rotina com perfeição!", {
+                force: true,
+                delayAfterEnd: 2000,
+                onEnd: () => {
+                  this.updateRoundStep(this.currentRound + 1);
+                  this.loadRound();
+                }
+              });
             }, 400);
-
-            setTimeout(() => {
-              this.updateRoundStep(this.currentRound + 1);
-              this.loadRound();
-            }, 1700);
           }
         } else {
           this.attemptsOnCurrentRound++;

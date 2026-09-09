@@ -88,24 +88,80 @@ class SpeechEngine {
     return ptVoices[0] || null;
   }
 
-  speak(text, force = false) {
-    if (!this.synth) return;
-    if (!this.isNarratorEnabled && !force) return;
+  /**
+   * Executa a fala com voz angelical.
+   * Suporta:
+   * - speak(text)
+   * - speak(text, force)
+   * - speak(text, force, onEndCallback)
+   * - speak(text, { force, onEnd, delayAfterEnd })
+   */
+  speak(text, forceOrOptions = false, onEndCallback = null) {
+    if (!this.synth) {
+      if (typeof forceOrOptions === 'function') forceOrOptions();
+      if (typeof onEndCallback === 'function') onEndCallback();
+      return;
+    }
+
+    let force = false;
+    let onEnd = null;
+    let delayAfterEnd = 0;
+
+    if (typeof forceOrOptions === 'boolean') {
+      force = forceOrOptions;
+      if (typeof onEndCallback === 'function') {
+        onEnd = onEndCallback;
+      }
+    } else if (typeof forceOrOptions === 'function') {
+      force = false;
+      onEnd = forceOrOptions;
+    } else if (typeof forceOrOptions === 'object' && forceOrOptions !== null) {
+      force = !!forceOrOptions.force;
+      onEnd = forceOrOptions.onEnd || onEndCallback || null;
+      delayAfterEnd = Number(forceOrOptions.delayAfterEnd) || 0;
+    }
+
+    const executeCallback = () => {
+      if (typeof onEnd === 'function') {
+        if (delayAfterEnd > 0) {
+          setTimeout(() => {
+            try { onEnd(); } catch (e) { console.error('Erro no callback de fala:', e); }
+          }, delayAfterEnd);
+        } else {
+          try { onEnd(); } catch (e) { console.error('Erro no callback de fala:', e); }
+        }
+      }
+    };
+
+    if (!this.isNarratorEnabled && !force) {
+      // Se não estiver com narrador ativado e não for forçado, executa callback sem atrasar
+      executeCallback();
+      return;
+    }
 
     // Se a voz ainda não foi carregada, tenta recarregar
     if (!this.voice) {
       this.initVoices();
     }
 
-    // Cancela qualquer fala anterior para evitar sobreposição
+    // Limpa timeout e fala anterior para evitar sobreposição
+    if (this._fallbackTimer) {
+      clearTimeout(this._fallbackTimer);
+      this._fallbackTimer = null;
+    }
     this.synth.cancel();
 
     // Sanitiza o texto para entonação calma e sem gritos
-    const cleanText = text
+    const cleanText = (text || '')
       .replace(/!{2,}/g, '.')
       .replace(/\?{2,}/g, '?')
       .replace(/\*/g, '')
       .trim();
+
+    if (!cleanText) {
+      executeCallback();
+      return;
+    }
 
     const utterance = new SpeechSynthesisUtterance(cleanText);
     utterance.lang = 'pt-BR';
@@ -118,10 +174,48 @@ class SpeechEngine {
     utterance.pitch = 1.15; // Timbre meigo, suave e acolhedor (livre do tom grave/metálico)
     utterance.volume = 0.95; // Volume confortável sem picos sonoros
 
+    let hasEnded = false;
+    const handleEnd = () => {
+      if (hasEnded) return;
+      hasEnded = true;
+      if (this._fallbackTimer) {
+        clearTimeout(this._fallbackTimer);
+        this._fallbackTimer = null;
+      }
+      this.currentUtterance = null;
+      executeCallback();
+    };
+
+    utterance.onend = () => {
+      handleEnd();
+    };
+
+    utterance.onerror = (e) => {
+      console.warn('SpeechSynthesis aviso/erro:', e);
+      handleEnd();
+    };
+
+    // Prevenção contra garbage collection do Chromium
+    this.currentUtterance = utterance;
+
+    // Fallback de segurança: calcula duração estimada da fala + margem de segurança
+    // Média de ~10 caracteres por segundo em rate 0.88
+    const estimatedDurationMs = Math.max(2500, (cleanText.length / 8) * 1000 + 1500);
+    this._fallbackTimer = setTimeout(() => {
+      if (!hasEnded) {
+        handleEnd();
+      }
+    }, estimatedDurationMs);
+
     this.synth.speak(utterance);
   }
 
   stop() {
+    if (this._fallbackTimer) {
+      clearTimeout(this._fallbackTimer);
+      this._fallbackTimer = null;
+    }
+    this.currentUtterance = null;
     if (this.synth) {
       this.synth.cancel();
     }
