@@ -116,6 +116,9 @@ export class CalmModeManager {
     if (this.modal) {
       this.modal.classList.add('active');
     }
+    try {
+      localStorage.setItem('starkids_calm_open', 'true');
+    } catch (_) {}
     sound.startBreezeAmbient();
     this.startBreathingCycle();
   }
@@ -125,6 +128,9 @@ export class CalmModeManager {
     if (this.modal) {
       this.modal.classList.remove('active');
     }
+    try {
+      localStorage.removeItem('starkids_calm_open');
+    } catch (_) {}
     sound.stopBreezeAmbient();
     this.stopBreathingCycle();
     this.lastInteractionTime = Date.now();

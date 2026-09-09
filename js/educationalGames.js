@@ -298,6 +298,85 @@ export class EducationalGamesManager {
     this.activeRounds = this.pickRandomSubset(pool, this.totalRounds);
   }
 
+  /**
+   * Salva a sessão ativa e rodada do jogo no localStorage para não perder o progresso se atualizar a página
+   */
+  saveActiveGameState(isChestOpen = false) {
+    if (!this.currentGameId) return;
+    const state = {
+      gameId: this.currentGameId,
+      currentRound: this.currentRound,
+      totalRounds: this.totalRounds,
+      activeRounds: this.activeRounds,
+      attemptsOnCurrentRound: this.attemptsOnCurrentRound,
+      isChestOpen: isChestOpen || (document.getElementById('treasureChestOverlay')?.classList.contains('active') || false),
+      timestamp: Date.now()
+    };
+    try {
+      localStorage.setItem('starkids_active_game_session', JSON.stringify(state));
+    } catch (e) {
+      console.warn('[StartKids] Falha ao persistir sessão do jogo:', e);
+    }
+  }
+
+  /**
+   * Limpa a sessão ativa do jogo ao voltar voluntariamente ao jardim ou concluir o baú
+   */
+  clearActiveGameState() {
+    try {
+      localStorage.removeItem('starkids_active_game_session');
+    } catch (e) {}
+  }
+
+  /**
+   * Restaura o jogo e a rodada exata onde a criança estava após um reload de página
+   */
+  restoreActiveGame() {
+    try {
+      const raw = localStorage.getItem('starkids_active_game_session');
+      if (!raw) return false;
+      const state = JSON.parse(raw);
+      if (!state || !state.gameId || !state.currentRound) return false;
+
+      this.currentGameId = state.gameId;
+      this.currentRound = state.currentRound;
+      this.totalRounds = state.totalRounds || 3;
+      this.attemptsOnCurrentRound = state.attemptsOnCurrentRound || 0;
+      this.activeRounds = (state.activeRounds && Array.isArray(state.activeRounds) && state.activeRounds.length > 0)
+        ? state.activeRounds
+        : this.pickRandomSubset(GAME_POOLS[this.currentGameId] || [], this.totalRounds);
+
+      this.app.showView('game');
+      this.app.calmMode.setMissionState(true);
+
+      const stepDots = document.querySelectorAll('.game-step-dot');
+      stepDots.forEach((dot, idx) => {
+        if (idx + 1 < this.currentRound) {
+          dot.className = 'game-step-dot done';
+        } else if (idx + 1 === this.currentRound) {
+          dot.className = 'game-step-dot active';
+        } else {
+          dot.className = 'game-step-dot';
+        }
+      });
+
+      const chestOverlay = document.getElementById('treasureChestOverlay');
+      if (chestOverlay) chestOverlay.classList.remove('active');
+
+      if (state.isChestOpen || this.currentRound > this.totalRounds) {
+        this.triggerChestReward();
+      } else {
+        this.loadRound();
+      }
+
+      console.log(`✨ [StartKids] Jogo ${this.currentGameId} restaurado com sucesso na rodada ${this.currentRound} de ${this.totalRounds}!`);
+      return true;
+    } catch (e) {
+      console.warn('[StartKids] Erro ao restaurar jogo:', e);
+      return false;
+    }
+  }
+
   startGame(gameId) {
     this.currentGameId = gameId;
     this.currentRound = 1;
@@ -315,6 +394,7 @@ export class EducationalGamesManager {
     const chestOverlay = document.getElementById('treasureChestOverlay');
     if (chestOverlay) chestOverlay.classList.remove('active');
 
+    this.saveActiveGameState();
     this.loadRound();
   }
 
@@ -331,6 +411,7 @@ export class EducationalGamesManager {
         dot.className = 'game-step-dot';
       }
     });
+    this.saveActiveGameState();
   }
 
   loadRound() {
@@ -1405,6 +1486,7 @@ export class EducationalGamesManager {
   // ==========================================================================
   triggerChestReward() {
     this.app.calmMode.setMissionState(false);
+    this.saveActiveGameState(true);
     const rewardData = mascot.unlockNextReward();
     const item = rewardData.item;
 
@@ -1432,6 +1514,7 @@ export class EducationalGamesManager {
 
     // Botão equipar na hora
     document.getElementById('btnChestEquipNow').onclick = () => {
+      this.clearActiveGameState();
       mascot.toggleEquip(item.id);
       overlay.classList.remove('active');
       this.app.showView('hub');
@@ -1440,6 +1523,7 @@ export class EducationalGamesManager {
 
     // Botão ir ao camarim
     document.getElementById('btnChestGoWardrobe').onclick = () => {
+      this.clearActiveGameState();
       overlay.classList.remove('active');
       this.app.showView('hub');
       mascot.render();
@@ -1448,6 +1532,7 @@ export class EducationalGamesManager {
 
     // Botão voltar ao jardim
     document.getElementById('btnChestBackHub').onclick = () => {
+      this.clearActiveGameState();
       overlay.classList.remove('active');
       this.app.showView('hub');
       mascot.render();

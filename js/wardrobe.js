@@ -31,16 +31,27 @@ export class WardrobeManager {
     this.renderCategoryTabs();
   }
 
-  open() {
+  open(category = null) {
     if (!this.modal) return;
+    if (category) {
+      this.currentCategory = category;
+    }
     this.modal.classList.add('active');
+    try {
+      localStorage.setItem('starkids_wardrobe_open', 'true');
+      localStorage.setItem('starkids_wardrobe_cat', this.currentCategory);
+    } catch (_) {}
     sound.playPop();
+    this.renderCategoryTabs();
     this.render();
   }
 
   close() {
     if (!this.modal) return;
     this.modal.classList.remove('active');
+    try {
+      localStorage.removeItem('starkids_wardrobe_open');
+    } catch (_) {}
     sound.playPop();
     mascot.render();
   }
@@ -59,6 +70,9 @@ export class WardrobeManager {
     tabsContainer.querySelectorAll('.wardrobe-tab-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         this.currentCategory = btn.getAttribute('data-cat');
+        try {
+          localStorage.setItem('starkids_wardrobe_cat', this.currentCategory);
+        } catch (_) {}
         sound.playPop();
         this.renderCategoryTabs();
         this.renderItemsGrid();

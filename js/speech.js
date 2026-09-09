@@ -7,7 +7,7 @@
 class SpeechEngine {
   constructor() {
     this.synth = window.speechSynthesis || null;
-    this.isNarratorEnabled = false; // Começa desativada para não assustar com som surpresa
+    this.isNarratorEnabled = localStorage.getItem('starkids_speech_enabled') === 'true';
     this.voice = null;
     this.initVoices();
   }
@@ -229,6 +229,9 @@ class SpeechEngine {
 
   toggleNarrator() {
     this.isNarratorEnabled = !this.isNarratorEnabled;
+    try {
+      localStorage.setItem('starkids_speech_enabled', this.isNarratorEnabled ? 'true' : 'false');
+    } catch (_) {}
     if (!this.isNarratorEnabled) {
       this.stop();
     }

@@ -11,7 +11,7 @@ class SoundEngine {
     this.sfxGain = null;
     this.ambientGain = null;
     
-    this.isMuted = false;
+    this.isMuted = localStorage.getItem('starkids_sound_muted') === 'true';
     this.isAmbientPlaying = false;
     this.ambientNodes = null;
 
@@ -215,6 +215,9 @@ class SoundEngine {
 
   toggleMute() {
     this.isMuted = !this.isMuted;
+    try {
+      localStorage.setItem('starkids_sound_muted', this.isMuted ? 'true' : 'false');
+    } catch (_) {}
     if (this.masterGain && this.ctx) {
       this.masterGain.gain.setValueAtTime(
         this.isMuted ? 0 : 0.7,

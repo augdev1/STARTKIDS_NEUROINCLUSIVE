@@ -39,7 +39,7 @@ class App {
       this.bindControls();
       this.bindGamesList();
       this.initMascotPhrases();
-      this.showView('hub');
+      this.restoreAppState();
       window.EmojiEnhancer?.enhance(document.body);
 
       // Escuta atualizações de progressão sincronizadas do banco PostgreSQL
@@ -97,6 +97,9 @@ class App {
     if (btnMotion) {
       btnMotion.addEventListener('click', () => {
         const isReduced = document.body.classList.toggle('reduced-motion');
+        try {
+          localStorage.setItem('starkids_reduced_motion', isReduced ? 'true' : 'false');
+        } catch (_) {}
         btnMotion.classList.toggle('active', isReduced);
         btnMotion.innerHTML = isReduced ? '<span>⏸️</span><span>Sem Movimento</span>' : '<span>🌀</span><span>Movimento Suave</span>';
       });
@@ -107,6 +110,9 @@ class App {
     if (btnContrast) {
       btnContrast.addEventListener('click', () => {
         const isHigh = document.body.classList.toggle('high-contrast');
+        try {
+          localStorage.setItem('starkids_high_contrast', isHigh ? 'true' : 'false');
+        } catch (_) {}
         btnContrast.classList.toggle('active', isHigh);
       });
     }
@@ -132,6 +138,7 @@ class App {
     if (btnBack) {
       btnBack.addEventListener('click', () => {
         speech.stop();
+        this.games.clearActiveGameState();
         this.showView('hub');
         this.calmMode.setMissionState(false);
         sound.playPop();
@@ -142,6 +149,7 @@ class App {
     if (brandSection) {
       brandSection.addEventListener('click', () => {
         speech.stop();
+        this.games.clearActiveGameState();
         this.showView('hub');
         this.calmMode.setMissionState(false);
         sound.playPop();
@@ -192,7 +200,76 @@ class App {
     }
   }
 
-  showView(viewName) {
+  /**
+   * Restaura preferências sensoriais de acessibilidade do HUD
+   */
+  restoreAccessibilitySettings() {
+    // 1. Som
+    const btnSound = document.getElementById('btnToggleSound');
+    if (btnSound) {
+      const isMuted = sound.isMuted;
+      btnSound.innerHTML = isMuted ? '<span>🔇</span><span>Sem Som</span>' : '<span>🔔</span><span>Sons Suaves</span>';
+      btnSound.classList.toggle('active', !isMuted);
+    }
+
+    // 2. Voz Guia
+    const btnSpeech = document.getElementById('btnToggleSpeech');
+    if (btnSpeech) {
+      const isSpeech = speech.isNarratorEnabled;
+      btnSpeech.classList.toggle('active', isSpeech);
+      btnSpeech.innerHTML = isSpeech ? '<span>🗣️</span><span>Voz Ligada</span>' : '<span>🔈</span><span>Voz Guia</span>';
+    }
+
+    // 3. Movimento
+    const isMotionReduced = localStorage.getItem('starkids_reduced_motion') === 'true';
+    if (isMotionReduced) {
+      document.body.classList.add('reduced-motion');
+    }
+    const btnMotion = document.getElementById('btnToggleMotion');
+    if (btnMotion) {
+      btnMotion.classList.toggle('active', isMotionReduced);
+      btnMotion.innerHTML = isMotionReduced ? '<span>⏸️</span><span>Sem Movimento</span>' : '<span>🌀</span><span>Movimento Suave</span>';
+    }
+
+    // 4. Alto Contraste
+    const isContrastHigh = localStorage.getItem('starkids_high_contrast') === 'true';
+    if (isContrastHigh) {
+      document.body.classList.add('high-contrast');
+    }
+    const btnContrast = document.getElementById('btnToggleContrast');
+    if (btnContrast) {
+      btnContrast.classList.toggle('active', isContrastHigh);
+    }
+  }
+
+  /**
+   * Restaura o estado da aplicação (tela do jogo, rodada, camarim ou modo calma)
+   */
+  restoreAppState() {
+    this.restoreAccessibilitySettings();
+
+    const activeView = localStorage.getItem('starkids_active_view') || 'hub';
+    const hasActiveSession = !!localStorage.getItem('starkids_active_game_session');
+
+    if (activeView === 'game' && hasActiveSession) {
+      const restored = this.games.restoreActiveGame();
+      if (!restored) {
+        this.showView('hub');
+      }
+    } else {
+      this.showView('hub');
+
+      // Se o camarim ou o modo calma estavam abertos antes do reload
+      if (localStorage.getItem('starkids_wardrobe_open') === 'true') {
+        const savedCat = localStorage.getItem('starkids_wardrobe_cat') || 'all';
+        this.wardrobe.open(savedCat);
+      } else if (localStorage.getItem('starkids_calm_open') === 'true') {
+        this.calmMode.open();
+      }
+    }
+  }
+
+  showView(viewName, options = {}) {
     // Interrompe imediatamente qualquer locução anterior ao trocar de tela
     speech.stop();
 
@@ -204,6 +281,12 @@ class App {
     if (target) {
       target.classList.add('active');
       window.EmojiEnhancer?.enhance(target);
+    }
+
+    if (!options.skipSave) {
+      try {
+        localStorage.setItem('starkids_active_view', viewName);
+      } catch (_) {}
     }
 
     if (viewName === 'hub') {
