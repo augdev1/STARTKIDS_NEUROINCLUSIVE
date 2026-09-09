@@ -1,6 +1,7 @@
 /* ==========================================================================
-   LOCUÇÃO ACESSÍVEL (WEB SPEECH API) - PIP: AVENTURAS SENSORIAIS
-   Leitura de instruções com voz amigável em ritmo calmo e cadenciado.
+   LOCUÇÃO ACESSÍVEL E ACOLHEDORA (WEB SPEECH API) - STARKIDS
+   Voz feminina angelical, calma, doce e não-robótica para crianças neurodivergentes.
+   Prioriza vozes neurais e naturais (Francisca, Thalita, Luciana, Google PT-BR).
    ========================================================================== */
 
 class SpeechEngine {
@@ -13,10 +14,15 @@ class SpeechEngine {
 
   initVoices() {
     if (!this.synth) return;
+
     const loadVoices = () => {
       const voices = this.synth.getVoices();
-      // Procura voz nativa em Português (Brasil)
-      this.voice = voices.find(v => v.lang === 'pt-BR' || v.lang.startsWith('pt')) || null;
+      if (!voices || voices.length === 0) return;
+
+      this.voice = this.findBestAngelicVoice(voices);
+      if (this.voice) {
+        console.log(`✨ [StartKids Voz Angelical] Selecionada com sucesso: "${this.voice.name}" (${this.voice.lang})`);
+      }
     };
 
     loadVoices();
@@ -25,18 +31,92 @@ class SpeechEngine {
     }
   }
 
+  /**
+   * Algoritmo de seleção que prioriza vozes femininas naturais,
+   * doces e afetuosas, eliminando vozes metálicas ou masculinas graves.
+   */
+  findBestAngelicVoice(voices) {
+    const ptVoices = voices.filter(v => {
+      const lang = (v.lang || '').toLowerCase();
+      return lang === 'pt-br' || lang.startsWith('pt');
+    });
+
+    if (ptVoices.length === 0) {
+      // Se não achar português, tenta qualquer voz feminina natural
+      return voices.find(v => /natural|female/i.test(v.name)) || voices[0] || null;
+    }
+
+    // Critérios em ordem de doçura, calor humano e naturalidade
+    const angelicPreferences = [
+      // 1. Vozes Neurais / Naturais de Estúdio (Edge / Windows 11) - Ultra Realistas e Angelicais
+      v => /francisca.*natural/i.test(v.name),
+      v => /thalita.*natural/i.test(v.name),
+      v => /francisca/i.test(v.name) && /online/i.test(v.name),
+      v => /thalita/i.test(v.name) && /online/i.test(v.name),
+
+      // 2. Vozes Naturais Apple / iOS / Safari (Siri Luciana / Joana)
+      v => /luciana/i.test(v.name),
+      v => /joana/i.test(v.name),
+
+      // 3. Voz Neural do Google (Chrome e Android)
+      v => /google\s+português\s+do\s+brasil/i.test(v.name),
+      v => /google/i.test(v.name) && /pt-br/i.test(v.name),
+
+      // 4. Vozes femininas conhecidas por serem afetuosas
+      v => /maria.*natural/i.test(v.name),
+      v => /helena/i.test(v.name),
+      v => /fernanda/i.test(v.name),
+      v => /leticia|letícia/i.test(v.name),
+      v => /camila/i.test(v.name),
+      v => /vitoria|vitória/i.test(v.name),
+      v => /maria/i.test(v.name) && !/daniel/i.test(v.name),
+      v => /female|mulher|feminina/i.test(v.name),
+
+      // 5. Qualquer voz em pt-BR que NÃO seja masculina identificada (evita Daniel, Felipe, etc)
+      v => !/daniel|felipe|antonio|antônio|ricardo|male|man|homem/i.test(v.name) && (v.lang || '').toLowerCase().includes('br'),
+      v => !/daniel|felipe|antonio|antônio|ricardo|male|man|homem/i.test(v.name),
+
+      // 6. Fallback padrão pt-BR
+      v => (v.lang || '').toLowerCase() === 'pt-br'
+    ];
+
+    for (const matchFn of angelicPreferences) {
+      const found = ptVoices.find(matchFn);
+      if (found) return found;
+    }
+
+    return ptVoices[0] || null;
+  }
+
   speak(text, force = false) {
     if (!this.synth) return;
     if (!this.isNarratorEnabled && !force) return;
 
-    // Cancela qualquer fala anterior para evitar sobreposição caótica
+    // Se a voz ainda não foi carregada, tenta recarregar
+    if (!this.voice) {
+      this.initVoices();
+    }
+
+    // Cancela qualquer fala anterior para evitar sobreposição
     this.synth.cancel();
 
-    const utterance = new SpeechSynthesisUtterance(text);
+    // Sanitiza o texto para entonação calma e sem gritos
+    const cleanText = text
+      .replace(/!{2,}/g, '.')
+      .replace(/\?{2,}/g, '?')
+      .replace(/\*/g, '')
+      .trim();
+
+    const utterance = new SpeechSynthesisUtterance(cleanText);
     utterance.lang = 'pt-BR';
-    if (this.voice) utterance.voice = this.voice;
-    utterance.rate = 0.9; // Levemente mais lento para absorção cognitiva amigável
-    utterance.pitch = 1.05; // Tom caloroso e afetuoso
+    if (this.voice) {
+      utterance.voice = this.voice;
+    }
+
+    // Parâmetros acústicos calibrados para um tom angelical, afetuoso e seguro:
+    utterance.rate = 0.88;  // Ritmo calmo e compassado (como uma professora contando história)
+    utterance.pitch = 1.15; // Timbre meigo, suave e acolhedor (livre do tom grave/metálico)
+    utterance.volume = 0.95; // Volume confortável sem picos sonoros
 
     this.synth.speak(utterance);
   }
@@ -53,6 +133,13 @@ class SpeechEngine {
       this.stop();
     }
     return this.isNarratorEnabled;
+  }
+
+  /**
+   * Permite consultar qual voz está sendo utilizada no momento
+   */
+  getCurrentVoiceName() {
+    return this.voice ? `${this.voice.name} (${this.voice.lang})` : 'Voz padrão do navegador';
   }
 }
 
