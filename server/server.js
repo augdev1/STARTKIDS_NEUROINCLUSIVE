@@ -14,8 +14,52 @@ const app = express();
 const PORT = process.env.PORT || 8085;
 
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '100kb' })); // Proteção contra payloads gigantescos
+
+// Headers de segurança HTTP essenciais
+app.use((req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  res.setHeader('X-XSS-Protection', '1; mode=block');
+  next();
+});
+
 app.use(logger.middleware());
+
+// Rate Limiting em memória para proteção contra força bruta em rotas sensíveis
+const authRateLimits = new Map();
+const RATE_LIMIT_WINDOW_MS = 5 * 60 * 1000; // 5 minutos
+const MAX_AUTH_ATTEMPTS = 25; // máx 25 tentativas por IP
+
+function authRateLimiter(req, res, next) {
+  const ip = (req.headers['x-forwarded-for'] || req.socket?.remoteAddress || 'unknown').split(',')[0].trim();
+  const now = Date.now();
+  const record = authRateLimits.get(ip);
+
+  if (!record || now > record.resetTime) {
+    authRateLimits.set(ip, { count: 1, resetTime: now + RATE_LIMIT_WINDOW_MS });
+    return next();
+  }
+
+  if (record.count >= MAX_AUTH_ATTEMPTS) {
+    logger.warn('SECURITY', `Rate limit atingido para IP ${ip} na rota ${req.url}`);
+    return res.status(429).json({
+      error: 'Muitas tentativas seguidas! Por favor, aguarde alguns minutinhos antes de tentar de novo.'
+    });
+  }
+
+  record.count++;
+  next();
+}
+
+// Limpeza automática periódica de memória do rate limiter
+setInterval(() => {
+  const now = Date.now();
+  for (const [ip, record] of authRateLimits.entries()) {
+    if (now > record.resetTime) authRateLimits.delete(ip);
+  }
+}, 10 * 60 * 1000).unref();
 
 // Servir arquivos estáticos (sem index automático para garantir que a entrada seja login.html)
 app.use(express.static(rootDir, { index: false }));
@@ -91,7 +135,7 @@ app.get('/api/logs', (req, res) => {
 /**
  * Cadastro descomplicado para crianças
  */
-app.post('/api/auth/register', async (req, res) => {
+app.post('/api/auth/register', authRateLimiter, async (req, res) => {
   try {
     const { username, password } = req.body;
 
@@ -142,7 +186,7 @@ app.post('/api/auth/register', async (req, res) => {
 /**
  * Login amigável
  */
-app.post('/api/auth/login', async (req, res) => {
+app.post('/api/auth/login', authRateLimiter, async (req, res) => {
   try {
     const { username, password } = req.body;
 

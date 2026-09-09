@@ -12,6 +12,14 @@
       window.location.replace('login.html');
     }
   </script>
+  <!-- PWA & Mobile Web App Config -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#162438">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="StartKids">
+  <link rel="apple-touch-icon" href="assets/startkids_logo_card.png">
+
   <!-- Fontes: PaRappa The Rapper Style para Logo + Quicksand Slim para Interface -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -72,6 +80,12 @@
         <button class="btn-icon btn-calm-pill" id="btnTriggerCalm" aria-label="Abrir Modo Calma para respirar">
           <span class="hud-emoji">🍃</span>
           <span>Modo Calma</span>
+        </button>
+
+        <!-- Botão PWA Instalador no Celular / Tablet -->
+        <button class="btn-icon btn-install-pwa" id="btnInstallPwaHub" style="display: none;" title="Instalar aplicativo no celular ou tablet" aria-label="Instalar aplicativo no celular ou tablet">
+          <span class="hud-emoji">📲</span>
+          <span>Instalar App</span>
         </button>
       </nav>
     </header>
@@ -417,7 +431,8 @@
   <script src="https://cdn.jsdelivr.net/npm/@twemoji/api@15.1.0/dist/twemoji.min.js" crossorigin="anonymous"></script>
   <script src="js/emojiEnhancer.js"></script>
 
-  <!-- Lógica da Aplicação Modular ES6 -->
+  <!-- PWA & Lógica da Aplicação Modular ES6 -->
+  <script type="module" src="js/pwaInstaller.js"></script>
   <script type="module" src="js/app.js"></script>
 </body>
 </html>

@@ -182,12 +182,25 @@
   left: 16px;
   font-size: 1.15rem;
   pointer-events: none;
-  opacity: 0.7;
+.login-emoji-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  line-height: 1;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+.login-emoji-icon img.emoji {
+  width: 1.25em !important;
+  height: 1.25em !important;
+  vertical-align: -0.15em !important;
 }
 
 .login-input-field {
   width: 100%;
-  padding: 14px 44px 14px 46px;
+  padding: 14px 44px 14px 18px;
   border-radius: 20px;
   border: 1.5px solid rgba(25, 37, 56, 0.12);
   background: #FBF9F5;
@@ -330,6 +343,39 @@
 }
 
 .btn-guest-mode:active {
+  transform: translateY(1px);
+}
+
+/* Botão de Instalação PWA (Celular / Tablet / Desktop) */
+.btn-install-pwa {
+  width: 100%;
+  background: #E8F5EF;
+  color: #1E6B4B;
+  border: 1.5px solid rgba(61, 163, 123, 0.35);
+  padding: 12px 20px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.94rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 48px;
+  margin-top: 12px;
+  box-shadow: 0 2px 8px rgba(61, 163, 123, 0.1);
+}
+
+.btn-install-pwa:hover {
+  background: #DCF0E6;
+  border-color: #3DA37B;
+  transform: translateY(-1.5px);
+  box-shadow: 0 4px 14px rgba(61, 163, 123, 0.2);
+}
+
+.btn-install-pwa:active {
   transform: translateY(1px);
 }
 

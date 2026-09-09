@@ -6,10 +6,18 @@
   <title>StartKids | Entrar ou Criar Conta</title>
   <meta name="description" content="Página de login amigável e segura do StartKids para salvar acessórios e progressão em PostgreSQL.">
 
-  <!-- Fontes: PaRappa The Rapper Style + Quicksand Slim -->
+  <!-- PWA & Mobile Web App Config -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#162438">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="StartKids">
+  <link rel="apple-touch-icon" href="assets/startkids_logo_card.png">
+
+  <!-- Fontes: PaRappa The Rapper Style + Quicksand Slim + Lexend -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Permanent+Marker&family=Gochi+Hand&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Permanent+Marker&family=Gochi+Hand&family=Quicksand:wght@400;500;600;700&family=Lexend:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- Estilos -->
   <link rel="stylesheet" href="css/style.css">
@@ -50,7 +58,8 @@
         <!-- Campo Nome de Usuário -->
         <div class="login-input-group">
           <label for="loginUsername" class="login-input-label">
-            <span>👤</span> Seu Nome ou Apelido
+            <span class="login-emoji-icon" aria-hidden="true">👤</span>
+            <span>Seu Nome ou Apelido</span>
           </label>
           <div class="login-input-box">
             <input 
@@ -70,7 +79,8 @@
         <!-- Campo Senha -->
         <div class="login-input-group">
           <label for="loginPassword" class="login-input-label">
-            <span>🔒</span> Sua Senha Mágica
+            <span class="login-emoji-icon" aria-hidden="true">🔒</span>
+            <span>Sua Senha Mágica</span>
           </label>
           <div class="login-input-box">
             <input 
@@ -94,7 +104,8 @@
 
         <!-- Botão de Ação -->
         <button type="submit" class="btn-login-submit" id="btnSubmit">
-          Criar Meu Perfil Mágico ✨
+          <span>Criar Meu Perfil Mágico</span>
+          <span class="login-emoji-icon" aria-hidden="true">✨</span>
         </button>
       </form>
 
@@ -105,14 +116,20 @@
 
       <!-- Botão de Modo Visitante -->
       <button type="button" class="btn-guest-mode" id="btnGuestMode" title="Jogar direto sem criar conta">
-        <span>🎈</span>
+        <span class="login-emoji-icon" aria-hidden="true">🎈</span>
         <span>Continuar como Visitante (Sem Salvar na Nuvem)</span>
+      </button>
+
+      <!-- Botão de Instalar o App PWA (Aparece em Celulares e Tablets) -->
+      <button type="button" class="btn-install-pwa" id="btnInstallPwa" style="display: none;" title="Instalar aplicativo no seu celular ou tablet">
+        <span class="login-emoji-icon" aria-hidden="true">📲</span>
+        <span>Instalar App no Celular / Tablet</span>
       </button>
 
       <!-- Rodapé de Segurança -->
       <div class="login-security-badge">
-        <span>🛡️</span>
-        <span>Senhas criptografadas com hash e progresso salvo em banco PostgreSQL.</span>
+        <span class="login-emoji-icon" aria-hidden="true">🛡️</span>
+        <span>Senhas protegidas com criptografia e dados salvos com segurança.</span>
       </div>
     </main>
   </div>
@@ -121,7 +138,8 @@
   <script src="https://cdn.jsdelivr.net/npm/@twemoji/api@15.1.0/dist/twemoji.min.js" crossorigin="anonymous"></script>
   <script src="js/emojiEnhancer.js"></script>
 
-  <!-- Controlador Modular da Página de Login -->
+  <!-- PWA & Controlador Modular da Página de Login -->
+  <script type="module" src="js/pwaInstaller.js"></script>
   <script type="module" src="js/login.js"></script>
 </body>
 </html>

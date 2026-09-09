@@ -1175,6 +1175,104 @@ button:hover img.emoji,
   max-width: 680px;
 }
 
+/* Balão Narrativo de Alta Acessibilidade (ODS 4 - Neuroinclusão) */
+.emotion-story-card {
+  width: 100%;
+  background: #FFFFFF;
+  border-radius: 24px;
+  padding: 22px 26px;
+  box-shadow: 0 4px 18px rgba(25, 37, 56, 0.06);
+  border: 2px solid rgba(196, 158, 116, 0.25);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.emotion-story-card.story-success {
+  border-color: #3DA37B;
+  background: #F4FBF7;
+}
+
+.emotion-story-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.emotion-story-badge {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+  background: #F2EDE4;
+  padding: 4px 12px;
+  border-radius: 12px;
+  letter-spacing: 0.04em;
+}
+
+.btn-listen-story {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #F0F4F8;
+  color: var(--primary);
+  border: 1px solid rgba(43, 66, 99, 0.15);
+  padding: 6px 14px;
+  border-radius: 16px;
+  font-family: var(--font-body);
+  font-size: 0.86rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-listen-story:hover {
+  background: var(--primary);
+  color: #FFFFFF;
+  transform: translateY(-1px);
+}
+
+.emotion-story-text {
+  font-family: var(--font-body);
+  font-size: 1.16rem;
+  line-height: 1.6;
+  color: var(--text-main);
+  font-weight: 600;
+  margin: 0;
+  letter-spacing: 0.015em;
+}
+
+.emotion-feedback-bubble {
+  padding: 12px 16px;
+  border-radius: 16px;
+  font-family: var(--font-body);
+  font-size: 0.98rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  animation: gentle-fade-in 0.3s ease;
+}
+
+.emotion-feedback-bubble.success {
+  background: #E8F5EF;
+  color: #1E6B4B;
+  border: 1px solid rgba(61, 163, 123, 0.3);
+}
+
+.emotion-feedback-bubble.hint {
+  background: #FFF8E7;
+  color: #8C6212;
+  border: 1px solid rgba(217, 163, 43, 0.3);
+}
+
+.emotion-feedback-bubble .feedback-icon {
+  font-size: 1.25rem;
+}
+
 .emotion-scene-card {
   background: #F8FAF9;
   border: none;

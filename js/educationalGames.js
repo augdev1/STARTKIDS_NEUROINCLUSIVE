@@ -119,6 +119,19 @@ export class EducationalGamesManager {
     const stage = document.getElementById('gameActiveStage');
     stage.innerHTML = `
       <div class="emotion-game-wrapper">
+        <!-- Balão Narrativo com Texto da História (Acessibilidade Visual e Auditiva) -->
+        <div class="emotion-story-card" id="emotionStoryCard" role="region" aria-label="História da cena">
+          <div class="emotion-story-header">
+            <span class="emotion-story-badge">📖 HISTÓRIA DO PIP</span>
+            <button class="btn-listen-story" id="btnListenStory" title="Ouvir a história do Pip novamente" type="button">
+              <span>🔊</span>
+              <span>Ouvir História</span>
+            </button>
+          </div>
+          <p class="emotion-story-text" id="emotionStoryText">${data.scenario}</p>
+          <div class="emotion-feedback-bubble" id="emotionFeedbackBubble" style="display: none;"></div>
+        </div>
+
         <div class="emotion-scene-card anim-float">
           ${window.EmojiEnhancer?.vectors[data.vectorKey] || `<span style="font-size: 64px;">${data.icon}</span>`}
         </div>
@@ -136,6 +149,18 @@ export class EducationalGamesManager {
 
     window.EmojiEnhancer?.enhance(stage);
 
+    // Botão para repetir a narração da história
+    const btnListenStory = document.getElementById('btnListenStory');
+    if (btnListenStory) {
+      btnListenStory.addEventListener('click', () => {
+        sound.playSoftTap();
+        speech.speak(data.scenario, true);
+      });
+    }
+
+    const feedbackBubble = document.getElementById('emotionFeedbackBubble');
+    const storyCard = document.getElementById('emotionStoryCard');
+
     stage.querySelectorAll('.emotion-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         const id = btn.getAttribute('data-id');
@@ -144,15 +169,36 @@ export class EducationalGamesManager {
           sound.playChord([329.63, 392.00, 523.25]);
           speech.speak(data.feedback);
 
+          // Mostra o feedback explicativo em texto no balão
+          if (feedbackBubble && storyCard) {
+            storyCard.classList.add('story-success');
+            feedbackBubble.style.display = 'block';
+            feedbackBubble.className = 'emotion-feedback-bubble success';
+            feedbackBubble.innerHTML = `
+              <span class="feedback-icon">✨</span>
+              <span>${data.feedback}</span>
+            `;
+          }
+
           setTimeout(() => {
             this.updateRoundStep(this.currentRound + 1);
             this.loadRound();
-          }, 1400);
+          }, 2200);
         } else {
           this.attemptsOnCurrentRound++;
           btn.classList.add('anim-gentle-reset');
           sound.playTone(sound.pentatonicScale.D4, 0.4);
           setTimeout(() => btn.classList.remove('anim-gentle-reset'), 500);
+
+          // Dica textual acolhedora
+          if (feedbackBubble) {
+            feedbackBubble.style.display = 'block';
+            feedbackBubble.className = 'emotion-feedback-bubble hint';
+            feedbackBubble.innerHTML = `
+              <span class="feedback-icon">💭</span>
+              <span>Como você se sentiria nessa situação? Dê uma olhadinha no desenho e tente novamente com calma!</span>
+            `;
+          }
 
           if (this.attemptsOnCurrentRound >= 2) {
             const correctBtn = stage.querySelector(`.emotion-btn[data-id="${data.correctId}"]`);
