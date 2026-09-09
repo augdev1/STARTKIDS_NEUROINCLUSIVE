@@ -11,6 +11,262 @@ import { sound } from './audio.js';
 import { speech } from './speech.js';
 import { mascot } from './mascot.js';
 
+// ============================================================================
+// BANCO EXPANDIDO DE REPERTÓRIO PEDAGÓGICO ACOLHEDOR
+// Garante variedade dinâmica a cada partida para a criança não ver sempre o mesmo conteúdo
+// ============================================================================
+export const GAME_POOLS = {
+  // Jogo 1: O Espelho das Emoções
+  1: [
+    {
+      scenario: "O Pip ganhou um lindo girassol do seu amiguinho no bosque! Como o Pip está se sentindo?",
+      icon: "🌻",
+      vectorKey: "SUNFLOWER",
+      correctId: "happy",
+      correctLabel: "Alegre e Contente",
+      options: [
+        { id: "calm", emoji: "😌", label: "Sonolento" },
+        { id: "happy", emoji: "😊", label: "Alegre e Contente" },
+        { id: "scared", emoji: "🥺", label: "Assustado" }
+      ],
+      feedback: "Isso mesmo! Ganhar um presente com carinho nos enche de alegria!"
+    },
+    {
+      scenario: "Ouviu-se um trovão forte na chuvinha! O Pip precisa de um abraço. Como ele está se sentindo?",
+      icon: "⛈️",
+      vectorKey: "STORM",
+      correctId: "scared",
+      correctLabel: "Assustado",
+      options: [
+        { id: "scared", emoji: "🥺", label: "Assustado" },
+        { id: "happy", emoji: "😄", label: "Rindo" },
+        { id: "proud", emoji: "😎", label: "Corajoso" }
+      ],
+      feedback: "Muito bem! Barulhos altos podem dar susto, e um abraço aconchegante sempre ajuda!"
+    },
+    {
+      scenario: "O Pip deitou na relva fofinha ouvindo o riacho correr calmo. Como ele está se sentindo?",
+      icon: "🍃",
+      vectorKey: "BREEZE",
+      correctId: "calm",
+      correctLabel: "Tranquilo e em Paz",
+      options: [
+        { id: "angry", emoji: "😠", label: "Bravo" },
+        { id: "scared", emoji: "😰", label: "Com Medo" },
+        { id: "calm", emoji: "😌", label: "Tranquilo e em Paz" }
+      ],
+      feedback: "Exatamente! Respirar o ar puro e descansar a mente traz tranquilidade profunda."
+    },
+    {
+      scenario: "O Pip montou uma torre mágica bem alta com blocos de montar sem derrubar! Como o Pip está se sentindo?",
+      icon: "🏰",
+      vectorKey: "CASTLE",
+      correctId: "proud",
+      correctLabel: "Orgulhoso e Feliz",
+      options: [
+        { id: "proud", emoji: "⭐", label: "Orgulhoso e Feliz" },
+        { id: "sad", emoji: "😢", label: "Triste" },
+        { id: "scared", emoji: "😨", label: "Com Medo" }
+      ],
+      feedback: "Sensacional! Realizar uma construção bonita com paciência nos dá muito orgulho!"
+    },
+    {
+      scenario: "Uma borboleta azul brilhante pousou de mansinho na mãozinha do Pip! Como o Pip está se sentindo?",
+      icon: "🦋",
+      vectorKey: "BUTTERFLY",
+      correctId: "curious",
+      correctLabel: "Curioso e Encantado",
+      options: [
+        { id: "angry", emoji: "😠", label: "Bravo" },
+        { id: "curious", emoji: "🤩", label: "Curioso e Encantado" },
+        { id: "sleepy", emoji: "🥱", label: "Com Sono" }
+      ],
+      feedback: "Que lindo! A magia da natureza nos deixa cheios de encanto e curiosidade!"
+    },
+    {
+      scenario: "O copinho de água virou e molhou a pintura que o Pip fez com carinho. Como o Pip está se sentindo?",
+      icon: "💧",
+      vectorKey: "DROP",
+      correctId: "sad",
+      correctLabel: "Triste e Chateado",
+      options: [
+        { id: "happy", emoji: "😄", label: "Divertido" },
+        { id: "sad", emoji: "🥺", label: "Triste e Chateado" },
+        { id: "calm", emoji: "😌", label: "Calmo" }
+      ],
+      feedback: "É normal ficar chateado quando algo dá errado. Vamos respirar fundo e recomeçar com calma!"
+    },
+    {
+      scenario: "O coelhinho amigo chamou o Pip para brincar de bola no gramado! Como o Pip está se sentindo?",
+      icon: "🐰",
+      vectorKey: "RABBIT",
+      correctId: "happy",
+      correctLabel: "Muito Animado",
+      options: [
+        { id: "happy", emoji: "🥳", label: "Muito Animado" },
+        { id: "scared", emoji: "😨", label: "Assustado" },
+        { id: "angry", emoji: "😡", label: "Zangado" }
+      ],
+      feedback: "Maravilha! Brincar com amigos queridos enche o nosso dia de sorrisos!"
+    },
+    {
+      scenario: "A noite suave chegou no bosque e o Pip vestiu o pijama quentinho. Como ele está se sentindo?",
+      icon: "🌙",
+      vectorKey: "MOON",
+      correctId: "sleepy",
+      correctLabel: "Aconchegado e Sonolento",
+      options: [
+        { id: "sleepy", emoji: "😴", label: "Aconchegado e Sonolento" },
+        { id: "angry", emoji: "😠", label: "Com Raiva" },
+        { id: "proud", emoji: "😎", label: "Corajoso" }
+      ],
+      feedback: "Que gostoso! Um repouso suave recarrega nossas energias para um novo dia de descobertas."
+    }
+  ],
+
+  // Jogo 2: Construtor de Palavrinhas (palavras acessíveis de 3 a 4 letras)
+  2: [
+    { word: "SOL", icon: "☀️", hint: "Brilha quente no céu azul" },
+    { word: "LUA", icon: "🌙", hint: "Ilumina a nossa noite de descanso" },
+    { word: "MEL", icon: "🍯", hint: "Docinho feito pelas abelhas amigas" },
+    { word: "RIO", icon: "🌊", hint: "Água fresca que corre entre as pedrinhas" },
+    { word: "CEU", icon: "☁️", hint: "Onde as nuvens fofinhas passeiam" },
+    { word: "MAR", icon: "🏖️", hint: "Ondas calmas na beirinha da praia" },
+    { word: "PAO", icon: "🥖", hint: "Quentinho e gostoso no lanche da tarde" },
+    { word: "FLOR", icon: "🌸", hint: "Espalha perfume suave no jardim" },
+    { word: "CASA", icon: "🏡", hint: "Nosso cantinho de amor e proteção" },
+    { word: "GATO", icon: "🐱", hint: "Amiguinho peludo que ronrona com carinho" },
+    { word: "BOLA", icon: "⚽", hint: "Redondinha para brincar no gramado" },
+    { word: "URSO", icon: "🧸", hint: "Fofinho que dá abraços apertadinhos" },
+    { word: "BOLO", icon: "🎂", hint: "Doce festivo com velinhas coloridas" },
+    { word: "PEIXE", icon: "🐟", hint: "Nada leve e livre na água cristalina" },
+    { word: "MACA", icon: "🍎", hint: "Frutinha vermelhinha, crocante e saudável" }
+  ],
+
+  // Jogo 3: Balança das Quantidades (Frutas e numerais de 1 a 5)
+  3: [
+    { target: 2, icon: "🍎", vectorKey: "APPLE", name: "maçãs" },
+    { target: 4, icon: "🍓", vectorKey: "STRAWBERRY", name: "morangos" },
+    { target: 3, icon: "🍐", vectorKey: "PEAR", name: "peras" },
+    { target: 5, icon: "🍌", vectorKey: "BANANA", name: "bananas" },
+    { target: 2, icon: "🍊", vectorKey: "ORANGE", name: "laranjas" },
+    { target: 4, icon: "🍇", vectorKey: "GRAPES", name: "uvas" },
+    { target: 3, icon: "🍒", vectorKey: "CHERRY", name: "cerejas" },
+    { target: 1, icon: "🍉", vectorKey: "WATERMELON", name: "melancia" },
+    { target: 5, icon: "🍑", vectorKey: "PEACH", name: "pêssegos" }
+  ],
+
+  // Jogo 4: O Trem dos Padrões (Sequenciamento lógico claro)
+  4: [
+    {
+      sequence: ["🟡", "🟣", "🟡"],
+      correct: "🟣",
+      options: ["🟣", "🟢", "🟡"],
+      explanation: "Amarelo, Roxo, Amarelo... o próximo é Roxo!"
+    },
+    {
+      sequence: ["🌸", "⭐", "🌸"],
+      correct: "⭐",
+      options: ["🍃", "⭐", "🌸"],
+      explanation: "Flor, Estrela, Flor... o próximo é Estrela!"
+    },
+    {
+      sequence: ["🍎", "🍎", "🍐"],
+      correct: "🍐",
+      options: ["🍎", "🍐", "🍊"],
+      explanation: "Duas maçãs e duas peras completam o trem!"
+    },
+    {
+      sequence: ["💖", "⭐", "💖"],
+      correct: "⭐",
+      options: ["⭐", "💖", "🌙"],
+      explanation: "Coração, Estrela, Coração... o próximo é Estrela!"
+    },
+    {
+      sequence: ["🔵", "🟢", "🔵"],
+      correct: "🟢",
+      options: ["🟢", "🔵", "🟡"],
+      explanation: "Azul, Verde, Azul... o próximo é Verde!"
+    },
+    {
+      sequence: ["☀️", "🌙", "☀️"],
+      correct: "🌙",
+      options: ["🌙", "☀️", "⭐"],
+      explanation: "Sol, Lua, Sol... o próximo é Lua!"
+    },
+    {
+      sequence: ["🍃", "🌸", "🍃"],
+      correct: "🌸",
+      options: ["🌸", "🍃", "🍄"],
+      explanation: "Folha, Flor, Folha... o próximo é Flor!"
+    },
+    {
+      sequence: ["🔴", "🔷", "🔴"],
+      correct: "🔷",
+      options: ["🔷", "🔴", "⭐"],
+      explanation: "Círculo, Diamante, Círculo... o próximo é Diamante!"
+    },
+    {
+      sequence: ["🐱", "🐶", "🐱"],
+      correct: "🐶",
+      options: ["🐶", "🐱", "🐰"],
+      explanation: "Gatinho, Cachorrinho, Gatinho... o próximo é Cachorrinho!"
+    }
+  ],
+
+  // Jogo 5: A Rotina Encantada (Sequências de 3 passos do cotidiano)
+  5: [
+    {
+      theme: "Manhã Aconchegante do Pip",
+      steps: [
+        { id: 1, text: "Acordar e bocejar com a luz do sol", icon: "🌅" },
+        { id: 2, text: "Escovar os dentes e lavar o rosto", icon: "🪥" },
+        { id: 3, text: "Tomar um café da manhã quentinho", icon: "🥞" }
+      ]
+    },
+    {
+      theme: "Cuidando do Jardim",
+      steps: [
+        { id: 1, text: "Colocar a sementinha na terra fofa", icon: "🌱" },
+        { id: 2, text: "Regar com água limpinha e carinho", icon: "💧" },
+        { id: 3, text: "Ver a florzinha linda desabrochar", icon: "🌻" }
+      ]
+    },
+    {
+      theme: "Hora do Descanso Suave",
+      steps: [
+        { id: 1, text: "Guardar os brinquedos na caixinha", icon: "🧸" },
+        { id: 2, text: "Ouvir uma historinha tranquila", icon: "📖" },
+        { id: 3, text: "Cobrir com a mantinha e adormecer", icon: "🌙" }
+      ]
+    },
+    {
+      theme: "Preparando a Mochila Mágica",
+      steps: [
+        { id: 1, text: "Separar os livrinhos coloridos", icon: "📚" },
+        { id: 2, text: "Guardar a garrafinha e o lanchinho gostoso", icon: "🥪" },
+        { id: 3, text: "Fechar o zíper da mochila com cuidado", icon: "🎒" }
+      ]
+    },
+    {
+      theme: "Banho Relaxante e Espumoso",
+      steps: [
+        { id: 1, text: "Entrar na aguinha morna e gostosa", icon: "🛁" },
+        { id: 2, text: "Fazer espuminha com sabonete cheiroso", icon: "🧼" },
+        { id: 3, text: "Secar o corpinho com a toalha macia", icon: "🧖" }
+      ]
+    },
+    {
+      theme: "Tarde de Brincadeiras no Bosque",
+      steps: [
+        { id: 1, text: "Calçar os tênis confortáveis", icon: "👟" },
+        { id: 2, text: "Deslizar no escorregador colorido", icon: "🛝" },
+        { id: 3, text: "Beber água fresca e descansar na sombra", icon: "🥤" }
+      ]
+    }
+  ]
+};
+
 export class EducationalGamesManager {
   constructor(app) {
     this.app = app;
@@ -18,12 +274,35 @@ export class EducationalGamesManager {
     this.currentRound = 0;
     this.totalRounds = 3;
     this.attemptsOnCurrentRound = 0;
+    this.activeRounds = [];
+  }
+
+  /**
+   * Sorteia aleatoriamente e sem repetição 'count' itens de um array
+   */
+  pickRandomSubset(array, count = 3) {
+    if (!array || array.length === 0) return [];
+    const copy = [...array];
+    for (let i = copy.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+    return copy.slice(0, Math.min(count, copy.length));
+  }
+
+  /**
+   * Prepara os 3 exercícios únicos da sessão atual do jogo
+   */
+  prepareSessionRounds(gameId) {
+    const pool = GAME_POOLS[gameId] || [];
+    this.activeRounds = this.pickRandomSubset(pool, this.totalRounds);
   }
 
   startGame(gameId) {
     this.currentGameId = gameId;
     this.currentRound = 1;
     this.attemptsOnCurrentRound = 0;
+    this.prepareSessionRounds(gameId);
 
     this.app.showView('game');
     this.app.calmMode.setMissionState(true);
@@ -60,6 +339,10 @@ export class EducationalGamesManager {
       return;
     }
 
+    if (!this.activeRounds || this.activeRounds.length === 0) {
+      this.prepareSessionRounds(this.currentGameId);
+    }
+
     if (this.currentGameId === 1) this.renderEmotionsGame();
     else if (this.currentGameId === 2) this.renderPhonicsGame();
     else if (this.currentGameId === 3) this.renderMathBalanceGame();
@@ -71,49 +354,7 @@ export class EducationalGamesManager {
   // JOGO 1: O ESPELHO DAS EMOÇÕES (Socioemocional & Empatia)
   // ==========================================================================
   renderEmotionsGame() {
-    const rounds = [
-      {
-        scenario: "O Pip ganhou um lindo girassol do seu amiguinho no bosque! Como o Pip está se sentindo?",
-        icon: "🌻",
-        vectorKey: "SUNFLOWER",
-        correctId: "happy",
-        correctLabel: "Alegre e Contente",
-        options: [
-          { id: "calm", emoji: "😌", label: "Sonolento" },
-          { id: "happy", emoji: "😊", label: "Alegre e Contente" },
-          { id: "scared", emoji: "🥺", label: "Assustado" }
-        ],
-        feedback: "Isso mesmo! Ganhar um presente com carinho nos enche de alegria!"
-      },
-      {
-        scenario: "Ouviu-se um trovão forte na chuvinha! O Pip precisa de um abraço. Como ele está se sentindo?",
-        icon: "⛈️",
-        vectorKey: "STORM",
-        correctId: "scared",
-        correctLabel: "Assustado",
-        options: [
-          { id: "scared", emoji: "🥺", label: "Assustado" },
-          { id: "happy", emoji: "😄", label: "Rindo" },
-          { id: "proud", emoji: "😎", label: "Corajoso" }
-        ],
-        feedback: "Muito bem! Barulhos altos podem dar susto, e um abraço aconchegante sempre ajuda!"
-      },
-      {
-        scenario: "O Pip deitou na relva fofinha ouvindo o riacho correr calmo. Como ele está se sentindo?",
-        icon: "🍃",
-        vectorKey: "BREEZE",
-        correctId: "calm",
-        correctLabel: "Tranquilo e em Paz",
-        options: [
-          { id: "angry", emoji: "😠", label: "Bravo" },
-          { id: "scared", emoji: "😰", label: "Com Medo" },
-          { id: "calm", emoji: "😌", label: "Tranquilo e em Paz" }
-        ],
-        feedback: "Exatamente! Respirar o ar puro e descansar a mente traz tranquilidade profunda."
-      }
-    ];
-
-    const data = rounds[this.currentRound - 1];
+    const data = (this.activeRounds && this.activeRounds[this.currentRound - 1]) || GAME_POOLS[1][0];
     this.setGameHeader("O Espelho das Emoções", "Identifique o sentimento do amigo para fortalecer a empatia.", data.scenario);
 
     const stage = document.getElementById('gameActiveStage');
@@ -184,10 +425,10 @@ export class EducationalGamesManager {
             `;
           }
 
-          // Fala o feedback com a voz angelical e aguarda exatamente 2 segundos após o término da fala
+          // Fala o feedback com a voz angelical e aguarda exatamente 1 segundo após o término da fala
           speech.speak(data.feedback, {
             force: true,
-            delayAfterEnd: 2000,
+            delayAfterEnd: 1000,
             onEnd: () => {
               this.updateRoundStep(this.currentRound + 1);
               this.loadRound();
@@ -223,13 +464,7 @@ export class EducationalGamesManager {
   // JOGO 2: CONSTRUTOR DE PALAVRINHAS (Consciência Fonológica & Leitura)
   // ==========================================================================
   renderPhonicsGame() {
-    const words = [
-      { word: "SOL", icon: "☀️", hint: "Brilha quente no céu azul" },
-      { word: "LUA", icon: "🌙", hint: "Ilumina a nossa noite de descanso" },
-      { word: "MEL", icon: "🍯", hint: "Docinho feito pelas abelhas amigas" }
-    ];
-
-    const currentWordData = words[this.currentRound - 1];
+    const currentWordData = (this.activeRounds && this.activeRounds[this.currentRound - 1]) || GAME_POOLS[2][0];
     const targetWord = currentWordData.word;
     const targetLetters = targetWord.split('');
 
@@ -330,7 +565,7 @@ export class EducationalGamesManager {
           sound.playChord([261.63, 329.63, 392.00, 523.25]);
           speech.speak(`Muito bem! Você escreveu ${targetWord}!`, {
             force: true,
-            delayAfterEnd: 2000,
+            delayAfterEnd: 1000,
             onEnd: () => {
               this.updateRoundStep(this.currentRound + 1);
               this.loadRound();
@@ -479,13 +714,7 @@ export class EducationalGamesManager {
   // JOGO 3: BALANÇA DAS QUANTIDADES (Matemática Concreta & Números)
   // ==========================================================================
   renderMathBalanceGame() {
-    const rounds = [
-      { target: 2, icon: "🍎", vectorKey: "APPLE", name: "maçãs" },
-      { target: 4, icon: "🍓", vectorKey: "STRAWBERRY", name: "morangos" },
-      { target: 3, icon: "🍐", vectorKey: "PEAR", name: "peras" }
-    ];
-
-    const data = rounds[this.currentRound - 1];
+    const data = (this.activeRounds && this.activeRounds[this.currentRound - 1]) || GAME_POOLS[3][0];
     let currentRightCount = 0;
     const fruitItemHtml = window.EmojiEnhancer?.vectors[data.vectorKey] || `<span class="balance-fruit">${data.icon}</span>`;
 
@@ -555,9 +784,9 @@ export class EducationalGamesManager {
         if (btnRemove) btnRemove.style.pointerEvents = 'none';
 
         sound.playChord([261.63, 329.63, 392.00, 523.25]);
-        speech.speak(`Equilíbrio perfeito! São ${data.target} frutas nos dois lados!`, {
+        speech.speak(`Equilíbrio perfeito! São ${data.target} ${data.name} nos dois lados!`, {
           force: true,
-          delayAfterEnd: 2000,
+          delayAfterEnd: 1000,
           onEnd: () => {
             this.updateRoundStep(this.currentRound + 1);
             this.loadRound();
@@ -589,28 +818,7 @@ export class EducationalGamesManager {
   // JOGO 4: O TREM DOS PADRÕES (Funções Executivas & Sequenciamento Lógico)
   // ==========================================================================
   renderPatternsGame() {
-    const patterns = [
-      {
-        sequence: ["🟡", "🟣", "🟡"],
-        correct: "🟣",
-        options: ["🟣", "🟢", "🟡"],
-        explanation: "Amarelo, Roxo, Amarelo... o próximo é Roxo!"
-      },
-      {
-        sequence: ["🌸", "⭐", "🌸"],
-        correct: "⭐",
-        options: ["🍃", "⭐", "🌸"],
-        explanation: "Flor, Estrela, Flor... o próximo é Estrela!"
-      },
-      {
-        sequence: ["🍎", "🍎", "🍐"],
-        correct: "🍐",
-        options: ["🍎", "🍐", "🍊"],
-        explanation: "Duas maçãs e duas peras completam o trem!"
-      }
-    ];
-
-    const data = patterns[this.currentRound - 1];
+    const data = (this.activeRounds && this.activeRounds[this.currentRound - 1]) || GAME_POOLS[4][0];
     this.setGameHeader(
       "O Trem dos Padrões",
       "Segure a pecinha e puxe até o vagão com interrogação (ou toque para escolher).",
@@ -658,7 +866,7 @@ export class EducationalGamesManager {
         sound.playChord([293.66, 369.99, 440.00]);
         speech.speak(`Muito inteligente! ${data.explanation}`, {
           force: true,
-          delayAfterEnd: 2000,
+          delayAfterEnd: 1000,
           onEnd: () => {
             this.updateRoundStep(this.currentRound + 1);
             this.loadRound();
@@ -769,34 +977,7 @@ export class EducationalGamesManager {
   // JOGO 5: A ROTINA ENCANTADA (Planejamento, Autonomia & Vida Diária)
   // ==========================================================================
   renderRoutineGame() {
-    const routines = [
-      {
-        theme: "Manhã Aconchegante do Pip",
-        steps: [
-          { id: 1, text: "Acordar e bocejar com a luz do sol", icon: "🌅" },
-          { id: 2, text: "Escovar os dentes e lavar o rosto", icon: "🪥" },
-          { id: 3, text: "Tomar um café da manhã quentinho", icon: "🥞" }
-        ]
-      },
-      {
-        theme: "Cuidando do Jardim",
-        steps: [
-          { id: 1, text: "Colocar a sementinha na terra fofa", icon: "🌱" },
-          { id: 2, text: "Regar com água limpinha e carinho", icon: "💧" },
-          { id: 3, text: "Ver a florzinha linda desabrochar", icon: "🌻" }
-        ]
-      },
-      {
-        theme: "Hora do Descanso Suave",
-        steps: [
-          { id: 1, text: "Guardar os brinquedos na caixinha", icon: "🧸" },
-          { id: 2, text: "Ouvir uma historinha tranquila", icon: "📖" },
-          { id: 3, text: "Cobrir com a mantinha e adormecer", icon: "🌙" }
-        ]
-      }
-    ];
-
-    const currentRoutine = routines[this.currentRound - 1];
+    const currentRoutine = (this.activeRounds && this.activeRounds[this.currentRound - 1]) || GAME_POOLS[5][0];
     this.setGameHeader(
       "A Rotina Encantada",
       "Coloque os cartões na ordem em que as coisas acontecem no dia a dia.",
@@ -869,7 +1050,7 @@ export class EducationalGamesManager {
               sound.playChord([261.63, 329.63, 392.00, 523.25]);
               speech.speak("Sensacional! Você organizou toda a rotina com perfeição!", {
                 force: true,
-                delayAfterEnd: 2000,
+                delayAfterEnd: 1000,
                 onEnd: () => {
                   this.updateRoundStep(this.currentRound + 1);
                   this.loadRound();
