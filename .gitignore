@@ -9,3 +9,5 @@ yarn-error.log*
 .system_generated
 scratch
 *.log
+
+.vercel

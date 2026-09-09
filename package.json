@@ -6,7 +6,10 @@
   "type": "module",
   "scripts": {
     "start": "node server/server.js",
-    "dev": "node server/server.js"
+    "dev": "node server/server.js",
+    "test:syntax": "node --check server/server.js && node --check server/db.js && node --check server/auth.js && node --check server/logger.js",
+    "ship": "node scripts/push-deploy.js",
+    "deploy": "node scripts/push-deploy.js"
   },
   "keywords": [
     "starkids",

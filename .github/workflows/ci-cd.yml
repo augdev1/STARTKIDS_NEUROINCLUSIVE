@@ -1,0 +1,47 @@
+name: StarKids CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  validate:
+    name: 🧪 Validação, Testes de Sintaxe e Auditoria
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout do Repositório
+        uses: actions/checkout@v4
+
+      - name: ⚡ Configurar Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: 📦 Instalar Dependências
+        run: npm ci
+
+      - name: 🔍 Checagem de Sintaxe do Servidor e Scripts
+        run: npm run test:syntax
+
+      - name: 🚀 Disparar Deploy no Render (se Hook configurado)
+        if: github.ref == 'refs/heads/main' && env.RENDER_DEPLOY_HOOK != ''
+        env:
+          RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
+        run: |
+          echo "Disparando deploy hook no Render..."
+          curl -X POST "$RENDER_DEPLOY_HOOK"
+
+      - name: 📢 Resumo do Deploy
+        if: success()
+        run: |
+          echo "=========================================================="
+          echo "🎉 Código do StarKids validado com sucesso!"
+          echo "O push na branch main aciona o deploy instantâneo na Vercel e no Render."
+          echo "=========================================================="

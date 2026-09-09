@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { logger } from './logger.js';
 
 dotenv.config();
 
@@ -78,7 +79,7 @@ export async function initDB() {
       `);
 
       isPgConnected = true;
-      console.log('✅ Banco de Dados PostgreSQL conectado e tabelas sincronizadas com sucesso.');
+      logger.db('✅ Banco de Dados PostgreSQL conectado e tabelas sincronizadas com sucesso.');
 
       // Sincroniza dados do local_db.json para o PostgreSQL se existirem
       try {
@@ -93,7 +94,7 @@ export async function initDB() {
                 [u.username, u.password_hash, u.created_at || new Date()]
               );
               userId = inserted.rows[0].id;
-              console.log(`📥 Usuário "${u.username}" importado para o PostgreSQL (ID: ${userId})`);
+              logger.db(`📥 Usuário "${u.username}" importado para o PostgreSQL (ID: ${userId})`);
             } else {
               userId = check.rows[0].id;
             }
@@ -114,21 +115,21 @@ export async function initDB() {
                     prog.updated_at || new Date()
                   ]
                 );
-                console.log(`📥 Progressão do usuário "${u.username}" importada com sucesso (${prog.stars} estrelas).`);
+                logger.db(`📥 Progressão do usuário "${u.username}" importada com sucesso (${prog.stars} estrelas).`);
               }
             }
           }
         }
       } catch (migrateErr) {
-        console.warn('Nota sobre sincronização inicial:', migrateErr.message);
+        logger.warn('DB', `Nota sobre sincronização inicial: ${migrateErr.message}`);
       }
     } finally {
       client.release();
     }
   } catch (err) {
     isPgConnected = false;
-    console.warn('ℹ️ PostgreSQL não acessível no momento:', err.message);
-    console.log('🛡️ Ativando persistência em arquivo seguro local (em Docker ou Vercel o PostgreSQL será utilizado automaticamente).');
+    logger.warn('DB', `ℹ️ PostgreSQL não acessível no momento: ${err.message}`);
+    logger.info('DB', '🛡️ Ativando persistência em arquivo seguro local (em Docker ou Vercel o PostgreSQL será utilizado automaticamente).');
     getLocalDB(); // inicializa arquivo local
   }
 }
