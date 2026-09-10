@@ -325,7 +325,7 @@ export class EducationalGamesManager {
   clearActiveGameState() {
     try {
       localStorage.removeItem('starkids_active_game_session');
-    } catch (e) {}
+    } catch (e) { }
   }
 
   /**
@@ -561,7 +561,7 @@ export class EducationalGamesManager {
         startY = e.clientY;
         currentPointerId = e.pointerId;
         btn.classList.remove('returning');
-        try { btn.setPointerCapture(e.pointerId); } catch (_) {}
+        try { btn.setPointerCapture(e.pointerId); } catch (_) { }
       });
 
       btn.addEventListener('pointermove', (e) => {
@@ -591,7 +591,7 @@ export class EducationalGamesManager {
 
       const handlePointerEnd = (e) => {
         if (currentPointerId !== e.pointerId) return;
-        try { btn.releasePointerCapture(e.pointerId); } catch (_) {}
+        try { btn.releasePointerCapture(e.pointerId); } catch (_) { }
         currentPointerId = null;
 
         const id = btn.getAttribute('data-id');
@@ -626,7 +626,7 @@ export class EducationalGamesManager {
       btn.addEventListener('pointerup', handlePointerEnd);
       btn.addEventListener('pointercancel', (e) => {
         if (currentPointerId === e.pointerId) {
-          try { btn.releasePointerCapture(e.pointerId); } catch (_) {}
+          try { btn.releasePointerCapture(e.pointerId); } catch (_) { }
           currentPointerId = null;
           isDragging = false;
           resetBtn();
@@ -789,7 +789,7 @@ export class EducationalGamesManager {
         tile.classList.remove('returning');
         try {
           tile.setPointerCapture(e.pointerId);
-        } catch (_) {}
+        } catch (_) { }
       });
 
       tile.addEventListener('pointermove', (e) => {
@@ -833,7 +833,7 @@ export class EducationalGamesManager {
         if (currentPointerId !== e.pointerId) return;
         try {
           tile.releasePointerCapture(e.pointerId);
-        } catch (_) {}
+        } catch (_) { }
         currentPointerId = null;
 
         const letter = tile.getAttribute('data-letter');
@@ -1024,7 +1024,7 @@ export class EducationalGamesManager {
         startY = e.clientY;
         currentPointerId = e.pointerId;
         dragFruit.classList.remove('returning');
-        try { dragFruit.setPointerCapture(e.pointerId); } catch (_) {}
+        try { dragFruit.setPointerCapture(e.pointerId); } catch (_) { }
       });
 
       dragFruit.addEventListener('pointermove', (e) => {
@@ -1052,7 +1052,7 @@ export class EducationalGamesManager {
 
       const handlePointerEnd = (e) => {
         if (currentPointerId !== e.pointerId) return;
-        try { dragFruit.releasePointerCapture(e.pointerId); } catch (_) {}
+        try { dragFruit.releasePointerCapture(e.pointerId); } catch (_) { }
         currentPointerId = null;
 
         if (isDragging) {
@@ -1080,7 +1080,7 @@ export class EducationalGamesManager {
       dragFruit.addEventListener('pointerup', handlePointerEnd);
       dragFruit.addEventListener('pointercancel', (e) => {
         if (currentPointerId === e.pointerId) {
-          try { dragFruit.releasePointerCapture(e.pointerId); } catch (_) {}
+          try { dragFruit.releasePointerCapture(e.pointerId); } catch (_) { }
           currentPointerId = null;
           isDragging = false;
           resetFruit();
@@ -1200,7 +1200,7 @@ export class EducationalGamesManager {
         startY = e.clientY;
         currentPointerId = e.pointerId;
         btn.classList.remove('returning');
-        try { btn.setPointerCapture(e.pointerId); } catch (_) {}
+        try { btn.setPointerCapture(e.pointerId); } catch (_) { }
       });
 
       btn.addEventListener('pointermove', (e) => {
@@ -1232,7 +1232,7 @@ export class EducationalGamesManager {
 
       const handlePointerEnd = (e) => {
         if (currentPointerId !== e.pointerId) return;
-        try { btn.releasePointerCapture(e.pointerId); } catch (_) {}
+        try { btn.releasePointerCapture(e.pointerId); } catch (_) { }
         currentPointerId = null;
 
         const val = btn.getAttribute('data-val');
@@ -1393,7 +1393,7 @@ export class EducationalGamesManager {
         startY = e.clientY;
         currentPointerId = e.pointerId;
         card.classList.remove('returning');
-        try { card.setPointerCapture(e.pointerId); } catch (_) {}
+        try { card.setPointerCapture(e.pointerId); } catch (_) { }
       });
 
       card.addEventListener('pointermove', (e) => {
@@ -1430,7 +1430,7 @@ export class EducationalGamesManager {
 
       const handlePointerEnd = (e) => {
         if (currentPointerId !== e.pointerId) return;
-        try { card.releasePointerCapture(e.pointerId); } catch (_) {}
+        try { card.releasePointerCapture(e.pointerId); } catch (_) { }
         currentPointerId = null;
 
         const stepId = parseInt(card.getAttribute('data-step-id'), 10);
@@ -1465,7 +1465,7 @@ export class EducationalGamesManager {
       card.addEventListener('pointerup', handlePointerEnd);
       card.addEventListener('pointercancel', (e) => {
         if (currentPointerId === e.pointerId) {
-          try { card.releasePointerCapture(e.pointerId); } catch (_) {}
+          try { card.releasePointerCapture(e.pointerId); } catch (_) { }
           currentPointerId = null;
           isDragging = false;
           resetCard();
