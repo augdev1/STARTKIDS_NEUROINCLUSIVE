@@ -873,6 +873,14 @@ button:hover img.emoji,
   background: linear-gradient(180deg, #FFFFFF 0%, #F9F5FF 100%);
 }
 
+.game-hub-card.theme-emerald {
+  background: linear-gradient(180deg, #FFFFFF 0%, #F0FDF4 100%);
+}
+
+.game-hub-card.theme-indigo {
+  background: linear-gradient(180deg, #FFFFFF 0%, #EEF2FF 100%);
+}
+
 /* Barra do Topo do Card */
 .game-card-topbar {
   display: flex;
@@ -961,6 +969,8 @@ button:hover img.emoji,
 .pill-math { background: #FFF4C7; color: #9C6600; }
 .pill-patterns { background: #DBEFFF; color: #0B61A4; }
 .pill-routine { background: #EFE4FD; color: #5B2C96; }
+.pill-strategy { background: #D1FAE5; color: #065F46; }
+.pill-memory { background: #E0E7FF; color: #3730A3; }
 
 .game-card-desc {
   font-size: 0.94rem;
@@ -1026,6 +1036,16 @@ button:hover img.emoji,
 .btn-play-violet {
   background: #9B72CF;
   box-shadow: 0 4px 14px rgba(155, 114, 207, 0.35);
+}
+
+.btn-play-emerald {
+  background: #10B981;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+}
+
+.btn-play-indigo {
+  background: #6366F1;
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);
 }
 
 .btn-play-game:hover {
@@ -3529,6 +3549,338 @@ button:hover img.emoji,
   font-size: 0.85rem;
   font-weight: 700;
   color: var(--text-muted);
+}
+
+/* ==========================================================================
+   FASE 6: JOGO DA VELHA DO PIP (Raciocínio Lúdico & Parceria)
+   ========================================================================== */
+.tictactoe-arena {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.tictactoe-header-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: #FFFFFF;
+  padding: 10px 24px;
+  border-radius: var(--radius-pill);
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.12);
+  border: 2px solid rgba(16, 185, 129, 0.25);
+  font-family: var(--font-game-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #065F46;
+  text-align: center;
+  min-height: 52px;
+  transition: all 0.3s ease;
+}
+
+.tictactoe-header-status.pip-thinking {
+  background: #FEF3C7;
+  border-color: #F59E0B;
+  color: #92400E;
+}
+
+.tictactoe-status-icon {
+  font-size: 1.5rem;
+  animation: gentleBounce 2s infinite ease-in-out;
+}
+
+.tictactoe-board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  background: #ECFDF5;
+  padding: 16px;
+  border-radius: 28px;
+  box-shadow: inset 0 3px 8px rgba(16, 185, 129, 0.15), 0 8px 24px rgba(16, 185, 129, 0.1);
+  border: 3px solid rgba(16, 185, 129, 0.3);
+  width: 100%;
+  max-width: 380px;
+  aspect-ratio: 1 / 1;
+}
+
+.tictactoe-cell {
+  background: #FFFFFF;
+  border-radius: 20px;
+  border: 2px dashed rgba(16, 185, 129, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+  transition: all 0.22s cubic-bezier(0.2, 0.9, 0.3, 1);
+  position: relative;
+  user-select: none;
+}
+
+.tictactoe-cell:hover:not(.occupied) {
+  background: #F0FDF4;
+  border-color: #10B981;
+  transform: scale(1.03);
+}
+
+.tictactoe-cell.drag-over {
+  border-color: #10B981 !important;
+  background: rgba(16, 185, 129, 0.15) !important;
+  transform: scale(1.06) !important;
+  box-shadow: 0 0 0 3px #6EE7B7, 0 6px 18px rgba(16, 185, 129, 0.25) !important;
+}
+
+.tictactoe-cell.occupied {
+  cursor: default;
+  border-style: solid;
+  border-color: rgba(16, 185, 129, 0.4);
+}
+
+.tictactoe-cell.winning-cell {
+  background: #FEF3C7 !important;
+  border-color: #F59E0B !important;
+  box-shadow: 0 0 0 4px #FDE68A, 0 8px 20px rgba(245, 158, 11, 0.3) !important;
+  animation: winPulse 1.4s infinite ease-in-out;
+}
+
+.tictactoe-cell .cell-symbol {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: popIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Bandeja do Jogador (Arrastar ou Toque) */
+.tictactoe-tray {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  background: #FFFFFF;
+  padding: 12px 24px;
+  border-radius: 24px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+  border: 2px solid rgba(16, 185, 129, 0.2);
+  width: 100%;
+  max-width: 380px;
+}
+
+.tictactoe-tray-label {
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tictactoe-piece-source {
+  width: 72px;
+  height: 72px;
+  background: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%);
+  border: 2px solid #10B981;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  cursor: grab;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+  touch-action: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  user-select: none;
+}
+
+.tictactoe-piece-source:hover {
+  transform: scale(1.08);
+  box-shadow: 0 6px 16px rgba(16, 185, 129, 0.35);
+}
+
+.tictactoe-piece-source:active {
+  cursor: grabbing;
+}
+
+/* ==========================================================================
+   FASE 7: O JARDIM DA MEMÓRIA (Atenção, Foco & Pares Sensoriais)
+   ========================================================================== */
+.memory-arena {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.memory-header-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 520px;
+  background: #FFFFFF;
+  padding: 10px 20px;
+  border-radius: var(--radius-pill);
+  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.1);
+  border: 2px solid rgba(99, 102, 241, 0.2);
+}
+
+.memory-stat-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-game-display);
+  font-size: 0.96rem;
+  font-weight: 700;
+  color: #3730A3;
+}
+
+.memory-grid {
+  display: grid;
+  gap: 14px;
+  width: 100%;
+  max-width: 520px;
+  perspective: 1000px;
+}
+
+/* Grids adaptativos de acordo com o total de cartas da rodada */
+.memory-grid.grid-4 {
+  grid-template-columns: repeat(2, 1fr);
+  max-width: 340px;
+}
+
+.memory-grid.grid-6 {
+  grid-template-columns: repeat(3, 1fr);
+  max-width: 460px;
+}
+
+.memory-grid.grid-8 {
+  grid-template-columns: repeat(4, 1fr);
+  max-width: 540px;
+}
+
+.memory-card {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  min-height: 100px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  border-radius: 20px;
+  transform-style: preserve-3d;
+  transition: transform 0.45s cubic-bezier(0.2, 0.9, 0.3, 1);
+  outline: none;
+}
+
+.memory-card:focus-visible {
+  box-shadow: 0 0 0 3px #6366F1;
+}
+
+.memory-card.flipped {
+  transform: rotateY(180deg);
+}
+
+.memory-card.matched {
+  transform: rotateY(180deg) scale(0.98);
+  cursor: default;
+}
+
+.memory-card-face {
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  backface-visibility: hidden;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+  user-select: none;
+}
+
+/* Verso da carta (fechada) */
+.memory-card-back {
+  background: linear-gradient(135deg, #6366F1 0%, #4F46E5 100%);
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  color: #FFFFFF;
+}
+
+.memory-card-back-icon {
+  font-size: 2.2rem;
+  opacity: 0.9;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+}
+
+/* Frente da carta (aberta) */
+.memory-card-front {
+  background: #FFFFFF;
+  border: 3px solid #6366F1;
+  transform: rotateY(180deg);
+  padding: 8px;
+  gap: 4px;
+}
+
+.memory-card.matched .memory-card-front {
+  border-color: #10B981;
+  background: #F0FDF4;
+  box-shadow: 0 0 0 3px #A7F3D0, 0 6px 16px rgba(16, 185, 129, 0.2);
+}
+
+.memory-card-symbol {
+  font-size: 2.6rem;
+  line-height: 1;
+}
+
+.memory-card-name {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #3730A3;
+  text-align: center;
+  max-width: 90%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.memory-card.matched .memory-card-name {
+  color: #065F46;
+}
+
+@keyframes winPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes gentleBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+@media (max-width: 600px) {
+  .tictactoe-board {
+    max-width: 320px;
+    gap: 8px;
+    padding: 12px;
+  }
+  .tictactoe-cell {
+    font-size: 2.4rem;
+    border-radius: 16px;
+  }
+  .memory-grid.grid-8 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .memory-card-symbol {
+    font-size: 2.1rem;
+  }
 }
 
 

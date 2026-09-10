@@ -264,6 +264,116 @@ export const GAME_POOLS = {
         { id: 3, text: "Beber água fresca e descansar na sombra", icon: "🥤" }
       ]
     }
+  ],
+
+  // Jogo 6: O Jogo da Velha do Pip (Raciocínio & Parceria Amigável)
+  6: [
+    {
+      playerSymbol: "⭐",
+      pipSymbol: "🐶",
+      playerName: "Estrela",
+      pipName: "Pip",
+      themeName: "Amizade Brilhante",
+      instruction: "Arraste sua Estrela ou clique no tabuleiro para jogar com o Pip!"
+    },
+    {
+      playerSymbol: "☀️",
+      pipSymbol: "☁️",
+      playerName: "Solzinho",
+      pipName: "Nuvem",
+      themeName: "Céu Encantado",
+      instruction: "Arraste o Solzinho ou clique no tabuleiro para brincar com o Pip!"
+    },
+    {
+      playerSymbol: "🌸",
+      pipSymbol: "🦋",
+      playerName: "Florzinha",
+      pipName: "Borboleta",
+      themeName: "Jardim Mágico",
+      instruction: "Coloque sua Florzinha ou toque no tabuleiro para brincar no jardim!"
+    },
+    {
+      playerSymbol: "⛵",
+      pipSymbol: "🗼",
+      playerName: "Barquinho",
+      pipName: "Farol",
+      themeName: "Aventura no Mar",
+      instruction: "Arraste seu Barquinho no tabuleiro para navegar com o Pip!"
+    },
+    {
+      playerSymbol: "🍎",
+      pipSymbol: "🍐",
+      playerName: "Maçã",
+      pipName: "Pera",
+      themeName: "Pomar dos Amigos",
+      instruction: "Coloque sua Maçãzinha no tabuleiro para brincar no pomar do Pip!"
+    },
+    {
+      playerSymbol: "💖",
+      pipSymbol: "🌙",
+      playerName: "Coração",
+      pipName: "Lua",
+      themeName: "Noite de Carinho",
+      instruction: "Arraste o Coração ou toque na grade para jogar com o Pip!"
+    }
+  ],
+
+  // Jogo 7: O Jardim da Memória (Atenção, Foco & Pares Sensoriais)
+  7: [
+    {
+      themeName: "Amiguinhos da Natureza",
+      pairs: [
+        { id: "dog", symbol: "🐶", name: "Cachorrinho" },
+        { id: "cat", symbol: "🐱", name: "Gatinho" },
+        { id: "bunny", symbol: "🐰", name: "Coelhinho" },
+        { id: "bear", symbol: "🧸", name: "Ursinho" }
+      ]
+    },
+    {
+      themeName: "Pomar Saudável",
+      pairs: [
+        { id: "apple", symbol: "🍎", name: "Maçã" },
+        { id: "banana", symbol: "🍌", name: "Banana" },
+        { id: "strawberry", symbol: "🍓", name: "Morango" },
+        { id: "grape", symbol: "🍇", name: "Uva" }
+      ]
+    },
+    {
+      themeName: "Céu e Estrelas",
+      pairs: [
+        { id: "sun", symbol: "☀️", name: "Sol" },
+        { id: "moon", symbol: "🌙", name: "Lua" },
+        { id: "star", symbol: "⭐", name: "Estrela" },
+        { id: "cloud", symbol: "☁️", name: "Nuvem" }
+      ]
+    },
+    {
+      themeName: "Jardim das Cores",
+      pairs: [
+        { id: "flower", symbol: "🌸", name: "Florzinha" },
+        { id: "butterfly", symbol: "🦋", name: "Borboleta" },
+        { id: "leaf", symbol: "🍃", name: "Folhinha" },
+        { id: "rainbow", symbol: "🌈", name: "Arco-íris" }
+      ]
+    },
+    {
+      themeName: "Mundo dos Brinquedos",
+      pairs: [
+        { id: "ball", symbol: "⚽", name: "Bola" },
+        { id: "car", symbol: "🚗", name: "Carrinho" },
+        { id: "kite", symbol: "🪁", name: "Pipa" },
+        { id: "robot", symbol: "🤖", name: "Robô" }
+      ]
+    },
+    {
+      themeName: "Fundo do Mar",
+      pairs: [
+        { id: "fish", symbol: "🐟", name: "Peixinho" },
+        { id: "dolphin", symbol: "🐬", name: "Golfinho" },
+        { id: "crab", symbol: "🦀", name: "Caranguejo" },
+        { id: "shell", symbol: "🐚", name: "Conchinha" }
+      ]
+    }
   ]
 };
 
@@ -429,6 +539,8 @@ export class EducationalGamesManager {
     else if (this.currentGameId === 3) this.renderMathBalanceGame();
     else if (this.currentGameId === 4) this.renderPatternsGame();
     else if (this.currentGameId === 5) this.renderRoutineGame();
+    else if (this.currentGameId === 6) this.renderTicTacToeGame();
+    else if (this.currentGameId === 7) this.renderMemoryGame();
   }
 
   // ==========================================================================
@@ -1476,6 +1588,499 @@ export class EducationalGamesManager {
         if (isDragging) return;
         const stepId = parseInt(card.getAttribute('data-step-id'), 10);
         handleCardPlacement(card, stepId);
+      });
+    });
+  }
+
+  // ==========================================================================
+  // JOGO 6: O JOGO DA VELHA DO PIP (Raciocínio & Parceria Amigável)
+  // ==========================================================================
+  renderTicTacToeGame() {
+    const data = (this.activeRounds && this.activeRounds[this.currentRound - 1]) || GAME_POOLS[6][0];
+    this.setGameHeader(
+      "O Jogo da Velha do Pip",
+      `Tema: ${data.themeName} • Você é ${data.playerName} (${data.playerSymbol}) e o Pip é ${data.pipName} (${data.pipSymbol})`,
+      data.instruction
+    );
+
+    const stage = document.getElementById('gameActiveStage');
+    stage.innerHTML = `
+      <div class="tictactoe-arena" role="region" aria-label="Partida de Jogo da Velha com o Pip">
+        <div class="tictactoe-header-status" id="tttStatus" aria-live="polite">
+          <span class="tictactoe-status-icon">🎮</span>
+          <span id="tttStatusText">Sua vez! Toque ou arraste sua peça <strong>${data.playerName}</strong></span>
+        </div>
+
+        <div class="tictactoe-board" id="tttBoard" role="grid" aria-label="Tabuleiro de jogo da velha">
+          ${[0, 1, 2, 3, 4, 5, 6, 7, 8].map(idx => `
+            <div class="tictactoe-cell" data-index="${idx}" role="gridcell" tabindex="0" aria-label="Casa ${idx + 1} vazia"></div>
+          `).join('')}
+        </div>
+
+        <div class="tictactoe-tray">
+          <div class="tictactoe-tray-label">
+            <span>✨</span> Sua Peça Amiga:
+          </div>
+          <div class="tictactoe-piece-source" id="tttPieceSource" role="button" tabindex="0" aria-label="Sua peça ${data.playerName}: arraste até o tabuleiro ou toque na casa">
+            ${data.playerSymbol}
+          </div>
+          <span class="drag-hint-text">Arraste para o tabuleiro ou toque direto na casinha</span>
+        </div>
+      </div>
+    `;
+    window.EmojiEnhancer?.enhance(stage);
+
+    const statusBox = document.getElementById('tttStatus');
+    const statusText = document.getElementById('tttStatusText');
+    const cells = Array.from(stage.querySelectorAll('.tictactoe-cell'));
+    const pieceSource = document.getElementById('tttPieceSource');
+
+    const board = Array(9).fill(null); // null, 'PLAYER', 'PIP'
+    let isPlayerTurn = true;
+    let isGameOver = false;
+
+    const WINNING_COMBOS = [
+      [0, 1, 2], [3, 4, 5], [6, 7, 8], // Linhas
+      [0, 3, 6], [1, 4, 7], [2, 5, 8], // Colunas
+      [0, 4, 8], [2, 4, 6]             // Diagonais
+    ];
+
+    const checkWin = (who) => {
+      for (const combo of WINNING_COMBOS) {
+        if (board[combo[0]] === who && board[combo[1]] === who && board[combo[2]] === who) {
+          return combo;
+        }
+      }
+      return null;
+    };
+
+    const isBoardFull = () => board.every(cell => cell !== null);
+
+    // Finalização de rodada: Vitória ou Empate Encantado
+    const finishRound = (type, winningCombo = null) => {
+      if (isGameOver) return;
+      isGameOver = true;
+
+      // Desabilita interações
+      cells.forEach(c => c.style.pointerEvents = 'none');
+      if (pieceSource) pieceSource.style.pointerEvents = 'none';
+
+      if (type === 'PLAYER_WIN') {
+        if (winningCombo) {
+          winningCombo.forEach(idx => cells[idx].classList.add('winning-cell'));
+        }
+        statusBox.classList.remove('pip-thinking');
+        statusText.innerHTML = `🌟 <strong>Parabéns!</strong> Você completou uma linda linha de ${data.playerName}!`;
+        sound.playChord([261.63, 329.63, 392.00, 523.25]);
+
+        speech.speak(`Parabéns! Você completou uma linha brilhante de ${data.playerName}!`, {
+          force: true,
+          delayAfterEnd: 1000,
+          onEnd: () => {
+            this.updateRoundStep(this.currentRound + 1);
+            this.loadRound();
+          }
+        });
+      } else if (type === 'PIP_WIN') {
+        if (winningCombo) {
+          winningCombo.forEach(idx => cells[idx].classList.add('winning-cell'));
+        }
+        statusBox.classList.remove('pip-thinking');
+        statusText.innerHTML = `🐶 O Pip completou uma linha com carinho! Que linda jogada!`;
+        sound.playChord([261.63, 329.63, 392.00]);
+
+        speech.speak(`Que jogada bonita do Pip! Vocês jogaram muito bem juntos!`, {
+          force: true,
+          delayAfterEnd: 1000,
+          onEnd: () => {
+            this.updateRoundStep(this.currentRound + 1);
+            this.loadRound();
+          }
+        });
+      } else if (type === 'DRAW') {
+        // Empate Encantado (filosofia neuroinclusiva: sem perdedores, celebra o equilíbrio)
+        statusBox.classList.remove('pip-thinking');
+        statusText.innerHTML = `🌈 <strong>Empate Encantado!</strong> Que partida equilibrada e parceira!`;
+        sound.playChord([261.63, 293.66, 329.63, 392.00]);
+
+        speech.speak(`Empate Encantado! Que partida equilibrada e parceira entre você e o Pip!`, {
+          force: true,
+          delayAfterEnd: 1000,
+          onEnd: () => {
+            this.updateRoundStep(this.currentRound + 1);
+            this.loadRound();
+          }
+        });
+      }
+    };
+
+    // Vez do Pip (IA amigável e empática)
+    const pipTurn = () => {
+      if (isGameOver) return;
+      isPlayerTurn = false;
+      statusBox.classList.add('pip-thinking');
+      statusText.innerHTML = `🐶 <em>Pip está escolhendo a casinha com carinho...</em>`;
+
+      setTimeout(() => {
+        if (isGameOver) return;
+
+        const emptyIndices = [];
+        board.forEach((val, idx) => {
+          if (val === null) emptyIndices.push(idx);
+        });
+
+        if (emptyIndices.length === 0) {
+          finishRound('DRAW');
+          return;
+        }
+
+        // 1. Pip tenta completar sua linha se tiver 2 (60% chance)
+        let chosenIdx = null;
+        if (Math.random() < 0.6) {
+          for (const idx of emptyIndices) {
+            board[idx] = 'PIP';
+            if (checkWin('PIP')) {
+              chosenIdx = idx;
+              board[idx] = null;
+              break;
+            }
+            board[idx] = null;
+          }
+        }
+
+        // 2. Pip bloqueia amigavelmente o jogador se ele for ganhar (50% chance)
+        if (chosenIdx === null && Math.random() < 0.5) {
+          for (const idx of emptyIndices) {
+            board[idx] = 'PLAYER';
+            if (checkWin('PLAYER')) {
+              chosenIdx = idx;
+              board[idx] = null;
+              break;
+            }
+            board[idx] = null;
+          }
+        }
+
+        // 3. Senão joga no centro ou escolhe aleatoriamente entre as casas livres
+        if (chosenIdx === null) {
+          if (emptyIndices.includes(4) && Math.random() < 0.5) {
+            chosenIdx = 4;
+          } else {
+            chosenIdx = emptyIndices[Math.floor(Math.random() * emptyIndices.length)];
+          }
+        }
+
+        // Aplica jogada do Pip
+        board[chosenIdx] = 'PIP';
+        const cell = cells[chosenIdx];
+        cell.classList.add('occupied');
+        cell.innerHTML = `<span class="cell-symbol">${data.pipSymbol}</span>`;
+        cell.setAttribute('aria-label', `Casa ${chosenIdx + 1} ocupada pelo Pip`);
+        window.EmojiEnhancer?.enhance(cell);
+
+        sound.playTone(sound.pentatonicScale.D4, 0.35);
+
+        const pipWinCombo = checkWin('PIP');
+        if (pipWinCombo) {
+          finishRound('PIP_WIN', pipWinCombo);
+          return;
+        }
+
+        if (isBoardFull()) {
+          finishRound('DRAW');
+          return;
+        }
+
+        // Retorna a vez para o jogador
+        isPlayerTurn = true;
+        statusBox.classList.remove('pip-thinking');
+        statusText.innerHTML = `Sua vez! Toque ou arraste sua peça <strong>${data.playerName}</strong>`;
+      }, 700);
+    };
+
+    // Aplicação da jogada do Jogador
+    const applyPlayerMove = (idx) => {
+      if (!isPlayerTurn || isGameOver) return;
+      if (board[idx] !== null) {
+        sound.playTone(sound.pentatonicScale.D4, 0.2);
+        return;
+      }
+
+      board[idx] = 'PLAYER';
+      const cell = cells[idx];
+      cell.classList.add('occupied');
+      cell.innerHTML = `<span class="cell-symbol">${data.playerSymbol}</span>`;
+      cell.setAttribute('aria-label', `Casa ${idx + 1} ocupada por ${data.playerName}`);
+      window.EmojiEnhancer?.enhance(cell);
+
+      sound.playTone(sound.pentatonicScale.G4, 0.35);
+      speech.speak(data.playerName);
+
+      const playerWinCombo = checkWin('PLAYER');
+      if (playerWinCombo) {
+        finishRound('PLAYER_WIN', playerWinCombo);
+        return;
+      }
+
+      if (isBoardFull()) {
+        finishRound('DRAW');
+        return;
+      }
+
+      pipTurn();
+    };
+
+    // Suporte a Toque/Clique Direto nas Células
+    cells.forEach((cell, idx) => {
+      cell.addEventListener('click', () => {
+        applyPlayerMove(idx);
+      });
+      cell.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          applyPlayerMove(idx);
+        }
+      });
+    });
+
+    // Suporte a Drag and Drop Sensorial com Pointer Events
+    let isDraggingPiece = false;
+    let startX = 0;
+    let startY = 0;
+    let currentPointerId = null;
+
+    const resetPiece = () => {
+      pieceSource.classList.add('returning');
+      pieceSource.style.transform = 'translate3d(0, 0, 0)';
+      setTimeout(() => {
+        pieceSource.classList.remove('is-dragging', 'returning');
+        pieceSource.style.transform = '';
+      }, 260);
+      cells.forEach(c => c.classList.remove('drag-over'));
+    };
+
+    pieceSource.addEventListener('pointerdown', (e) => {
+      if (!isPlayerTurn || isGameOver) return;
+      isDraggingPiece = false;
+      startX = e.clientX;
+      startY = e.clientY;
+      currentPointerId = e.pointerId;
+      pieceSource.classList.remove('returning');
+      try { pieceSource.setPointerCapture(e.pointerId); } catch (_) { }
+    });
+
+    pieceSource.addEventListener('pointermove', (e) => {
+      if (currentPointerId !== e.pointerId) return;
+      const dx = e.clientX - startX;
+      const dy = e.clientY - startY;
+
+      if (!isDraggingPiece && Math.hypot(dx, dy) > 6) {
+        isDraggingPiece = true;
+        pieceSource.classList.add('is-dragging');
+      }
+
+      if (isDraggingPiece) {
+        pieceSource.style.transform = `translate3d(${dx}px, ${dy}px, 0) scale(1.12)`;
+
+        let hitAny = false;
+        cells.forEach((cell, idx) => {
+          if (board[idx] !== null) return;
+          const rect = cell.getBoundingClientRect();
+          const inside = (
+            e.clientX >= rect.left - 10 &&
+            e.clientX <= rect.right + 10 &&
+            e.clientY >= rect.top - 10 &&
+            e.clientY <= rect.bottom + 10
+          );
+          if (inside && !hitAny) {
+            cell.classList.add('drag-over');
+            hitAny = true;
+          } else {
+            cell.classList.remove('drag-over');
+          }
+        });
+      }
+    });
+
+    const handlePointerUp = (e) => {
+      if (currentPointerId !== e.pointerId) return;
+      try { pieceSource.releasePointerCapture(e.pointerId); } catch (_) { }
+      currentPointerId = null;
+
+      if (isDraggingPiece) {
+        isDraggingPiece = false;
+        let droppedIdx = -1;
+
+        cells.forEach((cell, idx) => {
+          if (board[idx] !== null) return;
+          const rect = cell.getBoundingClientRect();
+          if (
+            e.clientX >= rect.left - 10 &&
+            e.clientX <= rect.right + 10 &&
+            e.clientY >= rect.top - 10 &&
+            e.clientY <= rect.bottom + 10
+          ) {
+            droppedIdx = idx;
+          }
+          cell.classList.remove('drag-over');
+        });
+
+        pieceSource.classList.remove('is-dragging');
+        pieceSource.style.transform = '';
+
+        if (droppedIdx !== -1) {
+          applyPlayerMove(droppedIdx);
+        } else {
+          resetPiece();
+        }
+      }
+    };
+
+    pieceSource.addEventListener('pointerup', handlePointerUp);
+    pieceSource.addEventListener('pointercancel', () => {
+      currentPointerId = null;
+      isDraggingPiece = false;
+      resetPiece();
+    });
+
+    // Clique na peça da bandeja como instrução de apoio
+    pieceSource.addEventListener('click', () => {
+      if (isDraggingPiece) return;
+      speech.speak(`Sua peça é ${data.playerName}. Toque em uma casa vazia do tabuleiro para jogar!`);
+    });
+  }
+
+  // ==========================================================================
+  // JOGO 7: O JARDIM DA MEMÓRIA (Atenção, Foco & Pares Sensoriais)
+  // ==========================================================================
+  renderMemoryGame() {
+    const data = (this.activeRounds && this.activeRounds[this.currentRound - 1]) || GAME_POOLS[7][0];
+
+    // Progressão neuroinclusiva por rodada:
+    // Rodada 1: 2 pares (4 cartas - acolhimento inicial)
+    // Rodada 2: 3 pares (6 cartas - foco intermediário)
+    // Rodada 3: 4 pares (8 cartas - consolidação estimulante)
+    const pairCount = this.currentRound === 1 ? 2 : (this.currentRound === 2 ? 3 : 4);
+    const selectedPairs = data.pairs.slice(0, pairCount);
+
+    // Cria as cartas duplicadas (2 de cada par)
+    let cardsDeck = [];
+    selectedPairs.forEach(pair => {
+      cardsDeck.push({ ...pair, cardInstanceId: `${pair.id}_1` });
+      cardsDeck.push({ ...pair, cardInstanceId: `${pair.id}_2` });
+    });
+
+    // Embaralha as cartas
+    for (let i = cardsDeck.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [cardsDeck[i], cardsDeck[j]] = [cardsDeck[j], cardsDeck[i]];
+    }
+
+    const totalCards = cardsDeck.length;
+
+    this.setGameHeader(
+      "O Jardim da Memória",
+      `Tema: ${data.themeName} • Encontre os ${pairCount} pares mágicos`,
+      "Toque nas cartinhas para desvendar os pares amigos do jardim!"
+    );
+
+    const stage = document.getElementById('gameActiveStage');
+    stage.innerHTML = `
+      <div class="memory-arena" role="region" aria-label="Jogo da Memória">
+        <div class="memory-header-info">
+          <div class="memory-stat-pill">
+            <span>🌸</span> Tema: <strong>${data.themeName}</strong>
+          </div>
+          <div class="memory-stat-pill">
+            <span>✨</span> Pares: <strong id="memoryPairsFound">0</strong> / <strong>${pairCount}</strong>
+          </div>
+        </div>
+
+        <div class="memory-grid grid-${totalCards}" id="memoryGrid" role="grid" aria-label="Cartas do Jardim da Memória">
+          ${cardsDeck.map((c, idx) => `
+            <button class="memory-card" data-idx="${idx}" data-pair-id="${c.id}" type="button" aria-label="Carta ${idx + 1} fechada">
+              <div class="memory-card-face memory-card-back">
+                <span class="memory-card-back-icon">🌟</span>
+              </div>
+              <div class="memory-card-face memory-card-front">
+                <span class="memory-card-symbol">${c.symbol}</span>
+                <span class="memory-card-name">${c.name}</span>
+              </div>
+            </button>
+          `).join('')}
+        </div>
+      </div>
+    `;
+    window.EmojiEnhancer?.enhance(stage);
+
+    const cardElements = Array.from(stage.querySelectorAll('.memory-card'));
+    const pairsCounter = document.getElementById('memoryPairsFound');
+
+    let flippedIndices = [];
+    let matchedPairsCount = 0;
+    let isLocked = false;
+
+    cardElements.forEach((cardEl, idx) => {
+      cardEl.addEventListener('click', () => {
+        if (isLocked) return;
+        if (cardEl.classList.contains('flipped') || cardEl.classList.contains('matched')) return;
+
+        // Vira a carta
+        cardEl.classList.add('flipped');
+        cardEl.setAttribute('aria-label', `Carta aberta: ${cardsDeck[idx].name}`);
+        flippedIndices.push(idx);
+
+        sound.playTone(sound.pentatonicScale.C4 + flippedIndices.length * 60, 0.25);
+        speech.speak(cardsDeck[idx].name);
+
+        if (flippedIndices.length === 2) {
+          isLocked = true;
+          const idx1 = flippedIndices[0];
+          const idx2 = flippedIndices[1];
+          const card1 = cardElements[idx1];
+          const card2 = cardElements[idx2];
+          const data1 = cardsDeck[idx1];
+          const data2 = cardsDeck[idx2];
+
+          if (data1.id === data2.id) {
+            // Par Encontrado!
+            matchedPairsCount++;
+            if (pairsCounter) pairsCounter.textContent = matchedPairsCount;
+
+            card1.classList.add('matched');
+            card2.classList.add('matched');
+            card1.setAttribute('aria-label', `Par encontrado: ${data1.name}`);
+            card2.setAttribute('aria-label', `Par encontrado: ${data2.name}`);
+
+            sound.playChord([329.63, 392.00, 523.25]);
+
+            if (matchedPairsCount === pairCount) {
+              // Concluiu todos os pares da rodada!
+              speech.speak(`Parabéns! Você encontrou todos os pares de ${data.themeName}!`, {
+                force: true,
+                delayAfterEnd: 1000,
+                onEnd: () => {
+                  this.updateRoundStep(this.currentRound + 1);
+                  this.loadRound();
+                }
+              });
+            } else {
+              flippedIndices = [];
+              isLocked = false;
+            }
+          } else {
+            // Cartas diferentes: desvira suavemente após pausa acolhedora
+            setTimeout(() => {
+              card1.classList.remove('flipped');
+              card2.classList.remove('flipped');
+              card1.setAttribute('aria-label', `Carta ${idx1 + 1} fechada`);
+              card2.setAttribute('aria-label', `Carta ${idx2 + 1} fechada`);
+              sound.playTone(sound.pentatonicScale.D4, 0.25);
+              flippedIndices = [];
+              isLocked = false;
+            }, 900);
+          }
+        }
       });
     });
   }
