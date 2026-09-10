@@ -738,21 +738,28 @@ export class EducationalGamesManager {
 
       const slotIdx = parseInt(targetSlot.getAttribute('data-idx') || '0', 10);
       sound.playTone(sound.pentatonicScale.C4 + slotIdx * 60, 0.7);
-      speech.speak(letter);
 
       if (filledCount === targetLetters.length) {
         tiles.forEach(t => t.style.pointerEvents = 'none');
-        setTimeout(() => {
-          sound.playChord([261.63, 329.63, 392.00, 523.25]);
-          speech.speak(`Muito bem! Você escreveu ${targetWord}!`, {
-            force: true,
-            delayAfterEnd: 1000,
-            onEnd: () => {
-              this.updateRoundStep(this.currentRound + 1);
-              this.loadRound();
-            }
-          });
-        }, 350);
+        // Fala a última letra puxada, aguarda a locutora terminar de falar a letra completamente,
+        // aguarda 1 segundo de intervalo suave e sem sobreposição (delayAfterEnd: 1000), e só então entra o elogio!
+        speech.speak(letter, {
+          force: true,
+          delayAfterEnd: 1000,
+          onEnd: () => {
+            sound.playChord([261.63, 329.63, 392.00, 523.25]);
+            speech.speak(`Muito bem! Você escreveu ${targetWord}!`, {
+              force: true,
+              delayAfterEnd: 1000,
+              onEnd: () => {
+                this.updateRoundStep(this.currentRound + 1);
+                this.loadRound();
+              }
+            });
+          }
+        });
+      } else {
+        speech.speak(letter);
       }
     };
 
@@ -1326,21 +1333,28 @@ export class EducationalGamesManager {
         window.EmojiEnhancer?.enhance(holder);
 
         sound.playTone(sound.pentatonicScale.C4 + expectedStep * 70, 0.8);
-        speech.speak(stepData.text);
 
         if (userOrder.length === 3) {
           stage.querySelectorAll('.routine-card-btn').forEach(b => b.style.pointerEvents = 'none');
-          setTimeout(() => {
-            sound.playChord([261.63, 329.63, 392.00, 523.25]);
-            speech.speak("Sensacional! Você organizou toda a rotina com perfeição!", {
-              force: true,
-              delayAfterEnd: 1000,
-              onEnd: () => {
-                this.updateRoundStep(this.currentRound + 1);
-                this.loadRound();
-              }
-            });
-          }, 400);
+          // Fala o texto da última ação da rotina, aguarda o término completo,
+          // aguarda 1 segundo de intervalo suave (delayAfterEnd: 1000) e aí entra a celebração!
+          speech.speak(stepData.text, {
+            force: true,
+            delayAfterEnd: 1000,
+            onEnd: () => {
+              sound.playChord([261.63, 329.63, 392.00, 523.25]);
+              speech.speak("Sensacional! Você organizou toda a rotina com perfeição!", {
+                force: true,
+                delayAfterEnd: 1000,
+                onEnd: () => {
+                  this.updateRoundStep(this.currentRound + 1);
+                  this.loadRound();
+                }
+              });
+            }
+          });
+        } else {
+          speech.speak(stepData.text);
         }
       } else {
         this.attemptsOnCurrentRound++;
