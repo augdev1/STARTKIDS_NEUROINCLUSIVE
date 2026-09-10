@@ -824,7 +824,7 @@ button:hover img.emoji,
 /* GRADE DE JOGOS SLIM (Sem contornos pesados) */
 .educational-games-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr));
   gap: 22px;
 }
 
@@ -3031,9 +3031,18 @@ button:hover img.emoji,
   /* Modais no Mobile (Sheet Acolhedor) */
   .wardrobe-modal,
   .calm-modal,
-  .treasure-chest-modal {
+  .treasure-chest-modal,
+  .auth-modal {
     padding: 12px;
     align-items: flex-end;
+  }
+
+  .auth-box {
+    border-radius: 26px 26px 18px 18px;
+    max-height: 92vh;
+    padding: 22px 18px;
+    width: 100%;
+    overflow-y: auto;
   }
 
   .wardrobe-box {
@@ -3770,7 +3779,9 @@ button:hover img.emoji,
 .memory-card {
   position: relative;
   aspect-ratio: 1 / 1;
-  min-height: 100px;
+  width: 100%;
+  height: auto;
+  min-height: unset;
   background: transparent;
   border: none;
   cursor: pointer;
@@ -3778,6 +3789,7 @@ button:hover img.emoji,
   transform-style: preserve-3d;
   transition: transform 0.45s cubic-bezier(0.2, 0.9, 0.3, 1);
   outline: none;
+  box-sizing: border-box;
 }
 
 .memory-card:focus-visible {
@@ -3804,6 +3816,7 @@ button:hover img.emoji,
   backface-visibility: hidden;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
   user-select: none;
+  box-sizing: border-box;
 }
 
 /* Verso da carta (fechada) */
@@ -3814,7 +3827,7 @@ button:hover img.emoji,
 }
 
 .memory-card-back-icon {
-  font-size: 2.2rem;
+  font-size: clamp(1.6rem, 5vw, 2.2rem);
   opacity: 0.9;
   filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
 }
@@ -3824,8 +3837,8 @@ button:hover img.emoji,
   background: #FFFFFF;
   border: 3px solid #6366F1;
   transform: rotateY(180deg);
-  padding: 8px;
-  gap: 4px;
+  padding: 6px 4px;
+  gap: 3px;
 }
 
 .memory-card.matched .memory-card-front {
@@ -3835,20 +3848,21 @@ button:hover img.emoji,
 }
 
 .memory-card-symbol {
-  font-size: 2.6rem;
+  font-size: clamp(1.8rem, 5.5vw, 2.6rem);
   line-height: 1;
 }
 
 .memory-card-name {
   font-family: var(--font-body);
-  font-size: 0.78rem;
+  font-size: clamp(0.65rem, 2vw, 0.78rem);
   font-weight: 700;
   color: #3730A3;
   text-align: center;
-  max-width: 90%;
+  max-width: 95%;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  line-height: 1.15;
 }
 
 .memory-card.matched .memory-card-name {
@@ -3865,21 +3879,352 @@ button:hover img.emoji,
   50% { transform: translateY(-4px); }
 }
 
-@media (max-width: 600px) {
+/* ==========================================================================
+   RESPONSIVIDADE ESPECIALIZADA: TABLETS (601px até 1024px)
+   iPad Mini, iPad Air/Pro, Galaxy Tab, Surface Duo/Pro
+   ========================================================================== */
+@media (min-width: 601px) and (max-width: 1024px) {
+  .app-container {
+    padding: 16px 20px 40px;
+    max-width: 960px;
+  }
+
+  .hero-game-showcase {
+    grid-template-columns: 320px 1fr;
+    gap: 20px;
+  }
+
+  .educational-games-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .game-arena {
+    padding: 24px 28px;
+    border-radius: 28px;
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
   .tictactoe-board {
+    max-width: 360px;
+    gap: 10px;
+    padding: 14px;
+  }
+
+  .memory-grid.grid-8 {
+    grid-template-columns: repeat(4, 1fr);
+    max-width: 520px;
+  }
+
+  .routine-timeline-slots {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+
+  .wardrobe-body {
+    grid-template-columns: 240px 1fr;
+  }
+}
+
+/* ==========================================================================
+   RESPONSIVIDADE: SMARTPHONES PADRÃO E TELAS COMPACTAS (<= 600px)
+   iPhone 13/14/15/16, Galaxy S/A, Pixel
+   ========================================================================== */
+@media (max-width: 600px) {
+  .tictactoe-arena {
+    width: 100%;
+    max-width: 100%;
+    gap: 16px;
+    padding: 0 4px;
+  }
+
+  .tictactoe-header-status {
+    width: 100%;
+    max-width: 340px;
+    padding: 8px 16px;
+    font-size: 0.98rem;
+    min-height: 48px;
+    gap: 8px;
+  }
+
+  .tictactoe-board {
+    width: 100%;
     max-width: 320px;
     gap: 8px;
     padding: 12px;
+    border-radius: 24px;
   }
+
   .tictactoe-cell {
-    font-size: 2.4rem;
+    font-size: 2.3rem;
     border-radius: 16px;
   }
-  .memory-grid.grid-8 {
-    grid-template-columns: repeat(3, 1fr);
+
+  .tictactoe-tray {
+    max-width: 320px;
+    padding: 10px 16px;
   }
+
+  .tictactoe-piece-source {
+    width: 64px;
+    height: 64px;
+    font-size: 2.2rem;
+    border-radius: 18px;
+  }
+
+  .memory-arena {
+    width: 100%;
+    max-width: 100%;
+    gap: 16px;
+    padding: 0 4px;
+  }
+
+  .memory-header-info {
+    width: 100%;
+    max-width: 400px;
+    padding: 8px 14px;
+    font-size: 0.9rem;
+  }
+
+  .memory-grid {
+    gap: 10px;
+  }
+
+  .memory-grid.grid-4 {
+    max-width: 280px;
+  }
+
+  .memory-grid.grid-6 {
+    max-width: 380px;
+  }
+
+  .memory-grid.grid-8 {
+    grid-template-columns: repeat(4, 1fr);
+    max-width: 400px;
+    gap: 8px;
+  }
+
+  .memory-card {
+    border-radius: 16px;
+  }
+
+  .memory-card-face {
+    border-radius: 16px;
+  }
+
   .memory-card-symbol {
     font-size: 2.1rem;
+  }
+
+  .memory-card-name {
+    font-size: 0.72rem;
+  }
+}
+
+/* ==========================================================================
+   RESPONSIVIDADE: TELAS MUITO COMPACTAS (<= 380px)
+   iPhone SE (1st gen), Galaxy Fold Fechado, Celulares de Entrada
+   ========================================================================== */
+@media (max-width: 380px) {
+  .app-container {
+    padding: 6px 8px 24px;
+  }
+
+  .brand-title.parappa-logo {
+    font-size: 1.75rem;
+  }
+
+  .brand-logo-wrap {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+  }
+
+  .tictactoe-board {
+    max-width: min(calc(100vw - 20px), 282px);
+    gap: 6px;
+    padding: 8px;
+    border-radius: 18px;
+  }
+
+  .tictactoe-cell {
+    font-size: 1.9rem;
+    border-radius: 12px;
+  }
+
+  .tictactoe-header-status {
+    max-width: 282px;
+    padding: 6px 10px;
+    font-size: 0.86rem;
+    min-height: 42px;
+  }
+
+  .tictactoe-tray {
+    max-width: 282px;
+    padding: 8px 10px;
+  }
+
+  .tictactoe-piece-source {
+    width: 54px;
+    height: 54px;
+    font-size: 1.85rem;
+    border-radius: 14px;
+  }
+
+  .memory-header-info {
+    max-width: 290px;
+    padding: 6px 10px;
+    font-size: 0.82rem;
+  }
+
+  .memory-grid.grid-8 {
+    max-width: 290px;
+    gap: 6px;
+  }
+
+  .memory-grid.grid-6 {
+    max-width: 270px;
+    gap: 6px;
+  }
+
+  .memory-grid.grid-4 {
+    max-width: 230px;
+    gap: 8px;
+  }
+
+  .memory-card {
+    border-radius: 12px;
+  }
+
+  .memory-card-face {
+    border-radius: 12px;
+    padding: 2px;
+  }
+
+  .memory-card-symbol {
+    font-size: 1.7rem;
+  }
+
+  .memory-card-name {
+    font-size: 0.62rem;
+  }
+
+  .memory-card-back-icon {
+    font-size: 1.4rem;
+  }
+
+  .balance-beam {
+    width: min(calc(100vw - 28px), 235px);
+  }
+
+  .balance-pan {
+    width: 72px;
+  }
+
+  .pan-label {
+    width: 62px;
+    height: 22px;
+    font-size: 0.88rem;
+  }
+
+  .phonics-slot {
+    width: 48px;
+    height: 48px;
+    font-size: 1.5rem;
+    border-radius: 12px;
+  }
+
+  .phonics-letter-tile {
+    width: 50px;
+    height: 50px;
+    font-size: 1.5rem;
+    border-radius: 12px;
+    min-height: 50px;
+  }
+
+  .train-car {
+    width: 52px;
+    height: 52px;
+    font-size: 24px;
+  }
+
+  .pattern-choice-btn {
+    width: 54px;
+    height: 54px;
+    font-size: 26px;
+    min-height: 54px;
+  }
+}
+
+/* ==========================================================================
+   RESPONSIVIDADE: MODO PAISAGEM / LANDSCAPE (Dispositivos com pouca altura)
+   ========================================================================== */
+@media (max-height: 520px) and (orientation: landscape) {
+  .app-container {
+    padding: 8px 16px 20px;
+  }
+
+  .top-bar {
+    margin-bottom: 10px;
+  }
+
+  .game-arena {
+    padding: 14px 18px;
+    min-height: auto;
+  }
+
+  .game-arena-top {
+    padding-bottom: 8px;
+    gap: 8px;
+  }
+
+  .game-stage-viewport {
+    min-height: 240px;
+  }
+
+  .tictactoe-arena {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    max-width: 600px;
+  }
+
+  .tictactoe-board {
+    max-width: 240px;
+    gap: 6px;
+    padding: 8px;
+  }
+
+  .tictactoe-cell {
+    font-size: 1.8rem;
+  }
+
+  .tictactoe-tray {
+    max-width: 200px;
+  }
+
+  .memory-arena {
+    gap: 12px;
+  }
+
+  .memory-grid {
+    max-width: 460px;
+    gap: 8px;
+  }
+
+  .memory-card-symbol {
+    font-size: 1.7rem;
+  }
+
+  .wardrobe-box,
+  .calm-box,
+  .chest-box,
+  .auth-box {
+    max-height: 96vh;
+    overflow-y: auto;
+    padding: 16px;
   }
 }
 
