@@ -113,6 +113,100 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', app: 'StartKids', time: new Date().toISOString() });
 });
 
+// Cache em memória para os áudios neurais gerados (otimiza resposta para < 5ms)
+const ttsAudioCache = new Map();
+const MAX_TTS_CACHE_ITEMS = 600;
+
+let edgeTtsInstance = null;
+let edgeTtsModule = null;
+
+async function getEdgeTts() {
+  if (!edgeTtsModule) {
+    try {
+      edgeTtsModule = await import('msedge-tts');
+    } catch (err) {
+      logger.warn('TTS', `Módulo msedge-tts não disponível: ${err.message}`);
+      return null;
+    }
+  }
+  if (!edgeTtsInstance && edgeTtsModule) {
+    const { MsEdgeTTS, OUTPUT_FORMAT } = edgeTtsModule;
+    edgeTtsInstance = new MsEdgeTTS();
+    await edgeTtsInstance.setMetadata('pt-BR-FranciscaNeural', OUTPUT_FORMAT.AUDIO_24KHZ_48KBITRATE_MONO_MP3);
+  }
+  return edgeTtsInstance;
+}
+
+/**
+ * Endpoint de Síntese de Voz Neural Angelical de Alta Qualidade
+ * Garante áudio cristalino, doce e idêntico em qualquer celular (Android, iOS) ou desktop.
+ */
+app.get('/api/tts', async (req, res) => {
+  try {
+    const rawText = req.query.text || '';
+    const cleanText = String(rawText)
+      .replace(/!{2,}/g, '.')
+      .replace(/\?{2,}/g, '?')
+      .replace(/\*/g, '')
+      .trim();
+
+    if (!cleanText) {
+      return res.status(400).json({ error: 'Texto não informado para síntese.' });
+    }
+
+    if (cleanText.length > 500) {
+      return res.status(400).json({ error: 'Texto muito longo para síntese.' });
+    }
+
+    const cacheKey = cleanText.toLowerCase();
+
+    if (ttsAudioCache.has(cacheKey)) {
+      const cachedBuffer = ttsAudioCache.get(cacheKey);
+      res.setHeader('Content-Type', 'audio/mpeg');
+      res.setHeader('Content-Length', cachedBuffer.length);
+      res.setHeader('Cache-Control', 'public, max-age=604800, immutable');
+      return res.end(cachedBuffer);
+    }
+
+    const tts = await getEdgeTts();
+    if (!tts) {
+      return res.status(503).json({ error: 'TTS neural indisponível temporariamente.' });
+    }
+    const { audioStream } = tts.toStream(cleanText);
+
+    const chunks = [];
+    audioStream.on('data', (chunk) => chunks.push(chunk));
+    audioStream.on('end', () => {
+      const buffer = Buffer.concat(chunks);
+      if (ttsAudioCache.size >= MAX_TTS_CACHE_ITEMS) {
+        const firstKey = ttsAudioCache.keys().next().value;
+        ttsAudioCache.delete(firstKey);
+      }
+      ttsAudioCache.set(cacheKey, buffer);
+
+      res.setHeader('Content-Type', 'audio/mpeg');
+      res.setHeader('Content-Length', buffer.length);
+      res.setHeader('Cache-Control', 'public, max-age=604800, immutable');
+      res.end(buffer);
+    });
+
+    audioStream.on('error', (err) => {
+      logger.warn('TTS', `Erro no stream de áudio: ${err.message}`);
+      edgeTtsInstance = null;
+      if (!res.headersSent) {
+        res.status(500).json({ error: 'Erro ao sintetizar áudio.' });
+      }
+    });
+
+  } catch (err) {
+    logger.warn('TTS', `Erro na síntese neural: ${err.message}`);
+    edgeTtsInstance = null;
+    if (!res.headersSent) {
+      res.status(500).json({ error: 'Falha na geração da voz neural.' });
+    }
+  }
+});
+
 /**
  * Endpoint de Logs e Auditoria do Sistema
  */

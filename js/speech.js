@@ -9,6 +9,10 @@ class SpeechEngine {
     this.synth = window.speechSynthesis || null;
     this.isNarratorEnabled = localStorage.getItem('starkids_speech_enabled') === 'true';
     this.voice = null;
+    this.currentAudio = null;
+    this.currentUtterance = null;
+    this._fallbackTimer = null;
+    this._activePlayId = 0;
     this.initVoices();
   }
 
@@ -21,7 +25,7 @@ class SpeechEngine {
 
       this.voice = this.findBestAngelicVoice(voices);
       if (this.voice) {
-        console.log(`✨ [StartKids Voz Angelical] Selecionada com sucesso: "${this.voice.name}" (${this.voice.lang})`);
+        console.log(`✨ [StartKids Voz Angelical] Fallback nativo selecionado: "${this.voice.name}" (${this.voice.lang})`);
       }
     };
 
@@ -32,8 +36,8 @@ class SpeechEngine {
   }
 
   /**
-   * Algoritmo de seleção que prioriza vozes femininas naturais,
-   * doces e afetuosas, eliminando vozes metálicas ou masculinas graves.
+   * Algoritmo de seleção que prioriza vozes femininas naturais e de rede (network/neural),
+   * doces e afetuosas, eliminando vozes metálicas, comprimidas locais ou masculinas graves.
    */
   findBestAngelicVoice(voices) {
     const ptVoices = voices.filter(v => {
@@ -42,25 +46,25 @@ class SpeechEngine {
     });
 
     if (ptVoices.length === 0) {
-      // Se não achar português, tenta qualquer voz feminina natural
-      return voices.find(v => /natural|female/i.test(v.name)) || voices[0] || null;
+      return voices.find(v => /natural|female|network/i.test(v.name)) || voices[0] || null;
     }
 
-    // Critérios em ordem de doçura, calor humano e naturalidade
+    // Critérios em ordem de doçura, calor humano e qualidade neural de rede
     const angelicPreferences = [
-      // 1. Vozes Neurais / Naturais de Estúdio (Edge / Windows 11) - Ultra Realistas e Angelicais
+      // 1. Vozes Neurais de Estúdio (Microsoft Edge / Windows 11) - Ultra Realistas
       v => /francisca.*natural/i.test(v.name),
       v => /thalita.*natural/i.test(v.name),
       v => /francisca/i.test(v.name) && /online/i.test(v.name),
       v => /thalita/i.test(v.name) && /online/i.test(v.name),
 
-      // 2. Vozes Naturais Apple / iOS / Safari (Siri Luciana / Joana)
+      // 2. Vozes Neurais de Rede do Google (Android & Chrome - Alta Qualidade Humana)
+      v => /pt-br-x-.*network/i.test(v.name) && /afs|afz|yft|sfb|female/i.test(v.name),
+      v => /network/i.test(v.name) && !/male|homem|local/i.test(v.name),
+      v => /google\s+português\s+do\s+brasil/i.test(v.name) && !/local/i.test(v.name),
+
+      // 3. Vozes Naturais Apple / iOS / Safari (Siri Luciana / Joana)
       v => /luciana/i.test(v.name),
       v => /joana/i.test(v.name),
-
-      // 3. Voz Neural do Google (Chrome e Android)
-      v => /google\s+português\s+do\s+brasil/i.test(v.name),
-      v => /google/i.test(v.name) && /pt-br/i.test(v.name),
 
       // 4. Vozes femininas conhecidas por serem afetuosas
       v => /maria.*natural/i.test(v.name),
@@ -69,14 +73,13 @@ class SpeechEngine {
       v => /leticia|letícia/i.test(v.name),
       v => /camila/i.test(v.name),
       v => /vitoria|vitória/i.test(v.name),
-      v => /maria/i.test(v.name) && !/daniel/i.test(v.name),
-      v => /female|mulher|feminina/i.test(v.name),
+      v => /female|mulher|feminina/i.test(v.name) && !/local/i.test(v.name),
 
-      // 5. Qualquer voz em pt-BR que NÃO seja masculina identificada (evita Daniel, Felipe, etc)
-      v => !/daniel|felipe|antonio|antônio|ricardo|male|man|homem/i.test(v.name) && (v.lang || '').toLowerCase().includes('br'),
+      // 5. Qualquer voz feminina que NÃO seja local mecânica nem masculina
+      v => !/daniel|felipe|antonio|antônio|ricardo|male|man|homem|pico|espeak/i.test(v.name) && !v.name.includes('-local'),
+
+      // 6. Fallback padrão pt-BR não masculino
       v => !/daniel|felipe|antonio|antônio|ricardo|male|man|homem/i.test(v.name),
-
-      // 6. Fallback padrão pt-BR
       v => (v.lang || '').toLowerCase() === 'pt-br'
     ];
 
@@ -89,20 +92,12 @@ class SpeechEngine {
   }
 
   /**
-   * Executa a fala com voz angelical.
-   * Suporta:
-   * - speak(text)
-   * - speak(text, force)
-   * - speak(text, force, onEndCallback)
-   * - speak(text, { force, onEnd, delayAfterEnd })
+   * Executa a fala com voz angelical humanizada.
+   * Utiliza como canal principal a síntese neural de estúdio (/api/tts),
+   * garantindo voz 100% doce e humana em qualquer celular (Android, iOS) e PC.
+   * Mantém fallback automático para Web Speech API caso offline.
    */
   speak(text, forceOrOptions = false, onEndCallback = null) {
-    if (!this.synth) {
-      if (typeof forceOrOptions === 'function') forceOrOptions();
-      if (typeof onEndCallback === 'function') onEndCallback();
-      return;
-    }
-
     let force = false;
     let onEnd = null;
     let delayAfterEnd = 0;
@@ -134,22 +129,12 @@ class SpeechEngine {
     };
 
     if (!this.isNarratorEnabled && !force) {
-      // Se não estiver com narrador ativado e não for forçado, executa callback sem atrasar
       executeCallback();
       return;
     }
 
-    // Se a voz ainda não foi carregada, tenta recarregar
-    if (!this.voice) {
-      this.initVoices();
-    }
-
-    // Limpa timeout e fala anterior para evitar sobreposição
-    if (this._fallbackTimer) {
-      clearTimeout(this._fallbackTimer);
-      this._fallbackTimer = null;
-    }
-    this.synth.cancel();
+    // Interrompe imediatamente qualquer áudio em reprodução anterior
+    this.stop();
 
     // Sanitiza o texto para entonação calma e sem gritos
     const cleanText = (text || '')
@@ -163,57 +148,114 @@ class SpeechEngine {
       return;
     }
 
-    const utterance = new SpeechSynthesisUtterance(cleanText);
-    utterance.lang = 'pt-BR';
-    if (this.voice) {
-      utterance.voice = this.voice;
-    }
+    const playId = ++this._activePlayId;
+    let hasFinished = false;
 
-    // Parâmetros acústicos calibrados para um tom angelical, afetuoso e seguro:
-    utterance.rate = 0.88;  // Ritmo calmo e compassado (como uma professora contando história)
-    utterance.pitch = 1.15; // Timbre meigo, suave e acolhedor (livre do tom grave/metálico)
-    utterance.volume = 0.95; // Volume confortável sem picos sonoros
-
-    let hasEnded = false;
-    const handleEnd = () => {
-      if (hasEnded) return;
-      hasEnded = true;
+    const finishPlay = () => {
+      if (hasFinished || this._activePlayId !== playId) return;
+      hasFinished = true;
       if (this._fallbackTimer) {
         clearTimeout(this._fallbackTimer);
         this._fallbackTimer = null;
       }
+      this.currentAudio = null;
       this.currentUtterance = null;
       executeCallback();
     };
 
-    utterance.onend = () => {
-      handleEnd();
-    };
-
-    utterance.onerror = (e) => {
-      console.warn('SpeechSynthesis aviso/erro:', e);
-      handleEnd();
-    };
-
-    // Prevenção contra garbage collection do Chromium
-    this.currentUtterance = utterance;
-
-    // Fallback de segurança: calcula duração estimada da fala + margem de segurança
-    // Média de ~10 caracteres por segundo em rate 0.88
-    const estimatedDurationMs = Math.max(2500, (cleanText.length / 8) * 1000 + 1500);
-    this._fallbackTimer = setTimeout(() => {
-      if (!hasEnded) {
-        handleEnd();
+    // Fallback nativo via Web Speech API caso ocorra falha de rede
+    const fallbackToSpeechSynthesis = () => {
+      if (hasFinished || this._activePlayId !== playId) return;
+      if (!this.synth) {
+        finishPlay();
+        return;
       }
-    }, estimatedDurationMs);
 
-    this.synth.speak(utterance);
+      if (!this.voice) {
+        this.initVoices();
+      }
+
+      const utterance = new SpeechSynthesisUtterance(cleanText);
+      utterance.lang = 'pt-BR';
+      if (this.voice) {
+        utterance.voice = this.voice;
+      }
+
+      // Parâmetros acústicos suaves para reduzir qualquer aspereza no mobile
+      utterance.rate = 0.90;
+      utterance.pitch = 1.05;
+      utterance.volume = 0.95;
+
+      utterance.onend = () => finishPlay();
+      utterance.onerror = (e) => {
+        console.warn('SpeechSynthesis aviso/erro:', e);
+        finishPlay();
+      };
+
+      this.currentUtterance = utterance;
+
+      const estimatedMs = Math.max(2500, (cleanText.length / 8) * 1000 + 1500);
+      this._fallbackTimer = setTimeout(() => {
+        finishPlay();
+      }, estimatedMs);
+
+      try {
+        this.synth.speak(utterance);
+      } catch (_) {
+        finishPlay();
+      }
+    };
+
+    // 1. Canal Primário: Áudio Neural de Estúdio da Francisca (/api/tts)
+    try {
+      const apiBase = window.STARKIDS_API_URL || localStorage.getItem('starkids_api_url') || '';
+      const ttsUrl = `${apiBase}/api/tts?text=${encodeURIComponent(cleanText)}`;
+      const audio = new Audio(ttsUrl);
+      this.currentAudio = audio;
+
+      let hasStarted = false;
+      audio.onplay = () => {
+        hasStarted = true;
+      };
+
+      audio.onended = () => {
+        finishPlay();
+      };
+
+      audio.onerror = () => {
+        if (!hasStarted) {
+          fallbackToSpeechSynthesis();
+        } else {
+          finishPlay();
+        }
+      };
+
+      const playPromise = audio.play();
+      if (playPromise !== undefined) {
+        playPromise.catch((err) => {
+          // Em caso de política de autoplay ou erro de rede, usa o fallback nativo
+          fallbackToSpeechSynthesis();
+        });
+      }
+    } catch (e) {
+      fallbackToSpeechSynthesis();
+    }
   }
 
   stop() {
+    this._activePlayId++;
     if (this._fallbackTimer) {
       clearTimeout(this._fallbackTimer);
       this._fallbackTimer = null;
+    }
+    if (this.currentAudio) {
+      try {
+        this.currentAudio.pause();
+        this.currentAudio.currentTime = 0;
+        this.currentAudio.onended = null;
+        this.currentAudio.onerror = null;
+      } catch (_) {}
+      this.currentAudio = null;
     }
     if (this.currentUtterance) {
       this.currentUtterance.onend = null;
