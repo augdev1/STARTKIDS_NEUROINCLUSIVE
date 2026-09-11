@@ -1,0 +1,504 @@
+/* ==========================================================================
+   FASE 6: JOGO DA VELHA DO PIP & FASE 7: O JARDIM DA MEMÓRIA
+   Estilos dedicados para carregamento instantâneo e garantia de renderização
+   ========================================================================== */
+
+/* Emojis do Jogo da Velha e do Jardim da Memória */
+.tictactoe-cell img.emoji,
+.tictactoe-piece-source img.emoji {
+  width: 52px !important;
+  height: 52px !important;
+  margin: 0 !important;
+  vertical-align: middle !important;
+  display: block !important;
+}
+
+.tictactoe-player-avatar img.emoji {
+  width: 28px !important;
+  height: 28px !important;
+  margin: 0 !important;
+  vertical-align: middle !important;
+}
+
+.memory-card-symbol img.emoji {
+  width: 46px !important;
+  height: 46px !important;
+  margin: 0 !important;
+  vertical-align: middle !important;
+  display: block !important;
+}
+
+.memory-card-back-icon img.emoji {
+  width: 38px !important;
+  height: 38px !important;
+  margin: 0 !important;
+  vertical-align: middle !important;
+  display: block !important;
+}
+
+/* ==========================================================================
+   FASE 6: JOGO DA VELHA DO PIP
+   ========================================================================== */
+.tictactoe-arena {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 16px !important;
+  width: 100% !important;
+  max-width: 480px !important;
+  margin: 0 auto !important;
+}
+
+/* Barra de Placar e Turnos de Parceria (Você vs Pip) */
+.tictactoe-players-bar {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+  width: 100% !important;
+  max-width: 380px !important;
+}
+
+.tictactoe-player-card {
+  flex: 1 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  background: #FFFFFF !important;
+  padding: 8px 14px !important;
+  border-radius: 20px !important;
+  border: 2px solid rgba(16, 185, 129, 0.2) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04) !important;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+  position: relative !important;
+}
+
+.tictactoe-player-card.active-turn {
+  border-color: #10B981 !important;
+  background: #F0FDF4 !important;
+  box-shadow: 0 0 0 3px #A7F3D0, 0 6px 18px rgba(16, 185, 129, 0.2) !important;
+  transform: translateY(-2px) !important;
+}
+
+.tictactoe-player-card.pip-turn {
+  border-color: #F59E0B !important;
+  background: #FEF3C7 !important;
+  box-shadow: 0 0 0 3px #FDE68A, 0 6px 18px rgba(245, 158, 11, 0.2) !important;
+}
+
+.tictactoe-player-avatar {
+  width: 42px !important;
+  height: 42px !important;
+  border-radius: 14px !important;
+  background: #ECFDF5 !important;
+  border: 1.5px solid rgba(16, 185, 129, 0.3) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 1.6rem !important;
+  flex-shrink: 0 !important;
+}
+
+.tictactoe-player-card.is-pip .tictactoe-player-avatar {
+  background: #FFFBEB !important;
+  border-color: rgba(245, 158, 11, 0.3) !important;
+}
+
+.tictactoe-player-info {
+  display: flex !important;
+  flex-direction: column !important;
+  min-width: 0 !important;
+}
+
+.tictactoe-player-title {
+  font-family: var(--font-game-display, sans-serif) !important;
+  font-size: 0.95rem !important;
+  font-weight: 700 !important;
+  color: #065F46 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  line-height: 1.2 !important;
+}
+
+.tictactoe-player-card.is-pip .tictactoe-player-title {
+  color: #92400E !important;
+}
+
+.tictactoe-player-sub {
+  font-family: var(--font-body, sans-serif) !important;
+  font-size: 0.74rem !important;
+  font-weight: 600 !important;
+  color: var(--text-muted, #6B7280) !important;
+  line-height: 1.2 !important;
+}
+
+.tictactoe-player-card.active-turn .tictactoe-player-sub {
+  color: #059669 !important;
+  font-weight: 700 !important;
+}
+
+.tictactoe-player-card.pip-turn .tictactoe-player-sub {
+  color: #D97706 !important;
+  font-weight: 700 !important;
+}
+
+.tictactoe-vs-badge {
+  font-size: 1.3rem !important;
+  opacity: 0.85 !important;
+  user-select: none !important;
+}
+
+/* Barra de Status */
+.tictactoe-header-status {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  background: #FFFFFF !important;
+  padding: 8px 18px !important;
+  border-radius: 9999px !important;
+  box-shadow: 0 3px 12px rgba(16, 185, 129, 0.08) !important;
+  border: 1.5px solid rgba(16, 185, 129, 0.2) !important;
+  font-family: var(--font-body, sans-serif) !important;
+  font-size: 0.96rem !important;
+  font-weight: 600 !important;
+  color: #065F46 !important;
+  text-align: center !important;
+  min-height: 42px !important;
+  width: 100% !important;
+  max-width: 380px !important;
+  transition: all 0.3s ease !important;
+}
+
+.tictactoe-header-status.pip-thinking {
+  background: #FFFBEB !important;
+  border-color: #F59E0B !important;
+  color: #92400E !important;
+}
+
+.tictactoe-status-icon {
+  font-size: 1.25rem !important;
+  line-height: 1 !important;
+}
+
+/* Tabuleiro 3x3 Sólido */
+.tictactoe-board {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 10px !important;
+  background: linear-gradient(145deg, #ECFDF5 0%, #D1FAE5 100%) !important;
+  padding: 14px !important;
+  border-radius: 26px !important;
+  box-shadow: inset 0 2px 6px rgba(16, 185, 129, 0.12), 0 8px 24px rgba(16, 185, 129, 0.12) !important;
+  border: 3px solid rgba(16, 185, 129, 0.35) !important;
+  width: 100% !important;
+  max-width: 360px !important;
+  aspect-ratio: 1 / 1 !important;
+  box-sizing: border-box !important;
+}
+
+.tictactoe-cell {
+  background: #FFFFFF !important;
+  border-radius: 18px !important;
+  border: 2px solid #D1FAE5 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 2.8rem !important;
+  cursor: pointer !important;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03) !important;
+  transition: all 0.22s cubic-bezier(0.2, 0.9, 0.3, 1) !important;
+  position: relative !important;
+  user-select: none !important;
+  touch-action: manipulation !important;
+  min-height: 80px !important;
+  box-sizing: border-box !important;
+}
+
+.tictactoe-cell:hover:not(.occupied) {
+  background: #F0FDF4 !important;
+  border-color: #10B981 !important;
+  transform: scale(1.04) !important;
+  box-shadow: 0 6px 14px rgba(16, 185, 129, 0.15) !important;
+}
+
+.tictactoe-cell:active:not(.occupied) {
+  transform: scale(0.97) !important;
+}
+
+.tictactoe-cell.drag-over {
+  border-color: #10B981 !important;
+  background: rgba(16, 185, 129, 0.18) !important;
+  transform: scale(1.06) !important;
+  box-shadow: 0 0 0 3px #6EE7B7, 0 6px 18px rgba(16, 185, 129, 0.25) !important;
+}
+
+.tictactoe-cell.occupied {
+  cursor: default !important;
+  border-color: rgba(16, 185, 129, 0.35) !important;
+  background: #FAFDFA !important;
+}
+
+.tictactoe-cell.winning-cell {
+  background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%) !important;
+  border-color: #F59E0B !important;
+  box-shadow: 0 0 0 4px #FBBF24, 0 8px 20px rgba(245, 158, 11, 0.35) !important;
+  animation: winPulse 1.2s infinite ease-in-out !important;
+}
+
+.tictactoe-cell .cell-symbol {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  animation: popIn 0.32s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+
+/* Dock Compacto do Jogador */
+.tictactoe-tray {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 12px !important;
+  background: #FFFFFF !important;
+  padding: 8px 20px !important;
+  border-radius: 9999px !important;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.04) !important;
+  border: 1.5px solid rgba(16, 185, 129, 0.2) !important;
+  width: 100% !important;
+  max-width: 360px !important;
+  box-sizing: border-box !important;
+}
+
+.tictactoe-tray-label {
+  font-family: var(--font-body, sans-serif) !important;
+  font-size: 0.85rem !important;
+  font-weight: 700 !important;
+  color: var(--text-muted, #6B7280) !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+}
+
+.tictactoe-piece-source {
+  width: 48px !important;
+  height: 48px !important;
+  background: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%) !important;
+  border: 2px solid #10B981 !important;
+  border-radius: 14px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 1.8rem !important;
+  cursor: grab !important;
+  box-shadow: 0 3px 10px rgba(16, 185, 129, 0.22) !important;
+  touch-action: none !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+  user-select: none !important;
+}
+
+.tictactoe-piece-source:hover {
+  transform: scale(1.08) !important;
+  box-shadow: 0 5px 14px rgba(16, 185, 129, 0.35) !important;
+}
+
+.tictactoe-piece-source:active {
+  cursor: grabbing !important;
+}
+
+.tictactoe-tray-hint {
+  font-family: var(--font-body, sans-serif) !important;
+  font-size: 0.82rem !important;
+  font-weight: 600 !important;
+  color: var(--text-muted, #6B7280) !important;
+}
+
+/* ==========================================================================
+   FASE 7: O JARDIM DA MEMÓRIA
+   ========================================================================== */
+.memory-arena {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 16px !important;
+  width: 100% !important;
+  max-width: 620px !important;
+  margin: 0 auto !important;
+}
+
+.memory-header-info {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+  max-width: 480px !important;
+  background: #FFFFFF !important;
+  padding: 8px 18px !important;
+  border-radius: 9999px !important;
+  box-shadow: 0 3px 12px rgba(99, 102, 241, 0.08) !important;
+  border: 1.5px solid rgba(99, 102, 241, 0.2) !important;
+  box-sizing: border-box !important;
+}
+
+.memory-stat-pill {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  font-family: var(--font-game-display, sans-serif) !important;
+  font-size: 0.95rem !important;
+  font-weight: 700 !important;
+  color: #3730A3 !important;
+}
+
+.memory-stat-pill strong {
+  color: #4F46E5 !important;
+}
+
+.memory-grid {
+  display: grid !important;
+  gap: 12px !important;
+  width: 100% !important;
+  max-width: 500px !important;
+  perspective: 1200px !important;
+  justify-content: center !important;
+  box-sizing: border-box !important;
+}
+
+.memory-grid.grid-4 {
+  grid-template-columns: repeat(2, 1fr) !important;
+  max-width: 320px !important;
+}
+
+.memory-grid.grid-6 {
+  grid-template-columns: repeat(3, 1fr) !important;
+  max-width: 440px !important;
+}
+
+.memory-grid.grid-8 {
+  grid-template-columns: repeat(4, 1fr) !important;
+  max-width: 520px !important;
+}
+
+.memory-card {
+  position: relative !important;
+  aspect-ratio: 3 / 4 !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 100px !important;
+  background: transparent !important;
+  border: none !important;
+  cursor: pointer !important;
+  border-radius: 18px !important;
+  transform-style: preserve-3d !important;
+  transition: transform 0.45s cubic-bezier(0.2, 0.9, 0.3, 1) !important;
+  outline: none !important;
+  box-sizing: border-box !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+.memory-card:hover:not(.flipped):not(.matched) {
+  transform: translateY(-4px) scale(1.02) !important;
+}
+
+.memory-card:focus-visible {
+  box-shadow: 0 0 0 3px #6366F1 !important;
+}
+
+.memory-card.flipped {
+  transform: rotateY(180deg) !important;
+}
+
+.memory-card.matched {
+  transform: rotateY(180deg) scale(0.98) !important;
+  cursor: default !important;
+}
+
+.memory-card-face {
+  position: absolute !important;
+  inset: 0 !important;
+  border-radius: 18px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  -webkit-backface-visibility: hidden !important;
+  backface-visibility: hidden !important;
+  transform: translateZ(0) !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06) !important;
+  user-select: none !important;
+  box-sizing: border-box !important;
+}
+
+.memory-card-back {
+  background: linear-gradient(135deg, #6366F1 0%, #4338CA 100%) !important;
+  border: 2px solid rgba(255, 255, 255, 0.4) !important;
+  box-shadow: inset 0 0 0 3px rgba(255, 255, 255, 0.2), 0 4px 14px rgba(79, 70, 229, 0.25) !important;
+  color: #FFFFFF !important;
+}
+
+.memory-card-back-icon {
+  font-size: 2.2rem !important;
+  opacity: 0.95 !important;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.2)) !important;
+  animation: gentleBounce 2.5s infinite ease-in-out !important;
+}
+
+.memory-card-front {
+  background: #FFFFFF !important;
+  border: 2.5px solid #818CF8 !important;
+  transform: rotateY(180deg) !important;
+  padding: 8px 4px 6px !important;
+  justify-content: space-between !important;
+}
+
+.memory-card.matched .memory-card-front {
+  border-color: #10B981 !important;
+  background: #F0FDF4 !important;
+  box-shadow: 0 0 0 3px #A7F3D0, 0 6px 16px rgba(16, 185, 129, 0.2) !important;
+}
+
+.memory-card-symbol-wrap {
+  flex: 1 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+}
+
+.memory-card-symbol {
+  font-size: 2.4rem !important;
+  line-height: 1 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.memory-card-name-tag {
+  font-family: var(--font-body, sans-serif) !important;
+  font-size: 0.76rem !important;
+  font-weight: 700 !important;
+  color: #3730A3 !important;
+  background: #EEF2FF !important;
+  padding: 3px 6px !important;
+  border-radius: 10px !important;
+  width: 90% !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  line-height: 1.2 !important;
+}
+
+.memory-card.matched .memory-card-name-tag {
+  color: #065F46 !important;
+  background: #DCFCE7 !important;
+}
+
+/* Responsividade Básica */
+@media (max-width: 600px) {
+  .tictactoe-players-bar { max-width: 310px !important; }
+  .tictactoe-board { max-width: 300px !important; }
+  .tictactoe-cell { min-height: 65px !important; font-size: 2.2rem !important; }
+  .memory-grid.grid-8 { max-width: 360px !important; gap: 8px !important; }
+  .memory-card { min-height: 80px !important; }
+}

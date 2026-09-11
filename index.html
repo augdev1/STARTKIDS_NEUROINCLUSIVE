@@ -26,8 +26,19 @@
   <link href="https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Permanent+Marker&family=Gochi+Hand&family=Quicksand:wght@400;500;600;700&family=Lexend:wght@500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Estilos e Design System Acolhedor -->
-  <link rel="stylesheet" href="css/style.css?v=3">
+  <link rel="stylesheet" href="css/style.css?v=4">
+  <link rel="stylesheet" href="css/games-phase6-7.css?v=1">
   <link rel="stylesheet" href="css/animations.css">
+  <script>
+    // Força limpeza de caches legados do PWA em navegadores que mantiveram cache antigo
+    if ('caches' in window) {
+      caches.keys().then(function(keys) {
+        keys.forEach(function(key) {
+          if (key !== 'startkids-cache-v4') caches.delete(key);
+        });
+      });
+    }
+  </script>
 </head>
 <body>
   <!-- Fundo Acolhedor Iluminado com Imagem StartKids -->
