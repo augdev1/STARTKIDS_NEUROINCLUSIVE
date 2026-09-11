@@ -28,16 +28,16 @@
   <link href="https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Permanent+Marker&family=Gochi+Hand&family=Quicksand:wght@400;500;600;700&family=Lexend:wght@500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Estilos e Design System Acolhedor com Cache Buster -->
-  <link rel="stylesheet" href="css/style.css?v=11">
-  <link rel="stylesheet" href="css/games-phase6-7.css?v=11">
-  <link rel="stylesheet" href="css/games-phase8-9.css?v=11">
-  <link rel="stylesheet" href="css/animations.css?v=11">
+  <link rel="stylesheet" href="css/style.css?v=12">
+  <link rel="stylesheet" href="css/games-phase6-7.css?v=12">
+  <link rel="stylesheet" href="css/games-phase8-9.css?v=12">
+  <link rel="stylesheet" href="css/animations.css?v=12">
   <script>
     // Força limpeza de caches legados do PWA em navegadores que mantiveram cache antigo
     if ('caches' in window) {
       caches.keys().then(function(keys) {
         keys.forEach(function(key) {
-          if (key !== 'startkids-cache-v11') caches.delete(key);
+          if (key !== 'startkids-cache-v12') caches.delete(key);
         });
       });
     }
@@ -558,7 +558,7 @@
   <script src="js/emojiEnhancer.js"></script>
 
   <!-- PWA & Lógica da Aplicação Modular ES6 -->
-  <script type="module" src="js/pwaInstaller.js?v=11"></script>
-  <script type="module" src="js/app.js?v=11"></script>
+  <script type="module" src="js/pwaInstaller.js?v=12"></script>
+  <script type="module" src="js/app.js?v=12"></script>
 </body>
 </html>

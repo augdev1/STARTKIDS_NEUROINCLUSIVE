@@ -2350,7 +2350,6 @@ export class EducationalGamesManager {
       }
     }
 
-    // Cópia dos itens da rodada
     let remainingItems = data.items.map(item => ({ ...item }));
     const totalItems = remainingItems.length;
     let itemsCollected = 0;
@@ -2380,7 +2379,7 @@ export class EducationalGamesManager {
             <button class="maze-dpad-btn" id="mazeBtnSouth" type="button" aria-label="Caminhar para baixo">⬇️</button>
             <button class="maze-dpad-btn" id="mazeBtnEast" type="button" aria-label="Caminhar para a direita">➡️</button>
           </div>
-          <span class="maze-hint-text">Toque no caminho, use as setinhas ou teclado (PC)</span>
+          <span class="maze-hint-text">Arraste com o dedo ou mouse pelo caminho, ou use as setinhas</span>
         </div>
       </div>
     `;
@@ -2412,7 +2411,7 @@ export class EducationalGamesManager {
             const isNeighbor = Math.abs(r - pipR) + Math.abs(c - pipC) === 1;
             if (isNeighbor && !isGameOver) {
               cellEl.classList.add('is-valid-step');
-              cellEl.setAttribute('title', 'Toque para caminhar');
+              cellEl.setAttribute('title', 'Caminhe até aqui');
             }
 
             if (isPlayer) {
@@ -2458,7 +2457,6 @@ export class EducationalGamesManager {
 
       const dist = Math.abs(newR - pipR) + Math.abs(newC - pipC);
       if (dist !== 1) {
-        speech.speak("Siga pelas casinhas amarelas brilhantes, um passo de cada vez! ✨", { delayAfterEnd: 300 });
         return;
       }
 
@@ -2495,6 +2493,46 @@ export class EducationalGamesManager {
       }
     };
 
+    // Suporte para arrastar com toque no celular/tablet ou mouse no PC
+    let isTracing = false;
+    let tracePointerId = null;
+
+    const handlePointerDown = (e) => {
+      if (isGameOver) return;
+      isTracing = true;
+      tracePointerId = e.pointerId;
+      try { boardEl.setPointerCapture(e.pointerId); } catch (_) { }
+    };
+
+    const handlePointerMove = (e) => {
+      if (!isTracing || tracePointerId !== e.pointerId || isGameOver) return;
+      const elem = document.elementFromPoint(e.clientX, e.clientY);
+      const cell = elem ? elem.closest('.maze-cell') : null;
+      if (cell) {
+        const r = parseInt(cell.getAttribute('data-r'), 10);
+        const c = parseInt(cell.getAttribute('data-c'), 10);
+        if (!isNaN(r) && !isNaN(c) && (r !== pipR || c !== pipC)) {
+          const dist = Math.abs(r - pipR) + Math.abs(c - pipC);
+          if (dist === 1 && data.grid[r][c] !== 1) {
+            tryMoveTo(r, c);
+          }
+        }
+      }
+    };
+
+    const handlePointerUp = (e) => {
+      if (tracePointerId === e.pointerId) {
+        isTracing = false;
+        tracePointerId = null;
+        try { boardEl.releasePointerCapture(e.pointerId); } catch (_) { }
+      }
+    };
+
+    boardEl.addEventListener('pointerdown', handlePointerDown);
+    boardEl.addEventListener('pointermove', handlePointerMove);
+    boardEl.addEventListener('pointerup', handlePointerUp);
+    boardEl.addEventListener('pointercancel', handlePointerUp);
+
     document.getElementById('mazeBtnNorth')?.addEventListener('click', () => tryMoveTo(pipR - 1, pipC));
     document.getElementById('mazeBtnSouth')?.addEventListener('click', () => tryMoveTo(pipR + 1, pipC));
     document.getElementById('mazeBtnWest')?.addEventListener('click', () => tryMoveTo(pipR, pipC - 1));
@@ -2507,7 +2545,13 @@ export class EducationalGamesManager {
       else if (['ArrowRight', 'KeyD'].includes(e.code)) { e.preventDefault(); tryMoveTo(pipR, pipC + 1); }
     };
     window.addEventListener('keydown', handleKeyDown);
-    this.activeCleanup = () => window.removeEventListener('keydown', handleKeyDown);
+    this.activeCleanup = () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      boardEl.removeEventListener('pointerdown', handlePointerDown);
+      boardEl.removeEventListener('pointermove', handlePointerMove);
+      boardEl.removeEventListener('pointerup', handlePointerUp);
+      boardEl.removeEventListener('pointercancel', handlePointerUp);
+    };
 
     renderCells();
   }
@@ -2534,6 +2578,7 @@ export class EducationalGamesManager {
     let validMovesForSelected = [];
     let isPlayerTurn = true;
     let isGameOver = false;
+    let isAnimating = false;
 
     stage.innerHTML = `
       <div class="checkers-arena" role="region" aria-label="Partida de Damas com o Pip">
@@ -2559,7 +2604,7 @@ export class EducationalGamesManager {
 
         <div class="checkers-status-bar" id="chkStatus" aria-live="polite">
           <span id="chkStatusIcon">✨</span>
-          <span id="chkStatusText">Toque na sua peça dourada para iluminar as diagonais!</span>
+          <span id="chkStatusText">Arraste sua peça ou toque nela para ver as diagonais!</span>
         </div>
 
         <div class="checkers-board" id="chkBoard" role="grid" aria-label="Tabuleiro de Damas 6x6">
@@ -2624,26 +2669,99 @@ export class EducationalGamesManager {
 
           const pieceData = getPieceAt(r, c);
           const validMove = validMovesForSelected.find(m => m.toR === r && m.toC === c);
-          if (validMove && isPlayerTurn && !isGameOver) {
+          if (validMove && isPlayerTurn && !isGameOver && !isAnimating) {
             cellEl.classList.add('is-valid-target');
             cellEl.setAttribute('title', validMove.isJump ? 'Salto Mágico!' : 'Mover aqui');
-            cellEl.addEventListener('click', () => executePlayerMove(validMove));
+            cellEl.addEventListener('click', () => {
+              if (selectedPiece && !isAnimating) {
+                animateAndExecuteMove(selectedPiece, validMove, true);
+              }
+            });
           }
 
           if (pieceData) {
             const pieceEl = document.createElement('div');
             pieceEl.className = 'checkers-piece ' + (pieceData.owner === 'player' ? 'piece-player' : 'piece-pip');
+            pieceEl.setAttribute('data-piece-id', pieceData.piece.id);
             if (pieceData.piece.isCrowned) pieceEl.classList.add('is-crowned');
             if (selectedPiece && selectedPiece.id === pieceData.piece.id) pieceEl.classList.add('is-selected');
 
             pieceEl.innerHTML = pieceData.owner === 'player' ? data.playerSymbol : data.pipSymbol;
             pieceEl.setAttribute('aria-label', `${pieceData.owner === 'player' ? 'Sua peça' : 'Peça do Pip'}${pieceData.piece.isCrowned ? ' Dama Real' : ''}`);
 
-            if (pieceData.owner === 'player' && isPlayerTurn && !isGameOver) {
-              pieceEl.addEventListener('click', (e) => {
-                e.stopPropagation();
+            // Suporte a Arraste (Touch / Mouse Drag & Drop) na Peça do Jogador
+            if (pieceData.owner === 'player' && isPlayerTurn && !isGameOver && !isAnimating) {
+              let isDraggingPiece = false;
+              let startX = 0;
+              let startY = 0;
+              let currentPointerId = null;
+
+              pieceEl.addEventListener('pointerdown', (e) => {
+                if (!isPlayerTurn || isGameOver || isAnimating) return;
+                startX = e.clientX;
+                startY = e.clientY;
+                currentPointerId = e.pointerId;
                 selectPlayerPiece(pieceData.piece);
+                try { pieceEl.setPointerCapture(e.pointerId); } catch (_) { }
               });
+
+              pieceEl.addEventListener('pointermove', (e) => {
+                if (currentPointerId !== e.pointerId || isAnimating) return;
+                const dx = e.clientX - startX;
+                const dy = e.clientY - startY;
+
+                if (!isDraggingPiece && Math.hypot(dx, dy) > 6) {
+                  isDraggingPiece = true;
+                  pieceEl.classList.add('is-dragging');
+                }
+
+                if (isDraggingPiece) {
+                  pieceEl.style.transform = `translate3d(${dx}px, ${dy}px, 0) scale(1.16)`;
+
+                  const elem = document.elementFromPoint(e.clientX, e.clientY);
+                  const hoveredCell = elem ? elem.closest('.checkers-cell') : null;
+                  boardEl.querySelectorAll('.checkers-cell').forEach(c => c.classList.remove('drag-target-hover'));
+
+                  if (hoveredCell && hoveredCell.classList.contains('is-valid-target')) {
+                    hoveredCell.classList.add('drag-target-hover');
+                  }
+                }
+              });
+
+              const handlePointerUp = (e) => {
+                if (currentPointerId !== e.pointerId) return;
+                try { pieceEl.releasePointerCapture(e.pointerId); } catch (_) { }
+                currentPointerId = null;
+                boardEl.querySelectorAll('.checkers-cell').forEach(c => c.classList.remove('drag-target-hover'));
+
+                if (isDraggingPiece) {
+                  isDraggingPiece = false;
+                  pieceEl.classList.remove('is-dragging');
+
+                  const elem = document.elementFromPoint(e.clientX, e.clientY);
+                  const targetCell = elem ? elem.closest('.checkers-cell') : null;
+                  let targetMove = null;
+
+                  if (targetCell) {
+                    const tr = parseInt(targetCell.getAttribute('data-r'), 10);
+                    const tc = parseInt(targetCell.getAttribute('data-c'), 10);
+                    targetMove = validMovesForSelected.find(m => m.toR === tr && m.toC === tc);
+                  }
+
+                  if (targetMove && !isAnimating) {
+                    pieceEl.style.transform = '';
+                    animateAndExecuteMove(pieceData.piece, targetMove, true);
+                  } else {
+                    // Volta suavemente à casinha de origem
+                    pieceEl.classList.add('is-returning');
+                    pieceEl.style.transform = '';
+                    setTimeout(() => pieceEl.classList.remove('is-returning'), 280);
+                  }
+                }
+              };
+
+              pieceEl.addEventListener('pointerup', handlePointerUp);
+              pieceEl.addEventListener('pointercancel', handlePointerUp);
             }
 
             cellEl.appendChild(pieceEl);
@@ -2656,14 +2774,14 @@ export class EducationalGamesManager {
     };
 
     const selectPlayerPiece = (piece) => {
-      if (!isPlayerTurn || isGameOver) return;
+      if (!isPlayerTurn || isGameOver || isAnimating) return;
       selectedPiece = piece;
       validMovesForSelected = getValidMovesForPiece(piece, true);
 
       sound.playTone(sound.pentatonicScale.E4, 0.15);
 
       if (validMovesForSelected.length > 0) {
-        statusText.innerHTML = `Escolha uma das casas que estão <strong>brilhando</strong>! ✨`;
+        statusText.innerHTML = `Arraste ou toque em uma das casas que estão <strong>brilhando</strong>! ✨`;
         statusIcon.textContent = '🌟';
       } else {
         statusText.innerHTML = `Essa pecinha está descansando. Escolha outra peça! 💛`;
@@ -2672,36 +2790,113 @@ export class EducationalGamesManager {
       renderBoard();
     };
 
-    const executePlayerMove = (move) => {
-      if (!isPlayerTurn || isGameOver || !selectedPiece) return;
+    // Animação de Deslocamento Suave e Orgânica (Damas Deslizando Naturalmente)
+    const animateAndExecuteMove = (piece, move, isPlayer) => {
+      if (isAnimating) return;
+      isAnimating = true;
 
-      selectedPiece.r = move.toR;
-      selectedPiece.c = move.toC;
+      // Localiza a casinha de origem e a casinha de destino no DOM
+      const fromCell = boardEl.querySelector(`.checkers-cell[data-r="${piece.r}"][data-c="${piece.c}"]`);
+      const toCell = boardEl.querySelector(`.checkers-cell[data-r="${move.toR}"][data-c="${move.toC}"]`);
+      const movingPieceEl = fromCell ? fromCell.querySelector('.checkers-piece') : null;
 
-      if (selectedPiece.r === 0 && !selectedPiece.isCrowned) {
-        selectedPiece.isCrowned = true;
-        sound.playChord([392.00, 523.25, 659.25]);
-        speech.speak("Sensacional! Sua peça se transformou em uma Dama Real! 👑", { delayAfterEnd: 400 });
-      }
+      if (fromCell && toCell && movingPieceEl) {
+        const fromRect = fromCell.getBoundingClientRect();
+        const toRect = toCell.getBoundingClientRect();
+        const deltaX = toRect.left - fromRect.left;
+        const deltaY = toRect.top - fromRect.top;
 
-      if (move.isJump && move.capturedPiece) {
-        pipPieces = pipPieces.filter(p => p.id !== move.capturedPiece.id);
-        sound.playChord([329.63, 440.00, 523.25]);
-        speech.speak("Salto mágico estelar! ✨", { delayAfterEnd: 300 });
+        // Inicia o deslizamento suave e visível
+        movingPieceEl.classList.add('is-animating-move');
+        movingPieceEl.style.transform = `translate3d(${deltaX}px, ${deltaY}px, 0)`;
+
+        // No meio do caminho (230ms), se houver salto, a peça saltada ganha o brilho estelar
+        if (move.isJump && move.capturedPiece) {
+          setTimeout(() => {
+            const capturedCell = boardEl.querySelector(`.checkers-cell[data-r="${move.capturedPiece.r}"][data-c="${move.capturedPiece.c}"]`);
+            const capturedPieceEl = capturedCell ? capturedCell.querySelector('.checkers-piece') : null;
+            if (capturedPieceEl) {
+              capturedPieceEl.classList.add('piece-captured-anim');
+            }
+            sound.playChord([329.63, 440.00, 523.25]);
+            if (isPlayer) {
+              speech.speak("Salto mágico estelar! ✨", { delayAfterEnd: 300 });
+            }
+          }, 230);
+        }
+
+        // Aguarda a finalização natural do deslocamento (460ms)
+        setTimeout(() => {
+          movingPieceEl.classList.remove('is-animating-move');
+          movingPieceEl.style.transform = '';
+          finishMoveExecution(piece, move, isPlayer);
+        }, 460);
       } else {
-        sound.playTone(sound.pentatonicScale.G4, 0.2);
+        finishMoveExecution(piece, move, isPlayer);
       }
+    };
 
-      selectedPiece = null;
-      validMovesForSelected = [];
-      renderBoard();
+    const finishMoveExecution = (piece, move, isPlayer) => {
+      piece.r = move.toR;
+      piece.c = move.toC;
 
-      if (pipPieces.length === 0) {
-        finishGameRound();
-        return;
+      if (isPlayer) {
+        if (piece.r === 0 && !piece.isCrowned) {
+          piece.isCrowned = true;
+          sound.playChord([392.00, 523.25, 659.25]);
+          speech.speak("Sensacional! Sua peça se transformou em uma Dama Real! 👑", { delayAfterEnd: 400 });
+        }
+
+        if (move.isJump && move.capturedPiece) {
+          pipPieces = pipPieces.filter(p => p.id !== move.capturedPiece.id);
+        } else {
+          sound.playTone(sound.pentatonicScale.G4, 0.2);
+        }
+
+        selectedPiece = null;
+        validMovesForSelected = [];
+        isAnimating = false;
+        renderBoard();
+
+        if (pipPieces.length === 0) {
+          finishGameRound();
+          return;
+        }
+
+        startPipTurn();
+      } else {
+        // Movimento do Pip finalizado
+        if (piece.r === boardSize - 1 && !piece.isCrowned) {
+          piece.isCrowned = true;
+        }
+
+        if (move.isJump && move.capturedPiece) {
+          playerPieces = playerPieces.filter(p => p.id !== move.capturedPiece.id);
+          sound.playChord([293.66, 369.99, 440.00]);
+        } else {
+          sound.playTone(sound.pentatonicScale.C4, 0.2);
+        }
+
+        isPlayerTurn = true;
+        isAnimating = false;
+        playerCard.classList.add('active-turn');
+        pipCard.classList.remove('active-turn');
+        playerSub.textContent = 'Sua Vez!';
+        pipSub.textContent = data.pipColorName;
+        statusBox.classList.remove('pip-thinking');
+        statusText.innerHTML = `Sua vez! Arraste ou toque para avançar! ✨`;
+        statusIcon.textContent = '⭐';
+
+        renderBoard();
+
+        if (playerPieces.length === 0) {
+          speech.speak("Foi uma partida linda! Vamos respirar fundo e tentar novamente!", {
+            force: true,
+            delayAfterEnd: 800,
+            onEnd: () => this.loadRound()
+          });
+        }
       }
-
-      startPipTurn();
     };
 
     const startPipTurn = () => {
@@ -2733,39 +2928,9 @@ export class EducationalGamesManager {
           ? jumps[Math.floor(Math.random() * jumps.length)]
           : allPipMoves[Math.floor(Math.random() * allPipMoves.length)];
 
-        chosen.piece.r = chosen.move.toR;
-        chosen.piece.c = chosen.move.toC;
-
-        if (chosen.piece.r === boardSize - 1 && !chosen.piece.isCrowned) {
-          chosen.piece.isCrowned = true;
-        }
-
-        if (chosen.move.isJump && chosen.move.capturedPiece) {
-          playerPieces = playerPieces.filter(p => p.id !== chosen.move.capturedPiece.id);
-          sound.playChord([293.66, 369.99, 440.00]);
-        } else {
-          sound.playTone(sound.pentatonicScale.C4, 0.2);
-        }
-
-        isPlayerTurn = true;
-        playerCard.classList.add('active-turn');
-        pipCard.classList.remove('active-turn');
-        playerSub.textContent = 'Sua Vez!';
-        pipSub.textContent = data.pipColorName;
-        statusBox.classList.remove('pip-thinking');
-        statusText.innerHTML = `Sua vez! Toque em uma peça dourada para avançar! ✨`;
-        statusIcon.textContent = '⭐';
-
-        renderBoard();
-
-        if (playerPieces.length === 0) {
-          speech.speak("Foi uma partida linda! Vamos respirar fundo e tentar novamente!", {
-            force: true,
-            delayAfterEnd: 800,
-            onEnd: () => this.loadRound()
-          });
-        }
-      }, 1000);
+        // O Pip também desliza sua peça de forma natural e visível!
+        animateAndExecuteMove(chosen.piece, chosen.move, false);
+      }, 950);
     };
 
     const finishGameRound = () => {

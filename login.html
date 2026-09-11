@@ -22,16 +22,16 @@
   <link href="https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Permanent+Marker&family=Gochi+Hand&family=Quicksand:wght@400;500;600;700&family=Lexend:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- Estilos com Cache Buster -->
-  <link rel="stylesheet" href="css/style.css?v=11">
-  <link rel="stylesheet" href="css/animations.css?v=11">
-  <link rel="stylesheet" href="css/login.css?v=11">
+  <link rel="stylesheet" href="css/style.css?v=12">
+  <link rel="stylesheet" href="css/animations.css?v=12">
+  <link rel="stylesheet" href="css/login.css?v=12">
 
   <script>
     // Limpa caches antigos do PWA no mobile imediatamente
     if ('caches' in window) {
       caches.keys().then(function(keys) {
         keys.forEach(function(key) {
-          if (key !== 'startkids-cache-v11') caches.delete(key);
+          if (key !== 'startkids-cache-v12') caches.delete(key);
         });
       });
     }
@@ -151,7 +151,7 @@
   <script src="js/emojiEnhancer.js"></script>
 
   <!-- PWA & Controlador Modular da Página de Login -->
-  <script type="module" src="js/pwaInstaller.js?v=11"></script>
-  <script type="module" src="js/login.js?v=11"></script>
+  <script type="module" src="js/pwaInstaller.js?v=12"></script>
+  <script type="module" src="js/login.js?v=12"></script>
 </body>
 </html>

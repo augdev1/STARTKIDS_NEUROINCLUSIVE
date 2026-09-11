@@ -108,6 +108,7 @@
   gap: 4px !important;
   box-sizing: border-box !important;
   user-select: none !important;
+  touch-action: none !important; /* Permite arrastar sem disparar rolagem da tela */
 }
 
 /* Casas do Labirinto */
@@ -119,8 +120,9 @@
   font-size: 1.4rem !important;
   position: relative !important;
   cursor: pointer !important;
-  transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease !important;
+  transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease !important;
   outline: none !important;
+  touch-action: none !important;
 }
 
 .maze-cell.is-path {
@@ -348,6 +350,7 @@
   padding: 6px !important;
   box-sizing: border-box !important;
   user-select: none !important;
+  touch-action: none !important;
 }
 
 /* Casas Claras e Escuras de Damas */
@@ -358,8 +361,9 @@
   justify-content: center !important;
   border-radius: 8px !important;
   cursor: default !important;
-  transition: background-color 0.2s ease !important;
+  transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease !important;
   outline: none !important;
+  touch-action: none !important;
 }
 
 .checkers-cell.cell-light {
@@ -380,11 +384,18 @@
   animation: pulseValidTarget 1.2s infinite ease-in-out !important;
 }
 
+.checkers-cell.drag-target-hover {
+  background: #047857 !important;
+  box-shadow: inset 0 0 0 3.5px #FFFFFF, 0 0 20px rgba(251, 191, 36, 1) !important;
+  transform: scale(1.08) !important;
+}
+
 .checkers-cell.is-valid-target::after {
   content: '✨' !important;
   font-size: 1rem !important;
   position: absolute !important;
   animation: floatItem 1.5s infinite ease-in-out !important;
+  pointer-events: none !important;
 }
 
 @keyframes pulseValidTarget {
@@ -406,9 +417,10 @@
   justify-content: center !important;
   font-size: 1.3rem !important;
   position: relative !important;
-  cursor: pointer !important;
+  cursor: grab !important;
   transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease !important;
   box-sizing: border-box !important;
+  touch-action: none !important;
 }
 
 .checkers-piece.piece-player {
@@ -421,12 +433,33 @@
   background: linear-gradient(135deg, #BAE6FD 0%, #0284C7 100%) !important;
   border: 2px solid #FFFFFF !important;
   box-shadow: 0 4px 10px rgba(2, 132, 199, 0.35), inset 0 2px 4px rgba(255, 255, 255, 0.8) !important;
+  cursor: default !important;
 }
 
 .checkers-piece.is-selected {
   transform: scale(1.15) translateY(-3px) !important;
   box-shadow: 0 0 0 3.5px #FFFFFF, 0 0 16px rgba(251, 191, 36, 0.9) !important;
-  z-index: 5 !important;
+  z-index: 10 !important;
+}
+
+/* Estados de Arraste da Peça */
+.checkers-piece.is-dragging {
+  z-index: 100 !important;
+  cursor: grabbing !important;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35) !important;
+  pointer-events: none !important;
+  transition: none !important;
+}
+
+.checkers-piece.is-returning {
+  transition: transform 0.28s cubic-bezier(0.25, 1, 0.5, 1) !important;
+}
+
+/* Transição de Movimentação Natural e Suave (Orgânica) */
+.checkers-piece.is-animating-move {
+  transition: transform 0.48s cubic-bezier(0.25, 1, 0.5, 1) !important;
+  z-index: 50 !important;
+  pointer-events: none !important;
 }
 
 .checkers-piece.is-crowned::before {
