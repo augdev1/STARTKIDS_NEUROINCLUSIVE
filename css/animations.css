@@ -185,6 +185,8 @@
 .game-hub-card:nth-child(3) { animation-delay: 0.19s; }
 .game-hub-card:nth-child(4) { animation-delay: 0.26s; }
 .game-hub-card:nth-child(5) { animation-delay: 0.33s; }
+.game-hub-card:nth-child(6) { animation-delay: 0.40s; }
+.game-hub-card:nth-child(7) { animation-delay: 0.47s; }
 
 /* Suporte a Redução de Movimento Acessível */
 @media (prefers-reduced-motion: reduce) {

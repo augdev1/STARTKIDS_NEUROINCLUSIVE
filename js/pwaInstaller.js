@@ -7,16 +7,28 @@
 let deferredPrompt = null;
 
 export function initPWA() {
-  // 1. Registra o Service Worker
+  // 1. Registra e atualiza o Service Worker imediatamente
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('/sw.js')
         .then((reg) => {
           console.log('📲 [PWA] Service Worker registrado com sucesso:', reg.scope);
+          // Força verificação imediata de nova versão no servidor
+          reg.update();
         })
         .catch((err) => {
           console.warn('⚠️ [PWA] Falha ao registrar Service Worker:', err.message);
         });
+    });
+
+    // Quando uma nova versão do Service Worker for ativada, recarrega para aplicar jogos novos
+    let refreshing = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (!refreshing) {
+        refreshing = true;
+        console.log('🔄 [PWA] Nova versão detectada! Atualizando aplicativo...');
+        window.location.reload();
+      }
     });
   }
 

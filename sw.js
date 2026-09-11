@@ -4,7 +4,7 @@
    tela cheia e carregue instantaneamente mesmo em redes lentas.
    ========================================================================== */
 
-const CACHE_NAME = 'startkids-cache-v6';
+const CACHE_NAME = 'startkids-cache-v7';
 const PRECACHE_ASSETS = [
   '/',
   '/login.html',
@@ -63,13 +63,17 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Network-First para HTML, CSS e JS: sempre busca a versão mais recente em tempo real
-  if (
+  // Network-First para navegação, raiz '/', HTML, CSS e JS: busca sempre a versão mais recente
+  const isAppCode = (
     event.request.mode === 'navigate' ||
+    url.pathname === '/' ||
     url.pathname.endsWith('.html') ||
     url.pathname.endsWith('.css') ||
-    url.pathname.endsWith('.js')
-  ) {
+    url.pathname.endsWith('.js') ||
+    url.pathname.endsWith('.json')
+  );
+
+  if (isAppCode) {
     event.respondWith(
       fetch(event.request)
         .then((networkResponse) => {
