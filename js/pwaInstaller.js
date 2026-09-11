@@ -49,7 +49,7 @@ export function initPWA() {
 function showInstallButtons() {
   const installButtons = document.querySelectorAll('.btn-install-pwa');
   installButtons.forEach(btn => {
-    btn.style.display = 'inline-flex';
+    btn.style.display = 'flex';
     btn.onclick = async () => {
       if (!deferredPrompt) {
         alert('Para instalar no iPhone ou iPad:\n1. Toque no botão de Compartilhar (ícone com seta para cima)\n2. Selecione "Adicionar à Tela de Início" 📲');

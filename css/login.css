@@ -350,31 +350,37 @@
 
 /* Botão de Instalação PWA (Celular / Tablet / Desktop) */
 .btn-install-pwa {
-  width: 100%;
-  background: #E8F5EF;
-  color: #1E6B4B;
-  border: 1.5px solid rgba(61, 163, 123, 0.35);
-  padding: 12px 20px;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  background: linear-gradient(135deg, #E8F5EF 0%, #D4F0E2 100%);
+  color: #125E3F;
+  border: 1.5px solid rgba(61, 163, 123, 0.4);
+  padding: 13px 20px;
   border-radius: var(--radius-pill);
   font-family: var(--font-body);
   font-weight: 700;
   font-size: 0.94rem;
   cursor: pointer;
   transition: all 0.2s ease;
-  display: flex;
+  display: flex !important;
   align-items: center;
   justify-content: center;
   gap: 10px;
   min-height: 48px;
   margin-top: 12px;
-  box-shadow: 0 2px 8px rgba(61, 163, 123, 0.1);
+  box-shadow: 0 3px 10px rgba(61, 163, 123, 0.15);
+  text-align: center;
+}
+
+.btn-install-pwa[style*="display: none"] {
+  display: none !important;
 }
 
 .btn-install-pwa:hover {
   background: #DCF0E6;
   border-color: #3DA37B;
   transform: translateY(-1.5px);
-  box-shadow: 0 4px 14px rgba(61, 163, 123, 0.2);
+  box-shadow: 0 4px 14px rgba(61, 163, 123, 0.25);
 }
 
 .btn-install-pwa:active {

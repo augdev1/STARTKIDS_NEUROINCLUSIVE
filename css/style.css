@@ -322,6 +322,22 @@ html, body {
   justify-content: center;
 }
 
+/* Botão Instalador PWA no Topo do Hub */
+#btnInstallPwaHub {
+  background: #E8F5EF;
+  color: #125E3F;
+  border: 1.5px solid rgba(61, 163, 123, 0.35);
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(61, 163, 123, 0.12);
+}
+
+#btnInstallPwaHub:hover {
+  background: #DCF0E6;
+  border-color: #3DA37B;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(61, 163, 123, 0.2);
+}
+
 /* ==========================================================================
    ESTILOS DE EMOJIS VETORIAIS ACOLHEDORES (TWEMOJI & VECTOR ART)
    Substitui os emojis nativos rígidos do Windows por arte vetorial suave e amigável.
@@ -2733,6 +2749,40 @@ button:hover img.emoji,
     max-width: 100%;
   }
 
+  /* Botão PWA Instalador no Topo Mobile (Linha 4 - Ocupa as 4 colunas com alinhamento perfeito) */
+  .accessibility-controls #btnInstallPwaHub {
+    grid-column: span 4 !important;
+    order: 8 !important;
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 10px !important;
+    min-height: 44px !important;
+    padding: 10px 16px !important;
+    border-radius: var(--radius-pill) !important;
+    background: linear-gradient(135deg, #E8F5EF 0%, #D4F0E2 100%) !important;
+    color: #125E3F !important;
+    border: 1.5px solid rgba(61, 163, 123, 0.4) !important;
+    font-family: var(--font-body) !important;
+    font-size: 0.92rem !important;
+    font-weight: 700 !important;
+    box-shadow: 0 3px 10px rgba(61, 163, 123, 0.15) !important;
+    margin-top: 4px !important;
+    text-align: center !important;
+    box-sizing: border-box !important;
+  }
+
+  .accessibility-controls #btnInstallPwaHub[style*="display: none"] {
+    display: none !important;
+  }
+
+  .accessibility-controls #btnInstallPwaHub .hud-emoji {
+    font-size: 1.25rem !important;
+    line-height: 1 !important;
+  }
+
   /* Palco Diorama do Pip no Mobile */
   .pip-hero-pedestal-card {
     padding: 20px 16px;
@@ -3280,6 +3330,13 @@ button:hover img.emoji,
   .accessibility-controls #btnToggleMotion span:last-child,
   .accessibility-controls #btnToggleContrast span:last-child {
     font-size: 0.68rem;
+  }
+
+  .accessibility-controls #btnInstallPwaHub {
+    font-size: 0.86rem !important;
+    padding: 8px 12px !important;
+    min-height: 42px !important;
+    gap: 8px !important;
   }
 
   .pip-avatar-container {
