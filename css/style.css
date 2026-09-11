@@ -369,6 +369,39 @@ button:hover img.emoji,
   height: 32px;
 }
 
+/* Emojis do Jogo da Velha e do Jardim da Memória (Centralizados e Proporcionais) */
+.tictactoe-cell img.emoji,
+.tictactoe-piece-source img.emoji {
+  width: 52px;
+  height: 52px;
+  margin: 0;
+  vertical-align: middle;
+  display: block;
+}
+
+.tictactoe-player-avatar img.emoji {
+  width: 28px;
+  height: 28px;
+  margin: 0;
+  vertical-align: middle;
+}
+
+.memory-card-symbol img.emoji {
+  width: 46px;
+  height: 46px;
+  margin: 0;
+  vertical-align: middle;
+  display: block;
+}
+
+.memory-card-back-icon img.emoji {
+  width: 38px;
+  height: 38px;
+  margin: 0;
+  vertical-align: middle;
+  display: block;
+}
+
 /* Ilustrações Vetoriais Customizadas dos Jogos (Alta Definição e Encanto) */
 .game-vector-art {
   width: 92px;
@@ -3567,122 +3600,232 @@ button:hover img.emoji,
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: 16px;
   width: 100%;
-  max-width: 520px;
+  max-width: 480px;
   margin: 0 auto;
 }
 
+/* Barra de Placar e Turnos de Parceria (Você vs Pip) */
+.tictactoe-players-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  max-width: 380px;
+}
+
+.tictactoe-player-card {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #FFFFFF;
+  padding: 8px 14px;
+  border-radius: 20px;
+  border: 2px solid rgba(16, 185, 129, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+}
+
+.tictactoe-player-card.active-turn {
+  border-color: #10B981;
+  background: #F0FDF4;
+  box-shadow: 0 0 0 3px #A7F3D0, 0 6px 18px rgba(16, 185, 129, 0.2);
+  transform: translateY(-2px);
+}
+
+.tictactoe-player-card.pip-turn {
+  border-color: #F59E0B;
+  background: #FEF3C7;
+  box-shadow: 0 0 0 3px #FDE68A, 0 6px 18px rgba(245, 158, 11, 0.2);
+}
+
+.tictactoe-player-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  background: #ECFDF5;
+  border: 1.5px solid rgba(16, 185, 129, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  flex-shrink: 0;
+}
+
+.tictactoe-player-card.is-pip .tictactoe-player-avatar {
+  background: #FFFBEB;
+  border-color: rgba(245, 158, 11, 0.3);
+}
+
+.tictactoe-player-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.tictactoe-player-title {
+  font-family: var(--font-game-display);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #065F46;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+}
+
+.tictactoe-player-card.is-pip .tictactoe-player-title {
+  color: #92400E;
+}
+
+.tictactoe-player-sub {
+  font-family: var(--font-body);
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  line-height: 1.2;
+}
+
+.tictactoe-player-card.active-turn .tictactoe-player-sub {
+  color: #059669;
+  font-weight: 700;
+}
+
+.tictactoe-player-card.pip-turn .tictactoe-player-sub {
+  color: #D97706;
+  font-weight: 700;
+}
+
+.tictactoe-vs-badge {
+  font-size: 1.3rem;
+  opacity: 0.85;
+  user-select: none;
+}
+
+/* Barra de Status Compacta */
 .tictactoe-header-status {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
+  gap: 8px;
   background: #FFFFFF;
-  padding: 10px 24px;
+  padding: 8px 18px;
   border-radius: var(--radius-pill);
-  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.12);
-  border: 2px solid rgba(16, 185, 129, 0.25);
-  font-family: var(--font-game-display);
-  font-size: 1.15rem;
-  font-weight: 700;
+  box-shadow: 0 3px 12px rgba(16, 185, 129, 0.08);
+  border: 1.5px solid rgba(16, 185, 129, 0.2);
+  font-family: var(--font-body);
+  font-size: 0.96rem;
+  font-weight: 600;
   color: #065F46;
   text-align: center;
-  min-height: 52px;
+  min-height: 42px;
+  width: 100%;
+  max-width: 380px;
   transition: all 0.3s ease;
 }
 
 .tictactoe-header-status.pip-thinking {
-  background: #FEF3C7;
+  background: #FFFBEB;
   border-color: #F59E0B;
   color: #92400E;
 }
 
 .tictactoe-status-icon {
-  font-size: 1.5rem;
-  animation: gentleBounce 2s infinite ease-in-out;
+  font-size: 1.25rem;
+  line-height: 1;
 }
 
+/* Tabuleiro 3x3 Sólido e Acolhedor */
 .tictactoe-board {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  background: #ECFDF5;
-  padding: 16px;
-  border-radius: 28px;
-  box-shadow: inset 0 3px 8px rgba(16, 185, 129, 0.15), 0 8px 24px rgba(16, 185, 129, 0.1);
-  border: 3px solid rgba(16, 185, 129, 0.3);
+  gap: 10px;
+  background: linear-gradient(145deg, #ECFDF5 0%, #D1FAE5 100%);
+  padding: 14px;
+  border-radius: 26px;
+  box-shadow: inset 0 2px 6px rgba(16, 185, 129, 0.12), 0 8px 24px rgba(16, 185, 129, 0.12);
+  border: 3px solid rgba(16, 185, 129, 0.35);
   width: 100%;
-  max-width: 380px;
+  max-width: 360px;
   aspect-ratio: 1 / 1;
 }
 
 .tictactoe-cell {
   background: #FFFFFF;
-  border-radius: 20px;
-  border: 2px dashed rgba(16, 185, 129, 0.35);
+  border-radius: 18px;
+  border: 2px solid #D1FAE5;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 3rem;
+  font-size: 2.8rem;
   cursor: pointer;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
   transition: all 0.22s cubic-bezier(0.2, 0.9, 0.3, 1);
   position: relative;
   user-select: none;
+  touch-action: manipulation;
 }
 
 .tictactoe-cell:hover:not(.occupied) {
   background: #F0FDF4;
   border-color: #10B981;
-  transform: scale(1.03);
+  transform: scale(1.04);
+  box-shadow: 0 6px 14px rgba(16, 185, 129, 0.15);
+}
+
+.tictactoe-cell:active:not(.occupied) {
+  transform: scale(0.97);
 }
 
 .tictactoe-cell.drag-over {
   border-color: #10B981 !important;
-  background: rgba(16, 185, 129, 0.15) !important;
+  background: rgba(16, 185, 129, 0.18) !important;
   transform: scale(1.06) !important;
   box-shadow: 0 0 0 3px #6EE7B7, 0 6px 18px rgba(16, 185, 129, 0.25) !important;
 }
 
 .tictactoe-cell.occupied {
   cursor: default;
-  border-style: solid;
-  border-color: rgba(16, 185, 129, 0.4);
+  border-color: rgba(16, 185, 129, 0.35);
+  background: #FAFDFA;
 }
 
 .tictactoe-cell.winning-cell {
-  background: #FEF3C7 !important;
+  background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%) !important;
   border-color: #F59E0B !important;
-  box-shadow: 0 0 0 4px #FDE68A, 0 8px 20px rgba(245, 158, 11, 0.3) !important;
-  animation: winPulse 1.4s infinite ease-in-out;
+  box-shadow: 0 0 0 4px #FBBF24, 0 8px 20px rgba(245, 158, 11, 0.35) !important;
+  animation: winPulse 1.2s infinite ease-in-out;
 }
 
 .tictactoe-cell .cell-symbol {
   display: flex;
   align-items: center;
   justify-content: center;
-  animation: popIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  animation: popIn 0.32s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* Bandeja do Jogador (Arrastar ou Toque) */
+/* Dock Compacto do Jogador */
 .tictactoe-tray {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
+  gap: 12px;
   background: #FFFFFF;
-  padding: 12px 24px;
-  border-radius: 24px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
-  border: 2px solid rgba(16, 185, 129, 0.2);
+  padding: 8px 20px;
+  border-radius: var(--radius-pill);
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.04);
+  border: 1.5px solid rgba(16, 185, 129, 0.2);
   width: 100%;
-  max-width: 380px;
+  max-width: 360px;
 }
 
 .tictactoe-tray-label {
   font-family: var(--font-body);
-  font-size: 0.88rem;
+  font-size: 0.85rem;
   font-weight: 700;
   color: var(--text-muted);
   display: flex;
@@ -3691,17 +3834,17 @@ button:hover img.emoji,
 }
 
 .tictactoe-piece-source {
-  width: 72px;
-  height: 72px;
+  width: 48px;
+  height: 48px;
   background: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%);
   border: 2px solid #10B981;
-  border-radius: 20px;
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2.5rem;
+  font-size: 1.8rem;
   cursor: grab;
-  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+  box-shadow: 0 3px 10px rgba(16, 185, 129, 0.22);
   touch-action: none;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   user-select: none;
@@ -3709,11 +3852,18 @@ button:hover img.emoji,
 
 .tictactoe-piece-source:hover {
   transform: scale(1.08);
-  box-shadow: 0 6px 16px rgba(16, 185, 129, 0.35);
+  box-shadow: 0 5px 14px rgba(16, 185, 129, 0.35);
 }
 
 .tictactoe-piece-source:active {
   cursor: grabbing;
+}
+
+.tictactoe-tray-hint {
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-muted);
 }
 
 /* ==========================================================================
@@ -3723,9 +3873,9 @@ button:hover img.emoji,
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: 16px;
   width: 100%;
-  max-width: 680px;
+  max-width: 620px;
   margin: 0 auto;
 }
 
@@ -3734,12 +3884,12 @@ button:hover img.emoji,
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  max-width: 520px;
+  max-width: 480px;
   background: #FFFFFF;
-  padding: 10px 20px;
+  padding: 8px 18px;
   border-radius: var(--radius-pill);
-  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.1);
-  border: 2px solid rgba(99, 102, 241, 0.2);
+  box-shadow: 0 3px 12px rgba(99, 102, 241, 0.08);
+  border: 1.5px solid rgba(99, 102, 241, 0.2);
 }
 
 .memory-stat-pill {
@@ -3747,49 +3897,60 @@ button:hover img.emoji,
   align-items: center;
   gap: 8px;
   font-family: var(--font-game-display);
-  font-size: 0.96rem;
+  font-size: 0.95rem;
   font-weight: 700;
   color: #3730A3;
 }
 
-.memory-grid {
-  display: grid;
-  gap: 14px;
-  width: 100%;
-  max-width: 520px;
-  perspective: 1000px;
+.memory-stat-pill strong {
+  color: #4F46E5;
 }
 
-/* Grids adaptativos de acordo com o total de cartas da rodada */
+/* Grid de Cartas com Proporção Vertical 3:4 */
+.memory-grid {
+  display: grid;
+  gap: 12px;
+  width: 100%;
+  max-width: 500px;
+  perspective: 1200px;
+  justify-content: center;
+}
+
 .memory-grid.grid-4 {
   grid-template-columns: repeat(2, 1fr);
-  max-width: 340px;
+  max-width: 320px;
 }
 
 .memory-grid.grid-6 {
   grid-template-columns: repeat(3, 1fr);
-  max-width: 460px;
+  max-width: 440px;
 }
 
 .memory-grid.grid-8 {
   grid-template-columns: repeat(4, 1fr);
-  max-width: 540px;
+  max-width: 520px;
 }
 
+/* Carta com Proporção Vertical Confortável */
 .memory-card {
   position: relative;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 3 / 4;
   width: 100%;
   height: auto;
   min-height: unset;
   background: transparent;
   border: none;
   cursor: pointer;
-  border-radius: 20px;
+  border-radius: 18px;
   transform-style: preserve-3d;
   transition: transform 0.45s cubic-bezier(0.2, 0.9, 0.3, 1);
   outline: none;
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.memory-card:hover:not(.flipped):not(.matched) {
+  transform: translateY(-4px) scale(1.02);
 }
 
 .memory-card:focus-visible {
@@ -3808,37 +3969,41 @@ button:hover img.emoji,
 .memory-card-face {
   position: absolute;
   inset: 0;
-  border-radius: 20px;
+  border-radius: 18px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
+  transform: translateZ(0);
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
   user-select: none;
   box-sizing: border-box;
 }
 
-/* Verso da carta (fechada) */
+/* Verso da carta (Mágico, Texturizado e Acolhedor) */
 .memory-card-back {
-  background: linear-gradient(135deg, #6366F1 0%, #4F46E5 100%);
+  background: linear-gradient(135deg, #6366F1 0%, #4338CA 100%);
   border: 2px solid rgba(255, 255, 255, 0.4);
+  box-shadow: inset 0 0 0 3px rgba(255, 255, 255, 0.2), 0 4px 14px rgba(79, 70, 229, 0.25);
   color: #FFFFFF;
 }
 
 .memory-card-back-icon {
-  font-size: clamp(1.6rem, 5vw, 2.2rem);
-  opacity: 0.9;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+  font-size: 2.2rem;
+  opacity: 0.95;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.2));
+  animation: gentleBounce 2.5s infinite ease-in-out;
 }
 
-/* Frente da carta (aberta) */
+/* Frente da carta (Branco Limpo com Plaquinha de Texto) */
 .memory-card-front {
   background: #FFFFFF;
-  border: 3px solid #6366F1;
+  border: 2.5px solid #818CF8;
   transform: rotateY(180deg);
-  padding: 6px 4px;
-  gap: 3px;
+  padding: 8px 4px 6px;
+  justify-content: space-between;
 }
 
 .memory-card.matched .memory-card-front {
@@ -3847,26 +4012,41 @@ button:hover img.emoji,
   box-shadow: 0 0 0 3px #A7F3D0, 0 6px 16px rgba(16, 185, 129, 0.2);
 }
 
-.memory-card-symbol {
-  font-size: clamp(1.8rem, 5.5vw, 2.6rem);
-  line-height: 1;
+.memory-card-symbol-wrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
 }
 
-.memory-card-name {
+.memory-card-symbol {
+  font-size: 2.4rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.memory-card-name-tag {
   font-family: var(--font-body);
-  font-size: clamp(0.65rem, 2vw, 0.78rem);
+  font-size: 0.76rem;
   font-weight: 700;
   color: #3730A3;
+  background: #EEF2FF;
+  padding: 3px 6px;
+  border-radius: 10px;
+  width: 90%;
   text-align: center;
-  max-width: 95%;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  line-height: 1.15;
+  line-height: 1.2;
 }
 
-.memory-card.matched .memory-card-name {
+.memory-card.matched .memory-card-name-tag {
   color: #065F46;
+  background: #DCFCE7;
 }
 
 @keyframes winPulse {
@@ -3935,90 +4115,139 @@ button:hover img.emoji,
   .tictactoe-arena {
     width: 100%;
     max-width: 100%;
-    gap: 16px;
+    gap: 12px;
     padding: 0 4px;
+  }
+
+  .tictactoe-players-bar {
+    max-width: 310px;
+    gap: 8px;
+  }
+
+  .tictactoe-player-card {
+    padding: 6px 10px;
+    border-radius: 16px;
+    gap: 8px;
+  }
+
+  .tictactoe-player-avatar {
+    width: 34px;
+    height: 34px;
+    font-size: 1.3rem;
+    border-radius: 10px;
+  }
+
+  .tictactoe-player-title {
+    font-size: 0.85rem;
+  }
+
+  .tictactoe-player-sub {
+    font-size: 0.68rem;
   }
 
   .tictactoe-header-status {
     width: 100%;
-    max-width: 340px;
-    padding: 8px 16px;
-    font-size: 0.98rem;
-    min-height: 48px;
-    gap: 8px;
+    max-width: 310px;
+    padding: 6px 14px;
+    font-size: 0.88rem;
+    min-height: 38px;
   }
 
   .tictactoe-board {
     width: 100%;
-    max-width: 320px;
+    max-width: 300px;
     gap: 8px;
-    padding: 12px;
-    border-radius: 24px;
+    padding: 10px;
+    border-radius: 22px;
   }
 
   .tictactoe-cell {
-    font-size: 2.3rem;
-    border-radius: 16px;
+    font-size: 2.2rem;
+    border-radius: 14px;
+  }
+
+  .tictactoe-cell img.emoji {
+    width: 44px;
+    height: 44px;
   }
 
   .tictactoe-tray {
-    max-width: 320px;
-    padding: 10px 16px;
+    max-width: 300px;
+    padding: 6px 14px;
+    gap: 8px;
   }
 
   .tictactoe-piece-source {
-    width: 64px;
-    height: 64px;
-    font-size: 2.2rem;
-    border-radius: 18px;
+    width: 40px;
+    height: 40px;
+    font-size: 1.5rem;
+    border-radius: 12px;
   }
 
   .memory-arena {
     width: 100%;
     max-width: 100%;
-    gap: 16px;
+    gap: 12px;
     padding: 0 4px;
   }
 
   .memory-header-info {
     width: 100%;
-    max-width: 400px;
-    padding: 8px 14px;
-    font-size: 0.9rem;
+    max-width: 380px;
+    padding: 6px 14px;
+    font-size: 0.88rem;
   }
 
   .memory-grid {
-    gap: 10px;
+    gap: 8px;
   }
 
   .memory-grid.grid-4 {
-    max-width: 280px;
+    max-width: 260px;
   }
 
   .memory-grid.grid-6 {
-    max-width: 380px;
+    max-width: 340px;
   }
 
   .memory-grid.grid-8 {
     grid-template-columns: repeat(4, 1fr);
-    max-width: 400px;
+    max-width: 360px;
     gap: 8px;
   }
 
   .memory-card {
-    border-radius: 16px;
+    border-radius: 14px;
   }
 
   .memory-card-face {
-    border-radius: 16px;
+    border-radius: 14px;
+    padding: 6px 3px 4px;
   }
 
   .memory-card-symbol {
-    font-size: 2.1rem;
+    font-size: 1.8rem;
   }
 
-  .memory-card-name {
-    font-size: 0.72rem;
+  .memory-card-symbol img.emoji {
+    width: 36px;
+    height: 36px;
+  }
+
+  .memory-card-name-tag {
+    font-size: 0.68rem;
+    padding: 2px 4px;
+    border-radius: 8px;
+    width: 94%;
+  }
+
+  .memory-card-back-icon {
+    font-size: 1.7rem;
+  }
+
+  .memory-card-back-icon img.emoji {
+    width: 30px;
+    height: 30px;
   }
 }
 
@@ -4041,56 +4270,87 @@ button:hover img.emoji,
     border-radius: 10px;
   }
 
+  .tictactoe-players-bar {
+    max-width: 260px;
+    gap: 6px;
+  }
+
+  .tictactoe-player-card {
+    padding: 5px 8px;
+    border-radius: 12px;
+    gap: 6px;
+  }
+
+  .tictactoe-player-avatar {
+    width: 28px;
+    height: 28px;
+    font-size: 1.1rem;
+    border-radius: 8px;
+  }
+
+  .tictactoe-player-title {
+    font-size: 0.78rem;
+  }
+
+  .tictactoe-player-sub {
+    font-size: 0.62rem;
+  }
+
+  .tictactoe-header-status {
+    max-width: 260px;
+    padding: 5px 8px;
+    font-size: 0.82rem;
+    min-height: 36px;
+  }
+
   .tictactoe-board {
-    max-width: min(calc(100vw - 20px), 282px);
+    max-width: min(calc(100vw - 20px), 260px);
     gap: 6px;
     padding: 8px;
     border-radius: 18px;
   }
 
   .tictactoe-cell {
-    font-size: 1.9rem;
+    font-size: 1.8rem;
     border-radius: 12px;
   }
 
-  .tictactoe-header-status {
-    max-width: 282px;
-    padding: 6px 10px;
-    font-size: 0.86rem;
-    min-height: 42px;
+  .tictactoe-cell img.emoji {
+    width: 36px;
+    height: 36px;
   }
 
   .tictactoe-tray {
-    max-width: 282px;
-    padding: 8px 10px;
+    max-width: 260px;
+    padding: 6px 8px;
   }
 
   .tictactoe-piece-source {
-    width: 54px;
-    height: 54px;
-    font-size: 1.85rem;
-    border-radius: 14px;
+    width: 36px;
+    height: 36px;
+    font-size: 1.3rem;
+    border-radius: 10px;
   }
 
   .memory-header-info {
-    max-width: 290px;
-    padding: 6px 10px;
-    font-size: 0.82rem;
+    max-width: 280px;
+    padding: 5px 8px;
+    font-size: 0.8rem;
   }
 
   .memory-grid.grid-8 {
-    max-width: 290px;
+    max-width: 280px;
     gap: 6px;
   }
 
   .memory-grid.grid-6 {
-    max-width: 270px;
+    max-width: 260px;
     gap: 6px;
   }
 
   .memory-grid.grid-4 {
-    max-width: 230px;
-    gap: 8px;
+    max-width: 220px;
+    gap: 6px;
   }
 
   .memory-card {
@@ -4099,19 +4359,31 @@ button:hover img.emoji,
 
   .memory-card-face {
     border-radius: 12px;
-    padding: 2px;
+    padding: 4px 2px 2px;
   }
 
   .memory-card-symbol {
-    font-size: 1.7rem;
+    font-size: 1.5rem;
   }
 
-  .memory-card-name {
-    font-size: 0.62rem;
+  .memory-card-symbol img.emoji {
+    width: 28px;
+    height: 28px;
+  }
+
+  .memory-card-name-tag {
+    font-size: 0.58rem;
+    padding: 1px 3px;
+    border-radius: 6px;
   }
 
   .memory-card-back-icon {
-    font-size: 1.4rem;
+    font-size: 1.3rem;
+  }
+
+  .memory-card-back-icon img.emoji {
+    width: 24px;
+    height: 24px;
   }
 
   .balance-beam {

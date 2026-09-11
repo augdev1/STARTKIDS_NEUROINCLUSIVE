@@ -1606,9 +1606,30 @@ export class EducationalGamesManager {
     const stage = document.getElementById('gameActiveStage');
     stage.innerHTML = `
       <div class="tictactoe-arena" role="region" aria-label="Partida de Jogo da Velha com o Pip">
+        <!-- Barra de Placar e Indicador de Turno Amigável -->
+        <div class="tictactoe-players-bar">
+          <div class="tictactoe-player-card is-player active-turn" id="tttPlayerCard" title="Você joga com ${data.playerName}">
+            <div class="tictactoe-player-avatar">${data.playerSymbol}</div>
+            <div class="tictactoe-player-info">
+              <span class="tictactoe-player-title">Você</span>
+              <span class="tictactoe-player-sub" id="tttPlayerSub">Sua Vez!</span>
+            </div>
+          </div>
+
+          <span class="tictactoe-vs-badge" aria-hidden="true">🤝</span>
+
+          <div class="tictactoe-player-card is-pip" id="tttPipCard" title="Pip joga com ${data.pipName}">
+            <div class="tictactoe-player-avatar">${data.pipSymbol}</div>
+            <div class="tictactoe-player-info">
+              <span class="tictactoe-player-title">Pip</span>
+              <span class="tictactoe-player-sub" id="tttPipSub">${data.pipName}</span>
+            </div>
+          </div>
+        </div>
+
         <div class="tictactoe-header-status" id="tttStatus" aria-live="polite">
-          <span class="tictactoe-status-icon">🎮</span>
-          <span id="tttStatusText">Sua vez! Toque ou arraste sua peça <strong>${data.playerName}</strong></span>
+          <span class="tictactoe-status-icon" id="tttStatusIcon">✨</span>
+          <span id="tttStatusText">Sua vez! Toque em uma casa livre para colocar <strong>${data.playerName}</strong></span>
         </div>
 
         <div class="tictactoe-board" id="tttBoard" role="grid" aria-label="Tabuleiro de jogo da velha">
@@ -1618,20 +1639,23 @@ export class EducationalGamesManager {
         </div>
 
         <div class="tictactoe-tray">
-          <div class="tictactoe-tray-label">
-            <span>✨</span> Sua Peça Amiga:
-          </div>
-          <div class="tictactoe-piece-source" id="tttPieceSource" role="button" tabindex="0" aria-label="Sua peça ${data.playerName}: arraste até o tabuleiro ou toque na casa">
+          <span class="tictactoe-tray-label">Sua Peça:</span>
+          <div class="tictactoe-piece-source" id="tttPieceSource" role="button" tabindex="0" aria-label="Sua peça ${data.playerName}: arraste ou toque direto no tabuleiro">
             ${data.playerSymbol}
           </div>
-          <span class="drag-hint-text">Arraste para o tabuleiro ou toque direto na casinha</span>
+          <span class="tictactoe-tray-hint">Toque direto na casa para jogar</span>
         </div>
       </div>
     `;
     window.EmojiEnhancer?.enhance(stage);
 
+    const playerCard = document.getElementById('tttPlayerCard');
+    const pipCard = document.getElementById('tttPipCard');
+    const playerSub = document.getElementById('tttPlayerSub');
+    const pipSub = document.getElementById('tttPipSub');
     const statusBox = document.getElementById('tttStatus');
     const statusText = document.getElementById('tttStatusText');
+    const statusIcon = document.getElementById('tttStatusIcon');
     const cells = Array.from(stage.querySelectorAll('.tictactoe-cell'));
     const pieceSource = document.getElementById('tttPieceSource');
 
@@ -1669,8 +1693,13 @@ export class EducationalGamesManager {
         if (winningCombo) {
           winningCombo.forEach(idx => cells[idx].classList.add('winning-cell'));
         }
+        playerCard.classList.add('active-turn');
+        pipCard.classList.remove('pip-turn');
+        playerSub.textContent = 'Vencedor! 🌟';
+        pipSub.textContent = 'Parabéns!';
         statusBox.classList.remove('pip-thinking');
-        statusText.innerHTML = `🌟 <strong>Parabéns!</strong> Você completou uma linda linha de ${data.playerName}!`;
+        if (statusIcon) statusIcon.textContent = '🌟';
+        statusText.innerHTML = `🌟 <strong>Parabéns!</strong> Você completou uma linha brilhante de ${data.playerName}!`;
         sound.playChord([261.63, 329.63, 392.00, 523.25]);
 
         speech.speak(`Parabéns! Você completou uma linha brilhante de ${data.playerName}!`, {
@@ -1685,8 +1714,13 @@ export class EducationalGamesManager {
         if (winningCombo) {
           winningCombo.forEach(idx => cells[idx].classList.add('winning-cell'));
         }
+        playerCard.classList.remove('active-turn');
+        pipCard.classList.add('pip-turn');
+        pipSub.textContent = 'Vencedor! 🐶';
+        playerSub.textContent = 'Bom jogo!';
         statusBox.classList.remove('pip-thinking');
-        statusText.innerHTML = `🐶 O Pip completou uma linha com carinho! Que linda jogada!`;
+        if (statusIcon) statusIcon.textContent = '🐶';
+        statusText.innerHTML = `🐶 O Pip completou uma linha com carinho! Que partida linda!`;
         sound.playChord([261.63, 329.63, 392.00]);
 
         speech.speak(`Que jogada bonita do Pip! Vocês jogaram muito bem juntos!`, {
@@ -1698,8 +1732,12 @@ export class EducationalGamesManager {
           }
         });
       } else if (type === 'DRAW') {
-        // Empate Encantado (filosofia neuroinclusiva: sem perdedores, celebra o equilíbrio)
+        playerCard.classList.remove('active-turn');
+        pipCard.classList.remove('pip-turn');
+        playerSub.textContent = 'Amigos ✨';
+        pipSub.textContent = 'Amigos ✨';
         statusBox.classList.remove('pip-thinking');
+        if (statusIcon) statusIcon.textContent = '🌈';
         statusText.innerHTML = `🌈 <strong>Empate Encantado!</strong> Que partida equilibrada e parceira!`;
         sound.playChord([261.63, 293.66, 329.63, 392.00]);
 
@@ -1718,7 +1756,12 @@ export class EducationalGamesManager {
     const pipTurn = () => {
       if (isGameOver) return;
       isPlayerTurn = false;
+      playerCard.classList.remove('active-turn');
+      pipCard.classList.add('pip-turn');
+      playerSub.textContent = data.playerName;
+      pipSub.textContent = 'Pensando...';
       statusBox.classList.add('pip-thinking');
+      if (statusIcon) statusIcon.textContent = '🐶';
       statusText.innerHTML = `🐶 <em>Pip está escolhendo a casinha com carinho...</em>`;
 
       setTimeout(() => {
@@ -1793,8 +1836,13 @@ export class EducationalGamesManager {
 
         // Retorna a vez para o jogador
         isPlayerTurn = true;
+        playerCard.classList.add('active-turn');
+        pipCard.classList.remove('pip-turn');
+        playerSub.textContent = 'Sua Vez!';
+        pipSub.textContent = data.pipName;
         statusBox.classList.remove('pip-thinking');
-        statusText.innerHTML = `Sua vez! Toque ou arraste sua peça <strong>${data.playerName}</strong>`;
+        if (statusIcon) statusIcon.textContent = '✨';
+        statusText.innerHTML = `Sua vez! Toque em uma casa livre para colocar <strong>${data.playerName}</strong>`;
       }, 700);
     };
 
@@ -2003,8 +2051,10 @@ export class EducationalGamesManager {
                 <span class="memory-card-back-icon">🌟</span>
               </div>
               <div class="memory-card-face memory-card-front">
-                <span class="memory-card-symbol">${c.symbol}</span>
-                <span class="memory-card-name">${c.name}</span>
+                <div class="memory-card-symbol-wrap">
+                  <span class="memory-card-symbol">${c.symbol}</span>
+                </div>
+                <span class="memory-card-name-tag">${c.name}</span>
               </div>
             </button>
           `).join('')}
