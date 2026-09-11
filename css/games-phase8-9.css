@@ -437,7 +437,7 @@
 }
 
 .checkers-piece.is-selected {
-  transform: scale(1.15) translateY(-3px) !important;
+  transform: scale(1.15) translateY(-3px);
   box-shadow: 0 0 0 3.5px #FFFFFF, 0 0 16px rgba(251, 191, 36, 0.9) !important;
   z-index: 10 !important;
 }
@@ -455,11 +455,13 @@
   transition: transform 0.28s cubic-bezier(0.25, 1, 0.5, 1) !important;
 }
 
-/* Transição de Movimentação Natural e Suave (Orgânica) */
+/* Transição de Movimentação Natural e Suave (Orgânica para Jogador e Pip) */
 .checkers-piece.is-animating-move {
   transition: transform 0.48s cubic-bezier(0.25, 1, 0.5, 1) !important;
-  z-index: 50 !important;
+  z-index: 200 !important;
   pointer-events: none !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3) !important;
+  will-change: transform;
 }
 
 .checkers-piece.is-crowned::before {

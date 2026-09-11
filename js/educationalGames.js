@@ -2736,7 +2736,8 @@ export class EducationalGamesManager {
 
                 if (isDraggingPiece) {
                   isDraggingPiece = false;
-                  pieceEl.classList.remove('is-dragging');
+                  const dx = e.clientX - startX;
+                  const dy = e.clientY - startY;
 
                   const elem = document.elementFromPoint(e.clientX, e.clientY);
                   const targetCell = elem ? elem.closest('.checkers-cell') : null;
@@ -2749,10 +2750,10 @@ export class EducationalGamesManager {
                   }
 
                   if (targetMove && !isAnimating) {
-                    pieceEl.style.transform = '';
-                    animateAndExecuteMove(pieceData.piece, targetMove, true);
+                    animateAndExecuteMove(pieceData.piece, targetMove, true, { dx, dy });
                   } else {
                     // Volta suavemente à casinha de origem
+                    pieceEl.classList.remove('is-dragging');
                     pieceEl.classList.add('is-returning');
                     pieceEl.style.transform = '';
                     setTimeout(() => pieceEl.classList.remove('is-returning'), 280);
@@ -2790,10 +2791,15 @@ export class EducationalGamesManager {
       renderBoard();
     };
 
-    // Animação de Deslocamento Suave e Orgânica (Damas Deslizando Naturalmente)
-    const animateAndExecuteMove = (piece, move, isPlayer) => {
+    // Animação de Deslocamento Suave e Orgânica (Damas Deslizando Naturalmente para Jogador e Pip)
+    const animateAndExecuteMove = (piece, move, isPlayer, startFromDrag = null) => {
       if (isAnimating) return;
       isAnimating = true;
+
+      // Limpa os brilhos das casas válidas para manter a visualização limpa durante a animação
+      boardEl.querySelectorAll('.checkers-cell').forEach(c => {
+        c.classList.remove('is-valid-target', 'drag-target-hover');
+      });
 
       // Localiza a casinha de origem e a casinha de destino no DOM
       const fromCell = boardEl.querySelector(`.checkers-cell[data-r="${piece.r}"][data-c="${piece.c}"]`);
@@ -2801,14 +2807,27 @@ export class EducationalGamesManager {
       const movingPieceEl = fromCell ? fromCell.querySelector('.checkers-piece') : null;
 
       if (fromCell && toCell && movingPieceEl) {
+        movingPieceEl.classList.remove('is-selected', 'is-dragging', 'is-returning');
+
         const fromRect = fromCell.getBoundingClientRect();
         const toRect = toCell.getBoundingClientRect();
         const deltaX = toRect.left - fromRect.left;
         const deltaY = toRect.top - fromRect.top;
 
+        if (startFromDrag) {
+          movingPieceEl.style.transition = 'none';
+          movingPieceEl.style.transform = `translate3d(${startFromDrag.dx}px, ${startFromDrag.dy}px, 0) scale(1.15)`;
+          void movingPieceEl.offsetHeight; // Força recálculo
+        } else {
+          movingPieceEl.style.transition = 'none';
+          movingPieceEl.style.transform = 'translate3d(0, 0, 0)';
+          void movingPieceEl.offsetHeight; // Força recálculo
+        }
+
         // Inicia o deslizamento suave e visível
         movingPieceEl.classList.add('is-animating-move');
-        movingPieceEl.style.transform = `translate3d(${deltaX}px, ${deltaY}px, 0)`;
+        movingPieceEl.style.transition = 'transform 0.48s cubic-bezier(0.25, 1, 0.5, 1)';
+        movingPieceEl.style.setProperty('transform', `translate3d(${deltaX}px, ${deltaY}px, 0) scale(1.08)`, 'important');
 
         // No meio do caminho (230ms), se houver salto, a peça saltada ganha o brilho estelar
         if (move.isJump && move.capturedPiece) {
@@ -2825,12 +2844,13 @@ export class EducationalGamesManager {
           }, 230);
         }
 
-        // Aguarda a finalização natural do deslocamento (460ms)
+        // Aguarda a finalização natural do deslocamento (480ms)
         setTimeout(() => {
           movingPieceEl.classList.remove('is-animating-move');
           movingPieceEl.style.transform = '';
+          movingPieceEl.style.transition = '';
           finishMoveExecution(piece, move, isPlayer);
-        }, 460);
+        }, 480);
       } else {
         finishMoveExecution(piece, move, isPlayer);
       }
