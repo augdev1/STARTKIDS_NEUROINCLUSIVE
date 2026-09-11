@@ -18,7 +18,9 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="StartKids">
-  <link rel="apple-touch-icon" href="assets/startkids_logo_card.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 
   <!-- Fontes: PaRappa The Rapper Style para Logo + Quicksand Slim para Interface -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -34,7 +36,7 @@
     if ('caches' in window) {
       caches.keys().then(function(keys) {
         keys.forEach(function(key) {
-          if (key !== 'startkids-cache-v5') caches.delete(key);
+          if (key !== 'startkids-cache-v6') caches.delete(key);
         });
       });
     }

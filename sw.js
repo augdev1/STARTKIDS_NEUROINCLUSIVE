@@ -4,7 +4,7 @@
    tela cheia e carregue instantaneamente mesmo em redes lentas.
    ========================================================================== */
 
-const CACHE_NAME = 'startkids-cache-v5';
+const CACHE_NAME = 'startkids-cache-v6';
 const PRECACHE_ASSETS = [
   '/',
   '/login.html',
@@ -25,7 +25,12 @@ const PRECACHE_ASSETS = [
   '/js/login.js',
   '/js/emojiEnhancer.js',
   '/manifest.json',
-  '/assets/startkids_logo_card.png'
+  '/assets/startkids_logo_card.png',
+  '/assets/icon-192.png',
+  '/assets/icon-512.png',
+  '/assets/icon-maskable-512.png',
+  '/assets/apple-touch-icon.png',
+  '/assets/favicon-32x32.png'
 ];
 
 self.addEventListener('install', (event) => {
