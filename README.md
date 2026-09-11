@@ -79,8 +79,9 @@ O sistema adota uma arquitetura em camadas desacopladas, priorizando carregament
 
 ### 3.1 Camada Frontend
 - **Abordagem Vanilla e Modularidade**: Desenvolvido em JavaScript ES6 nativo, HTML5 semântico e CSS3 puro via variáveis (CSS Custom Properties). Elimina sobrecargas de frameworks densos, resultando em inicialização instantânea mesmo em dispositivos escolares de baixa potência.
-- **Tratamento Híbrido de Entrada (Pointer Events)**: Todas as mecânicas interativas (como arrastar peças ou equilibrar balanças) suportam indistintamente eventos de mouse, caneta stylus e toque em tela capacitiva (touchscreens), disponibilizando também a alternativa de clique único para crianças com comprometimento motor fino.
-- **PWA (Progressive Web App)**: Implementação com `manifest.json` e Service Worker (`sw.js`). Permite instalação standalone no Android, iOS, Windows e macOS, funcionando em tela cheia sem barras de navegação que gerem distração.
+- **Tratamento Híbrido de Entrada e Arraste Natural (Pointer Events)**: Todas as mecânicas interativas (como arrastar peças de damas, traçar caminhos no labirinto ou equilibrar balanças) contam com suporte unificado a eventos de mouse, caneta stylus e toque em tela capacitiva (`pointerdown`, `pointermove`, `pointerup` com `setPointerCapture`), oferecendo também alternativa de clique único acessível e animações de deslocamento orgânicas.
+- **Regras de Negócio Acolhedoras no Acesso**: Validação imediata de credenciais (mínimo de 4 dígitos, sanitização automática de espaços e case-insensitive) e proteção com limitador acolhedor de 5 tentativas consecutivas com pausa guiada para respiração relaxante.
+- **PWA (Progressive Web App) e Instalação Descomplicada**: Implementação com `manifest.json` e Service Worker (`sw.js`). Apresenta opção centralizada de instalação rápida na própria tela de login, orientações específicas para iOS Safari, Android e navegadores Desktop, além de ocultação inteligente quando já operando em modo standalone de tela cheia.
 
 ### 3.2 Camada Backend
 - **Node.js e Express**: API RESTful leve e determinística.
@@ -101,7 +102,7 @@ O sistema adota uma arquitetura em camadas desacopladas, priorizando carregament
 
 ## 4. Módulos Educativos Disponíveis
 
-A plataforma disponibiliza cinco módulos de atividades estruturadas com progressão pedagógica:
+A plataforma disponibiliza nove módulos de atividades estruturadas com progressão pedagógica:
 
 1. **O Espelho das Emoções (Competências Socioemocionais)**:
    Apresentação de cenários cotidianos vivenciados pelo mascote Pip para identificação e nomeação de estados afetivos. Cada cenário conta com texto acessível em destaque, botão de narração em áudio e feedback falado explicativo ao acertar, seguido de 2 segundos de pausa para consolidação emocional.
@@ -113,6 +114,14 @@ A plataforma disponibiliza cinco módulos de atividades estruturadas com progres
    Composição de vagões ferroviários seguindo padrões lógicos de cores, formas e ritmo de alternância, fortalecendo a memória de trabalho e a antecipação cognitiva.
 5. **A Rotina Encantada (Planejamento e Autonomia)**:
    Sequenciamento temporal de ações cotidianas (acordar, higiene, alimentação, brincadeiras e descanso), promovendo organização estruturada e segurança emocional.
+6. **O Jogo da Velha do Pip (Raciocínio & Parceria Amigável)**:
+   Partidas lúdicas em tabuleiro de parceria com o mascote Pip, com suporte a interação por toque, arraste ou cliques simples, sem contadores regressivos e com reforço positivo a cada jogada.
+7. **O Jardim da Memória (Atenção, Foco & Pares Sensoriais)**:
+   Atividade de correspondência e memória de trabalho com ilustrações reconfortantes (amigos da natureza, pomar saudável e elementos celestes), promovendo concentração e foco visual em ambiente livre de frustração.
+8. **O Labirinto do Pip (Orientação Espacial & Resolução de Problemas)**:
+   Navegação por caminhos com rastreamento contínuo por toque ou mouse, permitindo coletar itens mágicos e alcançar o objetivo com traçado suave e acolhedor.
+9. **O Jogo de Damas do Pip (Estratégia, Diagonais & Parceria Amigável)**:
+   Mecânica adaptada de damas focada no aprendizado de diagonais e cooperação lúdica, equipada com inteligência acolhedora do Pip, suporte a arrastar peças e animações de movimento orgânicas.
 
 ---
 
@@ -123,20 +132,25 @@ A plataforma disponibiliza cinco módulos de atividades estruturadas com progres
 |-- api/                       # Função serverless para execução na borda (Vercel)
 |   +-- index.js
 |-- css/                       # Folhas de estilo modulares e variáveis de design
-|   |-- login.css
-|   +-- style.css
+|   |-- animations.css         # Microinterações e animações visuais fluidas
+|   |-- games-phase6-7.css     # Estilos dedicados aos Jogos 6 (Velha) e 7 (Memória)
+|   |-- games-phase8-9.css     # Estilos dedicados aos Jogos 8 (Labirinto) e 9 (Damas)
+|   |-- login.css              # Interface de autenticação, feedback e PWA
+|   +-- style.css              # Design system global e acessibilidade sensorial
 |-- js/                        # Módulos lógicos da aplicação cliente
+|   |-- accessoriesData.js     # Catálogo de roupinhas e itens customizáveis do Pip
 |   |-- app.js                 # Bootstrap da SPA e orquestração global
 |   |-- audio.js               # Motor de síntese sonora pentatônica (Web Audio API)
 |   |-- authService.js         # Cliente de comunicação com a API de autenticação
 |   |-- calmMode.js            # Módulo de respiração diafragmática guiada
-|   |-- educationalGames.js    # Lógica dos 5 módulos pedagógicos
+|   |-- educationalGames.js    # Lógica dos 9 módulos pedagógicos interativos
 |   |-- emojiEnhancer.js       # Tratamento de renderização de glifos vetoriais
-|   |-- login.js               # Gerenciador da interface de autenticação
+|   |-- login.js               # Gerenciador da interface de autenticação e regras de acesso
 |   |-- mascot.js              # Sistema de renderização multicamada do Pip (52 itens)
 |   |-- missions.js            # Missões diárias e trilhas de progressão
-|   |-- pwaInstaller.js        # Gerenciador de instalação PWA standalone
-|   +-- speech.js              # Motor de fala neural angelical e controle de transição
+|   |-- pwaInstaller.js        # Gerenciador de instalação PWA standalone e instruções multiplataforma
+|   |-- speech.js              # Motor de fala neural angelical e controle de transição
+|   +-- wardrobe.js            # Guarda-roupa interativo e personalização visual
 |-- server/                    # Servidor de aplicação e serviços de backend
 |   |-- auth.js                # Controladores de registro e login
 |   |-- db.js                  # Camada de abstração e pool PostgreSQL com fallback
