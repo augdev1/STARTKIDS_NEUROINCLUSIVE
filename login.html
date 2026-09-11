@@ -22,16 +22,16 @@
   <link href="https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Permanent+Marker&family=Gochi+Hand&family=Quicksand:wght@400;500;600;700&family=Lexend:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- Estilos com Cache Buster -->
-  <link rel="stylesheet" href="css/style.css?v=8">
-  <link rel="stylesheet" href="css/animations.css?v=8">
-  <link rel="stylesheet" href="css/login.css?v=8">
+  <link rel="stylesheet" href="css/style.css?v=9">
+  <link rel="stylesheet" href="css/animations.css?v=9">
+  <link rel="stylesheet" href="css/login.css?v=9">
 
   <script>
     // Limpa caches antigos do PWA no mobile imediatamente
     if ('caches' in window) {
       caches.keys().then(function(keys) {
         keys.forEach(function(key) {
-          if (key !== 'startkids-cache-v8') caches.delete(key);
+          if (key !== 'startkids-cache-v9') caches.delete(key);
         });
       });
     }
@@ -82,11 +82,13 @@
               class="login-input-field" 
               placeholder="Ex: Pedro, Sofia, Lucas..." 
               required 
-              maxlength="30" 
+              minlength="3"
+              maxlength="20" 
               autocomplete="username"
               autofocus
             >
           </div>
+          <div class="login-input-hint" id="usernameHint" aria-live="polite"></div>
         </div>
 
         <!-- Campo Senha -->
@@ -101,15 +103,17 @@
               id="loginPassword" 
               name="password" 
               class="login-input-field" 
-              placeholder="Sua senha secreta..." 
+              placeholder="Mínimo de 4 letrinhas ou números..." 
               required 
-              maxlength="50" 
+              minlength="4"
+              maxlength="64" 
               autocomplete="current-password"
             >
             <button type="button" class="btn-toggle-password" id="btnTogglePassword" title="Mostrar ou ocultar senha" aria-label="Mostrar ou ocultar senha">
               👁️
             </button>
           </div>
+          <div class="login-input-hint" id="passwordHint" aria-live="polite"></div>
         </div>
 
         <!-- Área de Mensagem / Feedback Acolhedor -->
@@ -147,7 +151,7 @@
   <script src="js/emojiEnhancer.js"></script>
 
   <!-- PWA & Controlador Modular da Página de Login -->
-  <script type="module" src="js/pwaInstaller.js?v=8"></script>
-  <script type="module" src="js/login.js?v=8"></script>
+  <script type="module" src="js/pwaInstaller.js?v=9"></script>
+  <script type="module" src="js/login.js?v=9"></script>
 </body>
 </html>

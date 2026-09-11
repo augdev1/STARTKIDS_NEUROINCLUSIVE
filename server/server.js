@@ -30,7 +30,18 @@ app.use(logger.middleware());
 // Rate Limiting em memória para proteção contra força bruta em rotas sensíveis
 const authRateLimits = new Map();
 const RATE_LIMIT_WINDOW_MS = 5 * 60 * 1000; // 5 minutos
-const MAX_AUTH_ATTEMPTS = 25; // máx 25 tentativas por IP
+const MAX_AUTH_ATTEMPTS = 25; // máx 25 tentativas gerais por IP
+
+// Rate Limiting acolhedor por usuário/IP: 5 tentativas erradas = 60s de pausa
+const loginAttemptsMap = new Map();
+const MAX_FAILED_LOGIN_ATTEMPTS = 5;
+const LOGIN_BLOCK_DURATION_MS = 60 * 1000; // 60 segundos
+
+function getLoginAttemptKey(req, username) {
+  const ip = (req.headers['x-forwarded-for'] || req.socket?.remoteAddress || 'unknown').split(',')[0].trim();
+  const cleanUser = (username || '').trim().toLowerCase();
+  return `${ip}:${cleanUser}`;
+}
 
 function authRateLimiter(req, res, next) {
   const ip = (req.headers['x-forwarded-for'] || req.socket?.remoteAddress || 'unknown').split(',')[0].trim();
@@ -53,11 +64,16 @@ function authRateLimiter(req, res, next) {
   next();
 }
 
-// Limpeza automática periódica de memória do rate limiter
+// Limpeza automática periódica de memória dos rate limiters
 setInterval(() => {
   const now = Date.now();
   for (const [ip, record] of authRateLimits.entries()) {
     if (now > record.resetTime) authRateLimits.delete(ip);
+  }
+  for (const [key, attempt] of loginAttemptsMap.entries()) {
+    if (attempt.blockedUntil && now > attempt.blockedUntil + 60000) {
+      loginAttemptsMap.delete(key);
+    }
   }
 }, 10 * 60 * 1000).unref();
 
@@ -229,6 +245,9 @@ app.get('/api/logs', (req, res) => {
 /**
  * Cadastro descomplicado para crianças
  */
+/**
+ * Cadastro descomplicado para crianças
+ */
 app.post('/api/auth/register', authRateLimiter, async (req, res) => {
   try {
     const { username, password } = req.body;
@@ -239,14 +258,29 @@ app.post('/api/auth/register', authRateLimiter, async (req, res) => {
     }
 
     const cleanUsername = username.trim();
-    if (cleanUsername.length < 2) {
+    if (cleanUsername.length < 3) {
       logger.warn('AUTH', `Tentativa de cadastro com nome muito curto: "${cleanUsername}"`);
-      return res.status(400).json({ error: 'O nome de usuário precisa ter pelo menos 2 letras.' });
+      return res.status(400).json({ error: 'O nome de usuário precisa ter pelo menos 3 letrinhas ou números.' });
     }
 
-    if (password.length < 3) {
-      logger.warn('AUTH', `Tentativa de cadastro com senha muito curta para "${cleanUsername}"`);
-      return res.status(400).json({ error: 'A senha precisa ter pelo menos 3 caracteres.' });
+    if (cleanUsername.length > 20) {
+      logger.warn('AUTH', `Tentativa de cadastro com nome muito longo: "${cleanUsername}"`);
+      return res.status(400).json({ error: 'O nome de usuário pode ter no máximo 20 caracteres.' });
+    }
+
+    // Aceita letras (incluindo acentos e ç), números e sublinhado
+    const validUserRegex = /^[a-zA-Z0-9_À-ÿ]+( [a-zA-Z0-9_À-ÿ]+)*$/;
+    if (!validUserRegex.test(cleanUsername)) {
+      return res.status(400).json({ error: 'O nome pode conter apenas letras, números ou underline, sem símbolos estranhos.' });
+    }
+
+    if (password.length < 4) {
+      logger.warn('AUTH', `Tentativa de cadastro com senha menor que 4 para "${cleanUsername}"`);
+      return res.status(400).json({ error: 'A senha precisa ter pelo menos 4 caracteres (números ou letras) para ser segura e fácil de lembrar!' });
+    }
+
+    if (password.length > 64) {
+      return res.status(400).json({ error: 'A senha é muito longa (máximo de 64 caracteres).' });
     }
 
     const existingUser = await findUserByUsername(cleanUsername);
@@ -278,28 +312,81 @@ app.post('/api/auth/register', authRateLimiter, async (req, res) => {
 });
 
 /**
- * Login amigável
+ * Login amigável com proteção de 5 tentativas e pausa acolhedora de 60s
  */
 app.post('/api/auth/login', authRateLimiter, async (req, res) => {
   try {
     const { username, password } = req.body;
 
-    if (!username || !password) {
+    const cleanUsername = (username || '').trim();
+    if (!cleanUsername || !password) {
       logger.warn('AUTH', 'Tentativa de login sem usuário ou senha');
       return res.status(400).json({ error: 'Por favor, digite seu nome e senha para entrar.' });
     }
 
-    const user = await findUserByUsername(username);
+    const key = getLoginAttemptKey(req, cleanUsername);
+    const now = Date.now();
+    const attemptRecord = loginAttemptsMap.get(key) || { failedCount: 0, blockedUntil: 0 };
+
+    // 1. Verifica se está em pausa acolhedora (bloqueio temporário de 60s)
+    if (attemptRecord.blockedUntil && now < attemptRecord.blockedUntil) {
+      const remainingSeconds = Math.ceil((attemptRecord.blockedUntil - now) / 1000);
+      logger.warn('SECURITY', `Login bloqueado temporariamente para "${cleanUsername}" (${remainingSeconds}s restantes)`);
+      return res.status(429).json({
+        error: `Muitas tentativas! Vamos respirar fundo com calma: tente novamente em ${remainingSeconds} segundos 🍃 (ou continue como Visitante!)`,
+        isBlocked: true,
+        retryAfter: remainingSeconds
+      });
+    }
+
+    if (password.length < 4) {
+      return res.status(400).json({ error: 'A senha precisa ter pelo menos 4 caracteres.' });
+    }
+
+    const user = await findUserByUsername(cleanUsername);
     if (!user) {
-      logger.warn('AUTH', `Tentativa de login com usuário inexistente: "${username}"`);
-      return res.status(401).json({ error: 'Não encontramos esse nome. Verifique se escreveu certinho ou crie sua conta!' });
+      attemptRecord.failedCount++;
+      if (attemptRecord.failedCount >= MAX_FAILED_LOGIN_ATTEMPTS) {
+        attemptRecord.blockedUntil = now + LOGIN_BLOCK_DURATION_MS;
+        attemptRecord.failedCount = 0;
+        loginAttemptsMap.set(key, attemptRecord);
+        return res.status(429).json({
+          error: 'Muitas tentativas seguidas! Vamos respirar fundo por 1 minutinho antes de tentar de novo 🍃 (ou entre como Visitante!)',
+          isBlocked: true,
+          retryAfter: 60
+        });
+      }
+      loginAttemptsMap.set(key, attemptRecord);
+      const remaining = MAX_FAILED_LOGIN_ATTEMPTS - attemptRecord.failedCount;
+      return res.status(401).json({
+        error: `Não encontramos esse amiguinho. Verifique se escreveu certinho! (${remaining} ${remaining === 1 ? 'tentativa restante' : 'tentativas restantes'})`,
+        attemptsRemaining: remaining
+      });
     }
 
     const match = await comparePassword(password, user.password_hash);
     if (!match) {
-      logger.warn('AUTH', `Senha incorreta para o amiguinho "${username}"`);
-      return res.status(401).json({ error: 'Senha incorreta! Não se preocupe, tente digitar novamente com calma.' });
+      attemptRecord.failedCount++;
+      if (attemptRecord.failedCount >= MAX_FAILED_LOGIN_ATTEMPTS) {
+        attemptRecord.blockedUntil = now + LOGIN_BLOCK_DURATION_MS;
+        attemptRecord.failedCount = 0;
+        loginAttemptsMap.set(key, attemptRecord);
+        return res.status(429).json({
+          error: 'Muitas tentativas seguidas! Vamos respirar fundo por 1 minutinho antes de tentar de novo 🍃 (ou entre como Visitante!)',
+          isBlocked: true,
+          retryAfter: 60
+        });
+      }
+      loginAttemptsMap.set(key, attemptRecord);
+      const remaining = MAX_FAILED_LOGIN_ATTEMPTS - attemptRecord.failedCount;
+      return res.status(401).json({
+        error: `Senha incorreta! Não se preocupe, tente digitar novamente com calma. (${remaining} ${remaining === 1 ? 'tentativa restante' : 'tentativas restantes'})`,
+        attemptsRemaining: remaining
+      });
     }
+
+    // Sucesso! Limpa qualquer registro de tentativas falhas
+    loginAttemptsMap.delete(key);
 
     const progression = await getUserProgression(user.id);
     const token = createSessionToken(user.id, user.username);
