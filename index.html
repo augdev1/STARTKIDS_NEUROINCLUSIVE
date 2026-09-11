@@ -28,15 +28,15 @@
   <link href="https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Permanent+Marker&family=Gochi+Hand&family=Quicksand:wght@400;500;600;700&family=Lexend:wght@500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Estilos e Design System Acolhedor com Cache Buster -->
-  <link rel="stylesheet" href="css/style.css?v=9">
-  <link rel="stylesheet" href="css/games-phase6-7.css?v=9">
-  <link rel="stylesheet" href="css/animations.css?v=9">
+  <link rel="stylesheet" href="css/style.css?v=10">
+  <link rel="stylesheet" href="css/games-phase6-7.css?v=10">
+  <link rel="stylesheet" href="css/animations.css?v=10">
   <script>
     // Força limpeza de caches legados do PWA em navegadores que mantiveram cache antigo
     if ('caches' in window) {
       caches.keys().then(function(keys) {
         keys.forEach(function(key) {
-          if (key !== 'startkids-cache-v9') caches.delete(key);
+          if (key !== 'startkids-cache-v10') caches.delete(key);
         });
       });
     }
@@ -95,12 +95,16 @@
           <span>Modo Calma</span>
         </button>
 
-        <!-- Botão PWA Instalador no Celular / Tablet -->
-        <button class="btn-icon btn-install-pwa" id="btnInstallPwaHub" style="display: none;" title="Instalar aplicativo no celular ou tablet" aria-label="Instalar aplicativo no celular ou tablet">
-          <span class="hud-emoji">📲</span>
-          <span>Instalar App</span>
-        </button>
       </nav>
+
+      <!-- Faixa Centralizada do Instalador PWA (Computador e Celular) -->
+      <div class="top-bar-install-wrapper" id="pwaInstallHubWrapper" style="display: none;">
+        <button class="btn-install-pwa-banner btn-install-pwa" id="btnInstallPwaHub" title="Instalar aplicativo no seu computador ou celular" aria-label="Instalar aplicativo">
+          <span class="hud-emoji">📲</span>
+          <span>Instalar Aplicativo (Acesso Rápido)</span>
+          <span class="install-pwa-badge">Grátis & Offline</span>
+        </button>
+      </div>
     </header>
 
     <!-- MAIN APP VIEWS -->
@@ -499,7 +503,7 @@
   <script src="js/emojiEnhancer.js"></script>
 
   <!-- PWA & Lógica da Aplicação Modular ES6 -->
-  <script type="module" src="js/pwaInstaller.js?v=9"></script>
-  <script type="module" src="js/app.js?v=9"></script>
+  <script type="module" src="js/pwaInstaller.js?v=10"></script>
+  <script type="module" src="js/app.js?v=10"></script>
 </body>
 </html>

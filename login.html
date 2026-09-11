@@ -22,16 +22,16 @@
   <link href="https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Permanent+Marker&family=Gochi+Hand&family=Quicksand:wght@400;500;600;700&family=Lexend:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- Estilos com Cache Buster -->
-  <link rel="stylesheet" href="css/style.css?v=9">
-  <link rel="stylesheet" href="css/animations.css?v=9">
-  <link rel="stylesheet" href="css/login.css?v=9">
+  <link rel="stylesheet" href="css/style.css?v=10">
+  <link rel="stylesheet" href="css/animations.css?v=10">
+  <link rel="stylesheet" href="css/login.css?v=10">
 
   <script>
     // Limpa caches antigos do PWA no mobile imediatamente
     if ('caches' in window) {
       caches.keys().then(function(keys) {
         keys.forEach(function(key) {
-          if (key !== 'startkids-cache-v9') caches.delete(key);
+          if (key !== 'startkids-cache-v10') caches.delete(key);
         });
       });
     }
@@ -137,10 +137,10 @@
         <span>Continuar como Visitante (Sem Salvar na Nuvem)</span>
       </button>
 
-      <!-- Botão de Instalar o App PWA (Aparece em Celulares e Tablets) -->
-      <button type="button" class="btn-install-pwa" id="btnInstallPwa" style="display: none;" title="Instalar aplicativo no seu celular ou tablet">
+      <!-- Botão de Instalar o App PWA (Computador e Celular) -->
+      <button type="button" class="btn-install-pwa" id="btnInstallPwa" style="display: none;" title="Instalar aplicativo no seu computador ou celular">
         <span class="login-emoji-icon" aria-hidden="true">📲</span>
-        <span>Instalar App no Celular / Tablet</span>
+        <span>Instalar Aplicativo (Acesso Rápido)</span>
       </button>
 
     </main>
@@ -151,7 +151,7 @@
   <script src="js/emojiEnhancer.js"></script>
 
   <!-- PWA & Controlador Modular da Página de Login -->
-  <script type="module" src="js/pwaInstaller.js?v=9"></script>
-  <script type="module" src="js/login.js?v=9"></script>
+  <script type="module" src="js/pwaInstaller.js?v=10"></script>
+  <script type="module" src="js/login.js?v=10"></script>
 </body>
 </html>

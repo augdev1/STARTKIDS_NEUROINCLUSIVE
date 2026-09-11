@@ -64,6 +64,8 @@ function showInstallButtons() {
       hideInstallButtons();
     };
   });
+  const wrapper = document.getElementById('pwaInstallHubWrapper');
+  if (wrapper) wrapper.style.display = 'flex';
 }
 
 function hideInstallButtons() {
@@ -71,6 +73,8 @@ function hideInstallButtons() {
   installButtons.forEach(btn => {
     btn.style.display = 'none';
   });
+  const wrapper = document.getElementById('pwaInstallHubWrapper');
+  if (wrapper) wrapper.style.display = 'none';
 }
 
 // Inicializa automaticamente se chamado
