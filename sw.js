@@ -4,7 +4,7 @@
    tela cheia e carregue instantaneamente mesmo em redes lentas.
    ========================================================================== */
 
-const CACHE_NAME = 'startkids-cache-v4';
+const CACHE_NAME = 'startkids-cache-v5';
 const PRECACHE_ASSETS = [
   '/',
   '/login.html',

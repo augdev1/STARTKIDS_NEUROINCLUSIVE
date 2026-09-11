@@ -1825,25 +1825,49 @@ export class EducationalGamesManager {
 
         const pipWinCombo = checkWin('PIP');
         if (pipWinCombo) {
-          finishRound('PIP_WIN', pipWinCombo);
+          cells.forEach(c => c.style.pointerEvents = 'none');
+          if (pieceSource) pieceSource.style.pointerEvents = 'none';
+          // Pip completou linha: fala o nome da peça do Pip, aguarda o término completo,
+          // aguarda 1 segundo de intervalo suave (delayAfterEnd: 1000) e aí entra a comemoração!
+          speech.speak(data.pipName, {
+            force: true,
+            delayAfterEnd: 1000,
+            onEnd: () => {
+              finishRound('PIP_WIN', pipWinCombo);
+            }
+          });
           return;
         }
 
         if (isBoardFull()) {
-          finishRound('DRAW');
+          cells.forEach(c => c.style.pointerEvents = 'none');
+          if (pieceSource) pieceSource.style.pointerEvents = 'none';
+          speech.speak(data.pipName, {
+            force: true,
+            delayAfterEnd: 1000,
+            onEnd: () => {
+              finishRound('DRAW');
+            }
+          });
           return;
         }
 
-        // Retorna a vez para o jogador
-        isPlayerTurn = true;
-        playerCard.classList.add('active-turn');
-        pipCard.classList.remove('pip-turn');
-        playerSub.textContent = 'Sua Vez!';
-        pipSub.textContent = data.pipName;
-        statusBox.classList.remove('pip-thinking');
-        if (statusIcon) statusIcon.textContent = '✨';
-        statusText.innerHTML = `Sua vez! Toque em uma casa livre para colocar <strong>${data.playerName}</strong>`;
-      }, 700);
+        // Retorna a vez para o jogador após falar a peça do Pip + pausa suave
+        speech.speak(data.pipName, {
+          delayAfterEnd: 400,
+          onEnd: () => {
+            if (isGameOver) return;
+            isPlayerTurn = true;
+            playerCard.classList.add('active-turn');
+            pipCard.classList.remove('pip-turn');
+            playerSub.textContent = 'Sua Vez!';
+            pipSub.textContent = data.pipName;
+            statusBox.classList.remove('pip-thinking');
+            if (statusIcon) statusIcon.textContent = '✨';
+            statusText.innerHTML = `Sua vez! Toque em uma casa livre para colocar <strong>${data.playerName}</strong>`;
+          }
+        });
+      }, 500);
     };
 
     // Aplicação da jogada do Jogador
@@ -1862,20 +1886,44 @@ export class EducationalGamesManager {
       window.EmojiEnhancer?.enhance(cell);
 
       sound.playTone(sound.pentatonicScale.G4, 0.35);
-      speech.speak(data.playerName);
 
       const playerWinCombo = checkWin('PLAYER');
       if (playerWinCombo) {
-        finishRound('PLAYER_WIN', playerWinCombo);
+        cells.forEach(c => c.style.pointerEvents = 'none');
+        if (pieceSource) pieceSource.style.pointerEvents = 'none';
+        // Encadeamento suave: fala a peça do jogador, aguarda o término completo,
+        // aguarda 1 segundo de intervalo suave e sem sobreposição (delayAfterEnd: 1000), e só então entra o elogio!
+        speech.speak(data.playerName, {
+          force: true,
+          delayAfterEnd: 1000,
+          onEnd: () => {
+            finishRound('PLAYER_WIN', playerWinCombo);
+          }
+        });
         return;
       }
 
       if (isBoardFull()) {
-        finishRound('DRAW');
+        cells.forEach(c => c.style.pointerEvents = 'none');
+        if (pieceSource) pieceSource.style.pointerEvents = 'none';
+        speech.speak(data.playerName, {
+          force: true,
+          delayAfterEnd: 1000,
+          onEnd: () => {
+            finishRound('DRAW');
+          }
+        });
         return;
       }
 
-      pipTurn();
+      // Partida continua: fala a peça do jogador com calma, aguarda terminar + pausa suave, e aí passa a vez para o Pip
+      isPlayerTurn = false;
+      speech.speak(data.playerName, {
+        delayAfterEnd: 500,
+        onEnd: () => {
+          if (!isGameOver) pipTurn();
+        }
+      });
     };
 
     // Suporte a Toque/Clique Direto nas Células
@@ -2081,9 +2129,11 @@ export class EducationalGamesManager {
         flippedIndices.push(idx);
 
         sound.playTone(sound.pentatonicScale.C4 + flippedIndices.length * 60, 0.25);
-        speech.speak(cardsDeck[idx].name);
 
-        if (flippedIndices.length === 2) {
+        if (flippedIndices.length === 1) {
+          // Primeira carta virada: fala o nome com suavidade
+          speech.speak(cardsDeck[idx].name);
+        } else if (flippedIndices.length === 2) {
           isLocked = true;
           const idx1 = flippedIndices[0];
           const idx2 = flippedIndices[1];
@@ -2106,29 +2156,47 @@ export class EducationalGamesManager {
 
             if (matchedPairsCount === pairCount) {
               // Concluiu todos os pares da rodada!
-              speech.speak(`Parabéns! Você encontrou todos os pares de ${data.themeName}!`, {
+              // Fala a 2ª carta do par, aguarda término completo da locução,
+              // aguarda 1 segundo de intervalo suave (delayAfterEnd: 1000) e aí entra a celebração!
+              speech.speak(data2.name, {
                 force: true,
                 delayAfterEnd: 1000,
                 onEnd: () => {
-                  this.updateRoundStep(this.currentRound + 1);
-                  this.loadRound();
+                  sound.playChord([261.63, 329.63, 392.00, 523.25]);
+                  speech.speak(`Parabéns! Você encontrou todos os pares de ${data.themeName}!`, {
+                    force: true,
+                    delayAfterEnd: 1000,
+                    onEnd: () => {
+                      this.updateRoundStep(this.currentRound + 1);
+                      this.loadRound();
+                    }
+                  });
                 }
               });
             } else {
-              flippedIndices = [];
-              isLocked = false;
+              // Par intermediário: fala a 2ª carta e só libera o tabuleiro após a voz terminar + 400ms
+              speech.speak(data2.name, {
+                delayAfterEnd: 400,
+                onEnd: () => {
+                  flippedIndices = [];
+                  isLocked = false;
+                }
+              });
             }
           } else {
-            // Cartas diferentes: desvira suavemente após pausa acolhedora
-            setTimeout(() => {
-              card1.classList.remove('flipped');
-              card2.classList.remove('flipped');
-              card1.setAttribute('aria-label', `Carta ${idx1 + 1} fechada`);
-              card2.setAttribute('aria-label', `Carta ${idx2 + 1} fechada`);
-              sound.playTone(sound.pentatonicScale.D4, 0.25);
-              flippedIndices = [];
-              isLocked = false;
-            }, 900);
+            // Cartas diferentes: fala a 2ª carta, aguarda terminar + 650ms de pausa suave, e só então desvira!
+            speech.speak(data2.name, {
+              delayAfterEnd: 650,
+              onEnd: () => {
+                card1.classList.remove('flipped');
+                card2.classList.remove('flipped');
+                card1.setAttribute('aria-label', `Carta ${idx1 + 1} fechada`);
+                card2.setAttribute('aria-label', `Carta ${idx2 + 1} fechada`);
+                sound.playTone(sound.pentatonicScale.D4, 0.25);
+                flippedIndices = [];
+                isLocked = false;
+              }
+            });
           }
         }
       });

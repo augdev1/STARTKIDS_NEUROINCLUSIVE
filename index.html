@@ -27,14 +27,14 @@
 
   <!-- Estilos e Design System Acolhedor -->
   <link rel="stylesheet" href="css/style.css?v=4">
-  <link rel="stylesheet" href="css/games-phase6-7.css?v=1">
+  <link rel="stylesheet" href="css/games-phase6-7.css?v=2">
   <link rel="stylesheet" href="css/animations.css">
   <script>
     // Força limpeza de caches legados do PWA em navegadores que mantiveram cache antigo
     if ('caches' in window) {
       caches.keys().then(function(keys) {
         keys.forEach(function(key) {
-          if (key !== 'startkids-cache-v4') caches.delete(key);
+          if (key !== 'startkids-cache-v5') caches.delete(key);
         });
       });
     }
@@ -497,7 +497,7 @@
   <script src="js/emojiEnhancer.js"></script>
 
   <!-- PWA & Lógica da Aplicação Modular ES6 -->
-  <script type="module" src="js/pwaInstaller.js"></script>
-  <script type="module" src="js/app.js"></script>
+  <script type="module" src="js/pwaInstaller.js?v=4"></script>
+  <script type="module" src="js/app.js?v=4"></script>
 </body>
 </html>
