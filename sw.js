@@ -4,13 +4,14 @@
    tela cheia e carregue instantaneamente mesmo em redes lentas.
    ========================================================================== */
 
-const CACHE_NAME = 'startkids-cache-v10';
+const CACHE_NAME = 'startkids-cache-v11';
 const PRECACHE_ASSETS = [
   '/',
   '/login.html',
   '/index.html',
   '/css/style.css',
   '/css/games-phase6-7.css',
+  '/css/games-phase8-9.css',
   '/css/animations.css',
   '/css/login.css',
   '/js/app.js',

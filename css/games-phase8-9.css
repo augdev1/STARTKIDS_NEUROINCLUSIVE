@@ -1,0 +1,472 @@
+/* ==========================================================================
+   FASE 8: O LABIRINTO DO PIP & FASE 9: O JOGO DE DAMAS DO PIP
+   Estilos dedicados, ultra-responsivos e neuroinclusivos (Mobile & Desktop)
+   ========================================================================== */
+
+/* Limitação de tamanho para imagens de emoji do EmojiEnhancer */
+.maze-cell img.emoji,
+.maze-dpad-btn img.emoji,
+.checkers-cell img.emoji,
+.checkers-piece img.emoji,
+.checkers-player-avatar img.emoji {
+  width: 40px !important;
+  height: 40px !important;
+  margin: 0 !important;
+  vertical-align: middle !important;
+  display: block !important;
+}
+
+@media (max-width: 480px) {
+  .maze-cell img.emoji,
+  .checkers-cell img.emoji,
+  .checkers-piece img.emoji {
+    width: 32px !important;
+    height: 32px !important;
+  }
+}
+
+/* Temas dos Cards no Hub de Jogos (Fase 8 e 9) */
+.game-hub-card.theme-amber {
+  background: linear-gradient(180deg, #FFFFFF 0%, #FFFBEB 100%) !important;
+}
+
+.game-hub-card.theme-teal {
+  background: linear-gradient(180deg, #FFFFFF 0%, #F0FDFA 100%) !important;
+}
+
+.pill-spatial {
+  background: #FEF3C7 !important;
+  color: #92400E !important;
+}
+
+.pill-checkers {
+  background: #CCFBF1 !important;
+  color: #115E59 !important;
+}
+
+.btn-play-amber {
+  background: #F59E0B !important;
+  box-shadow: 0 4px 14px rgba(245, 158, 11, 0.35) !important;
+}
+
+.btn-play-teal {
+  background: #0D9488 !important;
+  box-shadow: 0 4px 14px rgba(13, 148, 136, 0.35) !important;
+}
+
+/* ==========================================================================
+   FASE 8: O LABIRINTO DO PIP
+   ========================================================================== */
+.maze-arena {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 14px !important;
+  width: 100% !important;
+  max-width: 520px !important;
+  margin: 0 auto !important;
+  padding: 4px 10px 20px !important;
+}
+
+/* Barra de Status do Labirinto */
+.maze-status-bar {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+  max-width: 420px !important;
+  gap: 10px !important;
+}
+
+.maze-status-pill {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  background: #FFFFFF !important;
+  padding: 6px 14px !important;
+  border-radius: 20px !important;
+  border: 1.5px solid rgba(245, 158, 11, 0.25) !important;
+  font-size: 0.9rem !important;
+  font-weight: 700 !important;
+  color: #92400E !important;
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.08) !important;
+}
+
+/* Container do Tabuleiro do Labirinto */
+.maze-board-container {
+  position: relative !important;
+  width: 100% !important;
+  max-width: min(88vw, 390px) !important;
+  aspect-ratio: 1 / 1 !important;
+  margin: 0 auto !important;
+  background: #FFFDF9 !important;
+  border: 4px solid #FDE68A !important;
+  border-radius: 24px !important;
+  box-shadow: 0 10px 25px rgba(245, 158, 11, 0.12), inset 0 2px 6px rgba(0, 0, 0, 0.02) !important;
+  padding: 8px !important;
+  display: grid !important;
+  gap: 4px !important;
+  box-sizing: border-box !important;
+  user-select: none !important;
+}
+
+/* Casas do Labirinto */
+.maze-cell {
+  border-radius: 10px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 1.4rem !important;
+  position: relative !important;
+  cursor: pointer !important;
+  transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease !important;
+  outline: none !important;
+}
+
+.maze-cell.is-path {
+  background: #FDF6E2 !important;
+}
+
+.maze-cell.is-wall {
+  background: #D97706 !important;
+  background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%) !important;
+  border-radius: 12px !important;
+  box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.3), 0 2px 6px rgba(180, 83, 9, 0.2) !important;
+  cursor: not-allowed !important;
+}
+
+.maze-cell.is-valid-step {
+  background: #FEF3C7 !important;
+  box-shadow: inset 0 0 0 2.5px #F59E0B, 0 0 10px rgba(245, 158, 11, 0.4) !important;
+  animation: pulseValidMove 1.5s infinite ease-in-out !important;
+}
+
+.maze-cell.is-player {
+  background: #EFF6FF !important;
+  box-shadow: 0 0 0 2px #3B82F6 !important;
+}
+
+.maze-cell.is-item {
+  animation: floatItem 2s infinite ease-in-out !important;
+}
+
+.maze-cell.is-goal {
+  background: #ECFDF5 !important;
+  border: 2px dashed #10B981 !important;
+  animation: pulseGoal 2s infinite ease-in-out !important;
+}
+
+@keyframes pulseValidMove {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: inset 0 0 0 2px #F59E0B, 0 0 6px rgba(245, 158, 11, 0.3);
+  }
+  50% {
+    transform: scale(1.03);
+    box-shadow: inset 0 0 0 3px #D97706, 0 0 14px rgba(245, 158, 11, 0.6);
+  }
+}
+
+@keyframes floatItem {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px) scale(1.05); }
+}
+
+@keyframes pulseGoal {
+  0%, 100% { transform: scale(1); border-color: #10B981; }
+  50% { transform: scale(1.04); border-color: #059669; box-shadow: 0 0 12px rgba(16, 185, 129, 0.4); }
+}
+
+/* Controles de Navegação (D-Pad de Apoio Acolhedor) */
+.maze-dpad-container {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 6px !important;
+  margin-top: 6px !important;
+  width: 100% !important;
+  max-width: 220px !important;
+}
+
+.maze-dpad-row {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 12px !important;
+}
+
+.maze-dpad-btn {
+  width: 54px !important;
+  height: 50px !important;
+  border-radius: 16px !important;
+  border: 2px solid rgba(245, 158, 11, 0.35) !important;
+  background: #FFFFFF !important;
+  color: #92400E !important;
+  font-size: 1.4rem !important;
+  font-weight: bold !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06), 0 2px 0 #FDE68A !important;
+  transition: all 0.15s ease !important;
+  touch-action: manipulation !important;
+  outline: none !important;
+}
+
+.maze-dpad-btn:active {
+  transform: translateY(2px) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
+  background: #FEF3C7 !important;
+}
+
+.maze-hint-text {
+  font-size: 0.85rem !important;
+  color: var(--text-muted, #6B7280) !important;
+  text-align: center !important;
+  margin-top: 2px !important;
+}
+
+/* ==========================================================================
+   FASE 9: O JOGO DE DAMAS DO PIP
+   ========================================================================== */
+.checkers-arena {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 14px !important;
+  width: 100% !important;
+  max-width: 520px !important;
+  margin: 0 auto !important;
+  padding: 4px 10px 20px !important;
+}
+
+/* Placar de Damas (Você vs Pip) */
+.checkers-players-bar {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+  width: 100% !important;
+  max-width: 420px !important;
+}
+
+.checkers-player-card {
+  flex: 1 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  background: #FFFFFF !important;
+  padding: 8px 12px !important;
+  border-radius: 20px !important;
+  border: 2px solid rgba(13, 148, 136, 0.2) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04) !important;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+
+.checkers-player-card.active-turn {
+  border-color: #0D9488 !important;
+  background: #F0FDFA !important;
+  box-shadow: 0 0 0 3px #99F6E4, 0 6px 18px rgba(13, 148, 136, 0.2) !important;
+  transform: translateY(-2px) !important;
+}
+
+.checkers-player-avatar {
+  font-size: 1.5rem !important;
+  line-height: 1 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.checkers-player-info {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.checkers-player-title {
+  font-size: 0.95rem !important;
+  font-weight: 800 !important;
+  color: #134E4A !important;
+}
+
+.checkers-player-sub {
+  font-size: 0.78rem !important;
+  color: #0F766E !important;
+  font-weight: 600 !important;
+}
+
+.checkers-vs-badge {
+  font-size: 1.2rem !important;
+  opacity: 0.8 !important;
+}
+
+/* Status dinâmico da partida de damas */
+.checkers-status-bar {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  background: #FFFFFF !important;
+  border-radius: 16px !important;
+  padding: 8px 16px !important;
+  width: 100% !important;
+  max-width: 420px !important;
+  border: 1.5px solid rgba(13, 148, 136, 0.2) !important;
+  font-size: 0.9rem !important;
+  color: #134E4A !important;
+  font-weight: 600 !important;
+  text-align: center !important;
+}
+
+.checkers-status-bar.pip-thinking {
+  background: #F5F3FF !important;
+  border-color: #C4B5FD !important;
+  color: #5B21B6 !important;
+  animation: pulsePipTurn 1.4s infinite alternate !important;
+}
+
+@keyframes pulsePipTurn {
+  0% { transform: scale(0.99); }
+  100% { transform: scale(1.01); }
+}
+
+/* Tabuleiro 6x6 de Damas Acolhedor */
+.checkers-board {
+  display: grid !important;
+  grid-template-columns: repeat(6, 1fr) !important;
+  grid-template-rows: repeat(6, 1fr) !important;
+  gap: 3px !important;
+  width: 100% !important;
+  max-width: min(88vw, 390px) !important;
+  aspect-ratio: 1 / 1 !important;
+  margin: 0 auto !important;
+  background: #E6E1D8 !important;
+  border: 5px solid #2DD4BF !important;
+  border-radius: 22px !important;
+  box-shadow: 0 10px 24px rgba(13, 148, 136, 0.16) !important;
+  padding: 6px !important;
+  box-sizing: border-box !important;
+  user-select: none !important;
+}
+
+/* Casas Claras e Escuras de Damas */
+.checkers-cell {
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 8px !important;
+  cursor: default !important;
+  transition: background-color 0.2s ease !important;
+  outline: none !important;
+}
+
+.checkers-cell.cell-light {
+  background: #FAF7F2 !important;
+}
+
+.checkers-cell.cell-dark {
+  background: #115E59 !important;
+  background: linear-gradient(135deg, #134E4A 0%, #0F766E 100%) !important;
+  cursor: pointer !important;
+}
+
+/* Destaque para casa com movimento válido */
+.checkers-cell.is-valid-target {
+  cursor: pointer !important;
+  box-shadow: inset 0 0 0 3px #FBBF24, 0 0 12px rgba(251, 191, 36, 0.8) !important;
+  background: #047857 !important;
+  animation: pulseValidTarget 1.2s infinite ease-in-out !important;
+}
+
+.checkers-cell.is-valid-target::after {
+  content: '✨' !important;
+  font-size: 1rem !important;
+  position: absolute !important;
+  animation: floatItem 1.5s infinite ease-in-out !important;
+}
+
+@keyframes pulseValidTarget {
+  0%, 100% {
+    box-shadow: inset 0 0 0 2.5px #FBBF24, 0 0 6px rgba(251, 191, 36, 0.4);
+  }
+  50% {
+    box-shadow: inset 0 0 0 3.5px #F59E0B, 0 0 16px rgba(251, 191, 36, 0.9);
+  }
+}
+
+/* Peças de Damas */
+.checkers-piece {
+  width: 82% !important;
+  height: 82% !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 1.3rem !important;
+  position: relative !important;
+  cursor: pointer !important;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease !important;
+  box-sizing: border-box !important;
+}
+
+.checkers-piece.piece-player {
+  background: linear-gradient(135deg, #FEF08A 0%, #F59E0B 100%) !important;
+  border: 2px solid #FFFFFF !important;
+  box-shadow: 0 4px 10px rgba(217, 119, 6, 0.35), inset 0 2px 4px rgba(255, 255, 255, 0.8) !important;
+}
+
+.checkers-piece.piece-pip {
+  background: linear-gradient(135deg, #BAE6FD 0%, #0284C7 100%) !important;
+  border: 2px solid #FFFFFF !important;
+  box-shadow: 0 4px 10px rgba(2, 132, 199, 0.35), inset 0 2px 4px rgba(255, 255, 255, 0.8) !important;
+}
+
+.checkers-piece.is-selected {
+  transform: scale(1.15) translateY(-3px) !important;
+  box-shadow: 0 0 0 3.5px #FFFFFF, 0 0 16px rgba(251, 191, 36, 0.9) !important;
+  z-index: 5 !important;
+}
+
+.checkers-piece.is-crowned::before {
+  content: '👑' !important;
+  position: absolute !important;
+  top: -8px !important;
+  font-size: 0.95rem !important;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3)) !important;
+}
+
+/* Efeito de captura mágica (transformação em estrelas) */
+.piece-captured-anim {
+  animation: capturedStarBurst 0.6s forwards cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+@keyframes capturedStarBurst {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.4) rotate(15deg);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(0.1) translateY(-20px);
+    opacity: 0;
+  }
+}
+
+/* Responsividade adicional para telas compactas */
+@media (max-width: 380px) {
+  .maze-board-container,
+  .checkers-board {
+    max-width: 92vw !important;
+    padding: 4px !important;
+    gap: 2px !important;
+  }
+  .maze-dpad-btn {
+    width: 48px !important;
+    height: 44px !important;
+  }
+}

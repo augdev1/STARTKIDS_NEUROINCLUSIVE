@@ -374,6 +374,115 @@ export const GAME_POOLS = {
         { id: "shell", symbol: "🐚", name: "Conchinha" }
       ]
     }
+  ],
+
+  // Jogo 8: O Labirinto do Pip (Orientação Espacial & Resolução de Problemas)
+  8: [
+    {
+      themeName: "Bosque dos Girassóis",
+      instruction: "Ajude o Pip a caminhar pelo caminho amarelo, pegar a estrela e chegar na casinha!",
+      rows: 5,
+      cols: 5,
+      // 0: path, 1: wall, 2: start, 3: item (star), 4: goal
+      grid: [
+        [1, 1, 1, 1, 1],
+        [1, 2, 0, 3, 1],
+        [1, 1, 0, 1, 1],
+        [1, 0, 0, 4, 1],
+        [1, 1, 1, 1, 1]
+      ],
+      items: [{ r: 1, c: 3, icon: "⭐", name: "Estrela Brilhante" }],
+      goalIcon: "🏡",
+      goalName: "Casinha Acolhedora"
+    },
+    {
+      themeName: "Trilha das Borboletas",
+      instruction: "Explore o labirinto florido, recolha as 2 florzinhas mágicas e alcance o arco-íris!",
+      rows: 6,
+      cols: 6,
+      grid: [
+        [1, 1, 1, 1, 1, 1],
+        [1, 2, 0, 1, 3, 1],
+        [1, 0, 0, 0, 0, 1],
+        [1, 1, 0, 1, 0, 1],
+        [1, 3, 0, 0, 4, 1],
+        [1, 1, 1, 1, 1, 1]
+      ],
+      items: [
+        { r: 1, c: 4, icon: "🌸", name: "Florzinha Cor-de-Rosa" },
+        { r: 4, c: 1, icon: "🌼", name: "Margarida Dourada" }
+      ],
+      goalIcon: "🌈",
+      goalName: "Portal do Arco-Íris"
+    },
+    {
+      themeName: "O Reino das Estrelas",
+      instruction: "Guie o Pip pelo bosque estelar, colete os 3 tesouros e chegue ao castelo de cristal!",
+      rows: 7,
+      cols: 7,
+      grid: [
+        [1, 1, 1, 1, 1, 1, 1],
+        [1, 2, 0, 0, 1, 3, 1],
+        [1, 1, 1, 0, 1, 0, 1],
+        [1, 3, 0, 0, 0, 0, 1],
+        [1, 0, 1, 1, 1, 0, 1],
+        [1, 0, 0, 3, 0, 4, 1],
+        [1, 1, 1, 1, 1, 1, 1]
+      ],
+      items: [
+        { r: 1, c: 5, icon: "⭐", name: "Estrela do Céu" },
+        { r: 3, c: 1, icon: "🍎", name: "Maçã Mágica" },
+        { r: 5, c: 3, icon: "💎", name: "Cristal Reluzente" }
+      ],
+      goalIcon: "🏰",
+      goalName: "Castelo de Cristal"
+    }
+  ],
+
+  // Jogo 9: O Jogo de Damas do Pip (Estratégia, Diagonais & Parceria Amigável)
+  9: [
+    {
+      themeName: "Damas no Bosque",
+      instruction: "Toque na sua peça dourada para ver as diagonais brilhando e avance no tabuleiro!",
+      playerSymbol: "⭐",
+      pipSymbol: "🐾",
+      playerColorName: "Estrelas Douradas",
+      pipColorName: "Patinhas Azuis",
+      playerPieces: [
+        { r: 4, c: 1 }, { r: 4, c: 3 }, { r: 5, c: 0 }, { r: 5, c: 2 }
+      ],
+      pipPieces: [
+        { r: 0, c: 1 }, { r: 0, c: 3 }, { r: 1, c: 2 }
+      ]
+    },
+    {
+      themeName: "Saltos Mágicos",
+      instruction: "Dê saltos diagonais por cima das peças do Pip para transformá-las em estrelinhas!",
+      playerSymbol: "💎",
+      pipSymbol: "🍃",
+      playerColorName: "Cristais Radiantes",
+      pipColorName: "Folhinhas do Bosque",
+      playerPieces: [
+        { r: 4, c: 1 }, { r: 4, c: 3 }, { r: 4, c: 5 }, { r: 5, c: 2 }
+      ],
+      pipPieces: [
+        { r: 0, c: 3 }, { r: 0, c: 5 }, { r: 1, c: 2 }, { r: 2, c: 3 }
+      ]
+    },
+    {
+      themeName: "A Dama Real",
+      instruction: "Avance até a última linha para coroar sua Dama Real com poderes mágicos!",
+      playerSymbol: "🌟",
+      pipSymbol: "🐶",
+      playerColorName: "Super Estrelas",
+      pipColorName: "Amiguinhos do Pip",
+      playerPieces: [
+        { r: 3, c: 2 }, { r: 4, c: 1 }, { r: 4, c: 5 }, { r: 5, c: 4 }
+      ],
+      pipPieces: [
+        { r: 0, c: 1 }, { r: 0, c: 5 }, { r: 1, c: 4 }, { r: 2, c: 1 }
+      ]
+    }
   ]
 };
 
@@ -433,6 +542,10 @@ export class EducationalGamesManager {
    * Limpa a sessão ativa do jogo ao voltar voluntariamente ao jardim ou concluir o baú
    */
   clearActiveGameState() {
+    if (typeof this.activeCleanup === 'function') {
+      try { this.activeCleanup(); } catch (_) { }
+      this.activeCleanup = null;
+    }
     try {
       localStorage.removeItem('starkids_active_game_session');
     } catch (e) { }
@@ -525,6 +638,11 @@ export class EducationalGamesManager {
   }
 
   loadRound() {
+    if (typeof this.activeCleanup === 'function') {
+      try { this.activeCleanup(); } catch (_) { }
+      this.activeCleanup = null;
+    }
+
     if (this.currentRound > this.totalRounds) {
       this.triggerChestReward();
       return;
@@ -541,6 +659,8 @@ export class EducationalGamesManager {
     else if (this.currentGameId === 5) this.renderRoutineGame();
     else if (this.currentGameId === 6) this.renderTicTacToeGame();
     else if (this.currentGameId === 7) this.renderMemoryGame();
+    else if (this.currentGameId === 8) this.renderMazeGame();
+    else if (this.currentGameId === 9) this.renderCheckersGame();
   }
 
   // ==========================================================================
@@ -2201,6 +2321,477 @@ export class EducationalGamesManager {
         }
       });
     });
+  }
+
+  // ==========================================================================
+  // JOGO 8: O LABIRINTO DO PIP (Orientação Espacial & Resolução de Problemas)
+  // ==========================================================================
+  renderMazeGame() {
+    const data = (this.activeRounds && this.activeRounds[this.currentRound - 1]) || GAME_POOLS[8][0];
+
+    this.setGameHeader(
+      "O Labirinto do Pip",
+      `Tema: ${data.themeName} • Colete os itens e alcance a saída!`,
+      data.instruction
+    );
+
+    const stage = document.getElementById('gameActiveStage');
+    const rows = data.rows;
+    const cols = data.cols;
+
+    // Encontra a posição inicial do Pip (célula com valor 2) e do objetivo (valor 4)
+    let pipR = 1, pipC = 1;
+    let goalR = rows - 2, goalC = cols - 2;
+
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        if (data.grid[r][c] === 2) { pipR = r; pipC = c; }
+        if (data.grid[r][c] === 4) { goalR = r; goalC = c; }
+      }
+    }
+
+    // Cópia dos itens da rodada
+    let remainingItems = data.items.map(item => ({ ...item }));
+    const totalItems = remainingItems.length;
+    let itemsCollected = 0;
+    let isGameOver = false;
+
+    stage.innerHTML = `
+      <div class="maze-arena" role="region" aria-label="Labirinto do Pip">
+        <div class="maze-status-bar">
+          <div class="maze-status-pill">
+            <span>🧭</span> <span>${data.themeName}</span>
+          </div>
+          <div class="maze-status-pill" id="mazeItemsPill">
+            <span>⭐</span> Itens: <strong id="mazeItemsCount">0</strong> / <strong>${totalItems}</strong>
+          </div>
+        </div>
+
+        <div class="maze-board-container" id="mazeBoard" style="grid-template-columns: repeat(${cols}, 1fr); grid-template-rows: repeat(${rows}, 1fr);" role="grid" aria-label="Labirinto quadriculado">
+        </div>
+
+        <!-- Controles Direcionais de Apoio para Acessibilidade Tátil -->
+        <div class="maze-dpad-container" aria-label="Controles direcionais de apoio">
+          <div class="maze-dpad-row">
+            <button class="maze-dpad-btn" id="mazeBtnNorth" type="button" aria-label="Caminhar para cima">⬆️</button>
+          </div>
+          <div class="maze-dpad-row">
+            <button class="maze-dpad-btn" id="mazeBtnWest" type="button" aria-label="Caminhar para a esquerda">⬅️</button>
+            <button class="maze-dpad-btn" id="mazeBtnSouth" type="button" aria-label="Caminhar para baixo">⬇️</button>
+            <button class="maze-dpad-btn" id="mazeBtnEast" type="button" aria-label="Caminhar para a direita">➡️</button>
+          </div>
+          <span class="maze-hint-text">Toque no caminho, use as setinhas ou teclado (PC)</span>
+        </div>
+      </div>
+    `;
+
+    const boardEl = document.getElementById('mazeBoard');
+    const itemsCountEl = document.getElementById('mazeItemsCount');
+
+    // Função de renderização das células do labirinto
+    const renderCells = () => {
+      boardEl.innerHTML = '';
+      for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+          const cellEl = document.createElement('div');
+          cellEl.className = 'maze-cell';
+          cellEl.setAttribute('data-r', r);
+          cellEl.setAttribute('data-c', c);
+          cellEl.setAttribute('role', 'gridcell');
+
+          const isWall = data.grid[r][c] === 1;
+          const isPlayer = (r === pipR && c === pipC);
+          const isGoal = (r === goalR && c === goalC);
+          const itemAtCell = remainingItems.find(it => it.r === r && it.c === c);
+
+          if (isWall) {
+            cellEl.classList.add('is-wall');
+            cellEl.setAttribute('aria-label', 'Parede do bosque');
+          } else {
+            cellEl.classList.add('is-path');
+            const isNeighbor = Math.abs(r - pipR) + Math.abs(c - pipC) === 1;
+            if (isNeighbor && !isGameOver) {
+              cellEl.classList.add('is-valid-step');
+              cellEl.setAttribute('title', 'Toque para caminhar');
+            }
+
+            if (isPlayer) {
+              cellEl.classList.add('is-player');
+              cellEl.innerHTML = '🐶';
+              cellEl.setAttribute('aria-label', 'Pip está aqui');
+            } else if (itemAtCell) {
+              cellEl.classList.add('is-item');
+              cellEl.innerHTML = itemAtCell.icon;
+              cellEl.setAttribute('aria-label', itemAtCell.name);
+            } else if (isGoal) {
+              cellEl.classList.add('is-goal');
+              cellEl.innerHTML = data.goalIcon || '🏡';
+              cellEl.setAttribute('aria-label', data.goalName || 'Chegada');
+            }
+          }
+
+          cellEl.addEventListener('click', () => {
+            if (isGameOver) return;
+            if (isWall) {
+              sound.playTone(sound.pentatonicScale.D4, 0.2);
+              cellEl.classList.add('anim-gentle-reset');
+              setTimeout(() => cellEl.classList.remove('anim-gentle-reset'), 400);
+              return;
+            }
+            tryMoveTo(r, c);
+          });
+
+          boardEl.appendChild(cellEl);
+        }
+      }
+      window.EmojiEnhancer?.enhance(boardEl);
+    };
+
+    // Lógica de Movimentação do Pip
+    const tryMoveTo = (newR, newC) => {
+      if (isGameOver) return;
+      if (newR < 0 || newR >= rows || newC < 0 || newC >= cols) return;
+      if (data.grid[newR][newC] === 1) {
+        sound.playTone(sound.pentatonicScale.D4, 0.2);
+        return;
+      }
+
+      const dist = Math.abs(newR - pipR) + Math.abs(newC - pipC);
+      if (dist !== 1) {
+        speech.speak("Siga pelas casinhas amarelas brilhantes, um passo de cada vez! ✨", { delayAfterEnd: 300 });
+        return;
+      }
+
+      pipR = newR;
+      pipC = newC;
+      sound.playTone(sound.pentatonicScale.G4, 0.15);
+
+      const itemIdx = remainingItems.findIndex(it => it.r === pipR && it.c === pipC);
+      if (itemIdx !== -1) {
+        const collected = remainingItems.splice(itemIdx, 1)[0];
+        itemsCollected++;
+        if (itemsCountEl) itemsCountEl.textContent = itemsCollected;
+        sound.playChord([329.63, 392.00, 523.25]);
+        speech.speak(`Que maravilha! Você encontrou: ${collected.name}!`, { delayAfterEnd: 400 });
+      }
+
+      renderCells();
+
+      if (pipR === goalR && pipC === goalC) {
+        if (remainingItems.length > 0) {
+          speech.speak("Você quase chegou! Que tal voltar um passinho e pegar as estrelas que faltam no caminho?", { delayAfterEnd: 500 });
+        } else {
+          isGameOver = true;
+          sound.playChord([261.63, 329.63, 392.00, 523.25]);
+          speech.speak(`Parabéns! Você completou o labirinto de ${data.themeName} com muita calma e alegria!`, {
+            force: true,
+            delayAfterEnd: 1000,
+            onEnd: () => {
+              this.updateRoundStep(this.currentRound + 1);
+              this.loadRound();
+            }
+          });
+        }
+      }
+    };
+
+    document.getElementById('mazeBtnNorth')?.addEventListener('click', () => tryMoveTo(pipR - 1, pipC));
+    document.getElementById('mazeBtnSouth')?.addEventListener('click', () => tryMoveTo(pipR + 1, pipC));
+    document.getElementById('mazeBtnWest')?.addEventListener('click', () => tryMoveTo(pipR, pipC - 1));
+    document.getElementById('mazeBtnEast')?.addEventListener('click', () => tryMoveTo(pipR, pipC + 1));
+
+    const handleKeyDown = (e) => {
+      if (['ArrowUp', 'KeyW'].includes(e.code)) { e.preventDefault(); tryMoveTo(pipR - 1, pipC); }
+      else if (['ArrowDown', 'KeyS'].includes(e.code)) { e.preventDefault(); tryMoveTo(pipR + 1, pipC); }
+      else if (['ArrowLeft', 'KeyA'].includes(e.code)) { e.preventDefault(); tryMoveTo(pipR, pipC - 1); }
+      else if (['ArrowRight', 'KeyD'].includes(e.code)) { e.preventDefault(); tryMoveTo(pipR, pipC + 1); }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    this.activeCleanup = () => window.removeEventListener('keydown', handleKeyDown);
+
+    renderCells();
+  }
+
+  // ==========================================================================
+  // JOGO 9: O JOGO DE DAMAS DO PIP (Estratégia, Diagonais & Parceria Amigável)
+  // ==========================================================================
+  renderCheckersGame() {
+    const data = (this.activeRounds && this.activeRounds[this.currentRound - 1]) || GAME_POOLS[9][0];
+
+    this.setGameHeader(
+      "O Jogo de Damas do Pip",
+      `Tema: ${data.themeName} • Você é ${data.playerColorName} (${data.playerSymbol}) e o Pip é ${data.pipColorName} (${data.pipSymbol})`,
+      data.instruction
+    );
+
+    const stage = document.getElementById('gameActiveStage');
+    const boardSize = 6;
+
+    let playerPieces = data.playerPieces.map((p, idx) => ({ id: `p_${idx}`, r: p.r, c: p.c, isCrowned: false }));
+    let pipPieces = data.pipPieces.map((p, idx) => ({ id: `pip_${idx}`, r: p.r, c: p.c, isCrowned: false }));
+
+    let selectedPiece = null;
+    let validMovesForSelected = [];
+    let isPlayerTurn = true;
+    let isGameOver = false;
+
+    stage.innerHTML = `
+      <div class="checkers-arena" role="region" aria-label="Partida de Damas com o Pip">
+        <div class="checkers-players-bar">
+          <div class="checkers-player-card is-player active-turn" id="chkPlayerCard" title="Você joga com ${data.playerColorName}">
+            <div class="checkers-player-avatar">${data.playerSymbol}</div>
+            <div class="checkers-player-info">
+              <span class="checkers-player-title">Você</span>
+              <span class="checkers-player-sub" id="chkPlayerSub">Sua Vez!</span>
+            </div>
+          </div>
+
+          <span class="checkers-vs-badge" aria-hidden="true">🤝</span>
+
+          <div class="checkers-player-card is-pip" id="chkPipCard" title="Pip joga com ${data.pipColorName}">
+            <div class="checkers-player-avatar">${data.pipSymbol}</div>
+            <div class="checkers-player-info">
+              <span class="checkers-player-title">Pip</span>
+              <span class="checkers-player-sub" id="chkPipSub">${data.pipColorName}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="checkers-status-bar" id="chkStatus" aria-live="polite">
+          <span id="chkStatusIcon">✨</span>
+          <span id="chkStatusText">Toque na sua peça dourada para iluminar as diagonais!</span>
+        </div>
+
+        <div class="checkers-board" id="chkBoard" role="grid" aria-label="Tabuleiro de Damas 6x6">
+        </div>
+      </div>
+    `;
+
+    const boardEl = document.getElementById('chkBoard');
+    const playerCard = document.getElementById('chkPlayerCard');
+    const pipCard = document.getElementById('chkPipCard');
+    const playerSub = document.getElementById('chkPlayerSub');
+    const pipSub = document.getElementById('chkPipSub');
+    const statusBox = document.getElementById('chkStatus');
+    const statusText = document.getElementById('chkStatusText');
+    const statusIcon = document.getElementById('chkStatusIcon');
+
+    const getPieceAt = (r, c) => {
+      const p = playerPieces.find(piece => piece.r === r && piece.c === c);
+      if (p) return { owner: 'player', piece: p };
+      const pip = pipPieces.find(piece => piece.r === r && piece.c === c);
+      if (pip) return { owner: 'pip', piece: pip };
+      return null;
+    };
+
+    const getValidMovesForPiece = (piece, isPlayer) => {
+      const moves = [];
+      const dirs = piece.isCrowned
+        ? [[-1, -1], [-1, 1], [1, -1], [1, 1]]
+        : (isPlayer ? [[-1, -1], [-1, 1]] : [[1, -1], [1, 1]]);
+
+      dirs.forEach(([dr, dc]) => {
+        const nr = piece.r + dr;
+        const nc = piece.c + dc;
+        if (nr >= 0 && nr < boardSize && nc >= 0 && nc < boardSize) {
+          const target = getPieceAt(nr, nc);
+          if (!target) {
+            moves.push({ toR: nr, toC: nc, isJump: false, capturedPiece: null });
+          } else if (target.owner !== (isPlayer ? 'player' : 'pip')) {
+            const jumpR = nr + dr;
+            const jumpC = nc + dc;
+            if (jumpR >= 0 && jumpR < boardSize && jumpC >= 0 && jumpC < boardSize) {
+              if (!getPieceAt(jumpR, jumpC)) {
+                moves.push({ toR: jumpR, toC: jumpC, isJump: true, capturedPiece: target.piece });
+              }
+            }
+          }
+        }
+      });
+      return moves;
+    };
+
+    const renderBoard = () => {
+      boardEl.innerHTML = '';
+      for (let r = 0; r < boardSize; r++) {
+        for (let c = 0; c < boardSize; c++) {
+          const isDark = (r + c) % 2 === 1;
+          const cellEl = document.createElement('div');
+          cellEl.className = 'checkers-cell ' + (isDark ? 'cell-dark' : 'cell-light');
+          cellEl.setAttribute('data-r', r);
+          cellEl.setAttribute('data-c', c);
+          cellEl.setAttribute('role', 'gridcell');
+
+          const pieceData = getPieceAt(r, c);
+          const validMove = validMovesForSelected.find(m => m.toR === r && m.toC === c);
+          if (validMove && isPlayerTurn && !isGameOver) {
+            cellEl.classList.add('is-valid-target');
+            cellEl.setAttribute('title', validMove.isJump ? 'Salto Mágico!' : 'Mover aqui');
+            cellEl.addEventListener('click', () => executePlayerMove(validMove));
+          }
+
+          if (pieceData) {
+            const pieceEl = document.createElement('div');
+            pieceEl.className = 'checkers-piece ' + (pieceData.owner === 'player' ? 'piece-player' : 'piece-pip');
+            if (pieceData.piece.isCrowned) pieceEl.classList.add('is-crowned');
+            if (selectedPiece && selectedPiece.id === pieceData.piece.id) pieceEl.classList.add('is-selected');
+
+            pieceEl.innerHTML = pieceData.owner === 'player' ? data.playerSymbol : data.pipSymbol;
+            pieceEl.setAttribute('aria-label', `${pieceData.owner === 'player' ? 'Sua peça' : 'Peça do Pip'}${pieceData.piece.isCrowned ? ' Dama Real' : ''}`);
+
+            if (pieceData.owner === 'player' && isPlayerTurn && !isGameOver) {
+              pieceEl.addEventListener('click', (e) => {
+                e.stopPropagation();
+                selectPlayerPiece(pieceData.piece);
+              });
+            }
+
+            cellEl.appendChild(pieceEl);
+          }
+
+          boardEl.appendChild(cellEl);
+        }
+      }
+      window.EmojiEnhancer?.enhance(boardEl);
+    };
+
+    const selectPlayerPiece = (piece) => {
+      if (!isPlayerTurn || isGameOver) return;
+      selectedPiece = piece;
+      validMovesForSelected = getValidMovesForPiece(piece, true);
+
+      sound.playTone(sound.pentatonicScale.E4, 0.15);
+
+      if (validMovesForSelected.length > 0) {
+        statusText.innerHTML = `Escolha uma das casas que estão <strong>brilhando</strong>! ✨`;
+        statusIcon.textContent = '🌟';
+      } else {
+        statusText.innerHTML = `Essa pecinha está descansando. Escolha outra peça! 💛`;
+        statusIcon.textContent = '🐾';
+      }
+      renderBoard();
+    };
+
+    const executePlayerMove = (move) => {
+      if (!isPlayerTurn || isGameOver || !selectedPiece) return;
+
+      selectedPiece.r = move.toR;
+      selectedPiece.c = move.toC;
+
+      if (selectedPiece.r === 0 && !selectedPiece.isCrowned) {
+        selectedPiece.isCrowned = true;
+        sound.playChord([392.00, 523.25, 659.25]);
+        speech.speak("Sensacional! Sua peça se transformou em uma Dama Real! 👑", { delayAfterEnd: 400 });
+      }
+
+      if (move.isJump && move.capturedPiece) {
+        pipPieces = pipPieces.filter(p => p.id !== move.capturedPiece.id);
+        sound.playChord([329.63, 440.00, 523.25]);
+        speech.speak("Salto mágico estelar! ✨", { delayAfterEnd: 300 });
+      } else {
+        sound.playTone(sound.pentatonicScale.G4, 0.2);
+      }
+
+      selectedPiece = null;
+      validMovesForSelected = [];
+      renderBoard();
+
+      if (pipPieces.length === 0) {
+        finishGameRound();
+        return;
+      }
+
+      startPipTurn();
+    };
+
+    const startPipTurn = () => {
+      isPlayerTurn = false;
+      playerCard.classList.remove('active-turn');
+      pipCard.classList.add('active-turn');
+      playerSub.textContent = 'Aguardando';
+      pipSub.textContent = 'Pensando...';
+      statusBox.classList.add('pip-thinking');
+      statusText.innerHTML = `Pip está preparando um movimento carinhoso... 🐾`;
+      statusIcon.textContent = '💭';
+
+      setTimeout(() => {
+        if (isGameOver) return;
+
+        let allPipMoves = [];
+        pipPieces.forEach(piece => {
+          const moves = getValidMovesForPiece(piece, false);
+          moves.forEach(m => allPipMoves.push({ piece, move: m }));
+        });
+
+        if (allPipMoves.length === 0) {
+          finishGameRound();
+          return;
+        }
+
+        const jumps = allPipMoves.filter(m => m.move.isJump);
+        const chosen = jumps.length > 0
+          ? jumps[Math.floor(Math.random() * jumps.length)]
+          : allPipMoves[Math.floor(Math.random() * allPipMoves.length)];
+
+        chosen.piece.r = chosen.move.toR;
+        chosen.piece.c = chosen.move.toC;
+
+        if (chosen.piece.r === boardSize - 1 && !chosen.piece.isCrowned) {
+          chosen.piece.isCrowned = true;
+        }
+
+        if (chosen.move.isJump && chosen.move.capturedPiece) {
+          playerPieces = playerPieces.filter(p => p.id !== chosen.move.capturedPiece.id);
+          sound.playChord([293.66, 369.99, 440.00]);
+        } else {
+          sound.playTone(sound.pentatonicScale.C4, 0.2);
+        }
+
+        isPlayerTurn = true;
+        playerCard.classList.add('active-turn');
+        pipCard.classList.remove('active-turn');
+        playerSub.textContent = 'Sua Vez!';
+        pipSub.textContent = data.pipColorName;
+        statusBox.classList.remove('pip-thinking');
+        statusText.innerHTML = `Sua vez! Toque em uma peça dourada para avançar! ✨`;
+        statusIcon.textContent = '⭐';
+
+        renderBoard();
+
+        if (playerPieces.length === 0) {
+          speech.speak("Foi uma partida linda! Vamos respirar fundo e tentar novamente!", {
+            force: true,
+            delayAfterEnd: 800,
+            onEnd: () => this.loadRound()
+          });
+        }
+      }, 1000);
+    };
+
+    const finishGameRound = () => {
+      if (isGameOver) return;
+      isGameOver = true;
+
+      playerCard.classList.add('active-turn');
+      pipCard.classList.remove('active-turn');
+      playerSub.textContent = 'Vencedor! 🌟';
+      pipSub.textContent = 'Parabéns!';
+      statusBox.classList.remove('pip-thinking');
+      statusText.innerHTML = `Parabéns! Você e o Pip jogaram com muita sabedoria! 🎉`;
+      statusIcon.textContent = '🏆';
+
+      sound.playChord([261.63, 329.63, 392.00, 523.25]);
+      speech.speak(`Parabéns! Você completou a rodada de Damas em ${data.themeName} com muita inteligência e parceria!`, {
+        force: true,
+        delayAfterEnd: 1000,
+        onEnd: () => {
+          this.updateRoundStep(this.currentRound + 1);
+          this.loadRound();
+        }
+      });
+    };
+
+    renderBoard();
   }
 
   // Define títulos, instruções e apoio em voz
