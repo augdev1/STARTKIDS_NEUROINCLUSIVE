@@ -189,24 +189,24 @@ export class MascotManager {
   // Gera o SVG multicamadas do Pip com personalização dinâmica completa
   getSVG() {
     // 1. Configurações de Aparência (Cor, Olhos, Boca, Bochechas)
-    const bodyColorId = this.data.equipped.bodyColor || 'mint';
+    const bodyColorId = this.data?.equipped?.bodyColor || 'mint';
     const colorConfig = PIP_BODY_COLORS.find(c => c.id === bodyColorId) || PIP_BODY_COLORS[0];
 
-    const eyeShapeId = this.data.equipped.eyeShape || 'default';
+    const eyeShapeId = this.data?.equipped?.eyeShape || 'default';
     const eyeConfig = PIP_EYE_SHAPES.find(e => e.id === eyeShapeId) || PIP_EYE_SHAPES[0];
 
-    const mouthShapeId = this.data.equipped.mouthShape || 'default';
+    const mouthShapeId = this.data?.equipped?.mouthShape || 'default';
     const mouthConfig = PIP_MOUTH_SHAPES.find(m => m.id === mouthShapeId) || PIP_MOUTH_SHAPES[0];
 
-    const cheekShapeId = this.data.equipped.cheekShape || 'blush';
+    const cheekShapeId = this.data?.equipped?.cheekShape || 'blush';
     const cheekConfig = PIP_CHEEK_SHAPES.find(c => c.id === cheekShapeId) || PIP_CHEEK_SHAPES[0];
 
     // 2. Acessórios equipados
-    const auraId = this.data.equipped.auras;
-    const hatId = this.data.equipped.hats;
-    const faceId = this.data.equipped.face;
-    const clothesId = this.data.equipped.clothes;
-    const petId = this.data.equipped.pets;
+    const auraId = this.data?.equipped?.auras;
+    const hatId = this.data?.equipped?.hats;
+    const faceId = this.data?.equipped?.face;
+    const clothesId = this.data?.equipped?.clothes;
+    const petId = this.data?.equipped?.pets;
 
     const auraItem = auraId ? ACCESSORIES_DATABASE.find(a => a.id === auraId) : null;
     const hatItem = hatId ? ACCESSORIES_DATABASE.find(a => a.id === hatId) : null;
@@ -214,15 +214,16 @@ export class MascotManager {
     const clothesItem = clothesId ? ACCESSORIES_DATABASE.find(a => a.id === clothesId) : null;
     const petItem = petId ? ACCESSORIES_DATABASE.find(a => a.id === petId) : null;
 
+    // ID único por instância renderizada para evitar colisão de <defs> no DOM entre o Hub e o Camarim
+    const uid = 'pip_' + Math.random().toString(36).substring(2, 8);
+    const glowId = `pipGlow_${uid}`;
+
     return `
       <svg viewBox="0 0 220 220" width="100%" height="100%" class="anim-pip-breathe" style="overflow: visible; display: block;">
         <defs>
-          <radialGradient id="pipGlow" cx="50%" cy="40%" r="55%">
+          <radialGradient id="${glowId}" cx="50%" cy="40%" r="55%">
             ${colorConfig.gradientStops}
           </radialGradient>
-          <filter id="gentleShadow" x="-10%" y="-10%" width="130%" height="130%">
-            <feDropShadow dx="0" dy="8" stdDeviation="6" flood-color="${colorConfig.shadowColor}" flood-opacity="0.13" />
-          </filter>
         </defs>
 
         <!-- CAMADA 1: AURA (ao redor do corpinho) -->
@@ -232,21 +233,27 @@ export class MascotManager {
         ${clothesItem && clothesItem.svgBack ? clothesItem.svgBack : ''}
 
         <!-- Sombra no Chão (delimitada e suave) -->
-        <ellipse cx="110" cy="200" rx="62" ry="10" fill="rgba(90, 143, 123, 0.15)" />
+        <ellipse cx="110" cy="200" rx="62" ry="10" fill="rgba(90, 143, 123, 0.22)" />
 
-        <!-- CAMADA 2: CORPO DO PIP (Cor Personalizável) -->
-        <g filter="url(#gentleShadow)">
-          <path d="M110 32 C65 32 45 75 45 125 C45 175 70 195 110 195 C150 195 175 175 175 125 C175 75 155 32 110 32 Z"
-                fill="url(#pipGlow)" stroke="${colorConfig.stroke}" stroke-width="2.5" />
-        </g>
+        <!-- CAMADA 2: CORPO DO PIP (Cor Personalizável e Contorno Nítido) -->
+        <!-- Camada Base Sólida (Garante renderização mesmo se o SVG gradient falhar) -->
+        <path d="M110 32 C65 32 45 75 45 125 C45 175 70 195 110 195 C150 195 175 175 175 125 C175 75 155 32 110 32 Z"
+              fill="${colorConfig.swatch}" />
+
+        <!-- Camada de Gradiente Suave com Contorno Acolhedor -->
+        <path d="M110 32 C65 32 45 75 45 125 C45 175 70 195 110 195 C150 195 175 175 175 125 C175 75 155 32 110 32 Z"
+              fill="url(#${glowId})"
+              stroke="${colorConfig.stroke}"
+              stroke-width="3.2"
+              stroke-linejoin="round" />
 
         <!-- Patinhas Suaves Harmonizadas -->
-        <ellipse cx="78" cy="194" rx="14" ry="9" fill="${colorConfig.limbs}" stroke="${colorConfig.stroke}" stroke-width="2" />
-        <ellipse cx="142" cy="194" rx="14" ry="9" fill="${colorConfig.limbs}" stroke="${colorConfig.stroke}" stroke-width="2" />
+        <ellipse cx="78" cy="194" rx="14" ry="9" fill="${colorConfig.limbs}" stroke="${colorConfig.stroke}" stroke-width="2.2" />
+        <ellipse cx="142" cy="194" rx="14" ry="9" fill="${colorConfig.limbs}" stroke="${colorConfig.stroke}" stroke-width="2.2" />
 
         <!-- Braços / Asinhas Macias -->
-        <ellipse cx="48" cy="132" rx="10" ry="18" transform="rotate(-15 48 132)" fill="${colorConfig.limbs}" stroke="${colorConfig.stroke}" stroke-width="2" />
-        <ellipse cx="172" cy="132" rx="10" ry="18" transform="rotate(15 172 132)" fill="${colorConfig.limbs}" stroke="${colorConfig.stroke}" stroke-width="2" />
+        <ellipse cx="48" cy="132" rx="10" ry="18" transform="rotate(-15 48 132)" fill="${colorConfig.limbs}" stroke="${colorConfig.stroke}" stroke-width="2.2" />
+        <ellipse cx="172" cy="132" rx="10" ry="18" transform="rotate(15 172 132)" fill="${colorConfig.limbs}" stroke="${colorConfig.stroke}" stroke-width="2.2" />
 
         <!-- Bochechinhas Personalizáveis -->
         ${cheekConfig.svg}

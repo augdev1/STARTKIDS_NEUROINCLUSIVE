@@ -8,15 +8,15 @@ export const PIP_BODY_COLORS = [
     id: 'mint',
     name: 'Menta Suave',
     desc: 'O tom clássico e acolhedor do Pip',
-    swatch: '#D5E8E2',
+    swatch: '#C2E8DC',
     gradientStops: `
-      <stop offset="0%" stop-color="#FFFFFF" />
-      <stop offset="60%" stop-color="#EBF4F2" />
-      <stop offset="100%" stop-color="#D5E8E2" />
+      <stop offset="0%" stop-color="#E8F7F2" />
+      <stop offset="55%" stop-color="#CEEFE5" />
+      <stop offset="100%" stop-color="#AEE3D4" />
     `,
-    stroke: '#B3D4C9',
-    limbs: '#D5E8E2',
-    shadowColor: '#3D6656'
+    stroke: '#529681',
+    limbs: '#C2E8DC',
+    shadowColor: '#2E5F50'
   },
   {
     id: 'pink',
@@ -24,11 +24,11 @@ export const PIP_BODY_COLORS = [
     desc: 'Rosa quentinho como um abraço de nuvem',
     swatch: '#FBCFE8',
     gradientStops: `
-      <stop offset="0%" stop-color="#FFFFFF" />
-      <stop offset="60%" stop-color="#FDF2F8" />
-      <stop offset="100%" stop-color="#FBCFE8" />
+      <stop offset="0%" stop-color="#FFF0F6" />
+      <stop offset="55%" stop-color="#FCE7F3" />
+      <stop offset="100%" stop-color="#F472B6" />
     `,
-    stroke: '#F472B6',
+    stroke: '#DB2777',
     limbs: '#FCE7F3',
     shadowColor: '#831843'
   },
@@ -38,11 +38,11 @@ export const PIP_BODY_COLORS = [
     desc: 'Azul celeste que traz tranquilidade e paz',
     swatch: '#BAE6FD',
     gradientStops: `
-      <stop offset="0%" stop-color="#FFFFFF" />
-      <stop offset="60%" stop-color="#F0F9FF" />
-      <stop offset="100%" stop-color="#BAE6FD" />
+      <stop offset="0%" stop-color="#F0F9FF" />
+      <stop offset="55%" stop-color="#E0F2FE" />
+      <stop offset="100%" stop-color="#7DD3FC" />
     `,
-    stroke: '#7DD3FC',
+    stroke: '#0284C7',
     limbs: '#E0F2FE',
     shadowColor: '#0369A1'
   },
@@ -52,11 +52,11 @@ export const PIP_BODY_COLORS = [
     desc: 'Amarelo suave e radiante como um raio de sol',
     swatch: '#FEF08A',
     gradientStops: `
-      <stop offset="0%" stop-color="#FFFFFF" />
-      <stop offset="60%" stop-color="#FEFCE8" />
-      <stop offset="100%" stop-color="#FEF08A" />
+      <stop offset="0%" stop-color="#FEFCE8" />
+      <stop offset="55%" stop-color="#FEF9C3" />
+      <stop offset="100%" stop-color="#FACC15" />
     `,
-    stroke: '#FACC15',
+    stroke: '#CA8A04',
     limbs: '#FEF9C3',
     shadowColor: '#854D0E'
   },
@@ -66,11 +66,11 @@ export const PIP_BODY_COLORS = [
     desc: 'Lilás reconfortante com cheirinho de flores',
     swatch: '#E9D5FF',
     gradientStops: `
-      <stop offset="0%" stop-color="#FFFFFF" />
-      <stop offset="60%" stop-color="#FAF5FF" />
-      <stop offset="100%" stop-color="#E9D5FF" />
+      <stop offset="0%" stop-color="#FAF5FF" />
+      <stop offset="55%" stop-color="#F3E8FF" />
+      <stop offset="100%" stop-color="#C084FC" />
     `,
-    stroke: '#C084FC',
+    stroke: '#9333EA',
     limbs: '#F3E8FF',
     shadowColor: '#581C87'
   },
@@ -80,11 +80,11 @@ export const PIP_BODY_COLORS = [
     desc: 'Laranja pastel suave e cheio de ternura',
     swatch: '#FED7AA',
     gradientStops: `
-      <stop offset="0%" stop-color="#FFFFFF" />
-      <stop offset="60%" stop-color="#FFF7ED" />
-      <stop offset="100%" stop-color="#FED7AA" />
+      <stop offset="0%" stop-color="#FFF7ED" />
+      <stop offset="55%" stop-color="#FFEDD5" />
+      <stop offset="100%" stop-color="#FB923C" />
     `,
-    stroke: '#FB923C',
+    stroke: '#EA580C',
     limbs: '#FFEDD5',
     shadowColor: '#9A3412'
   },
@@ -94,11 +94,11 @@ export const PIP_BODY_COLORS = [
     desc: 'Verde fresco da floresta encantada',
     swatch: '#BBF7D0',
     gradientStops: `
-      <stop offset="0%" stop-color="#FFFFFF" />
-      <stop offset="60%" stop-color="#F0FDF4" />
-      <stop offset="100%" stop-color="#BBF7D0" />
+      <stop offset="0%" stop-color="#F0FDF4" />
+      <stop offset="55%" stop-color="#DCFCE7" />
+      <stop offset="100%" stop-color="#86EFAC" />
     `,
-    stroke: '#86EFAC',
+    stroke: '#16A34A',
     limbs: '#DCFCE7',
     shadowColor: '#166534'
   },
@@ -106,14 +106,14 @@ export const PIP_BODY_COLORS = [
     id: 'cloud',
     name: 'Nuvem Pérola',
     desc: 'Prateado clarinho e sereno como o luar',
-    swatch: '#E2E8F0',
+    swatch: '#CBD5E1',
     gradientStops: `
       <stop offset="0%" stop-color="#FFFFFF" />
-      <stop offset="60%" stop-color="#F8FAFC" />
-      <stop offset="100%" stop-color="#E2E8F0" />
+      <stop offset="55%" stop-color="#F1F5F9" />
+      <stop offset="100%" stop-color="#94A3B8" />
     `,
-    stroke: '#94A3B8',
-    limbs: '#F1F5F9',
+    stroke: '#64748B',
+    limbs: '#E2E8F0',
     shadowColor: '#334155'
   }
 ];
@@ -270,8 +270,8 @@ export const PIP_CHEEK_SHAPES = [
     desc: 'Círculos suaves de cor rosa acolhedor',
     icon: '🌸',
     svg: `
-      <circle cx="70" cy="118" r="11" fill="#FCE0E5" opacity="0.85" />
-      <circle cx="150" cy="118" r="11" fill="#FCE0E5" opacity="0.85" />
+      <circle cx="70" cy="118" r="11" fill="#F87171" opacity="0.45" />
+      <circle cx="150" cy="118" r="11" fill="#F87171" opacity="0.45" />
     `
   },
   {
@@ -280,7 +280,7 @@ export const PIP_CHEEK_SHAPES = [
     desc: 'Pequenos brilhos de estrela nas bochechas',
     icon: '⭐',
     svg: `
-      <g fill="#FBBF24" opacity="0.9">
+      <g fill="#F59E0B" opacity="0.95">
         <polygon points="70,113 71.5,116.5 75,118 71.5,119.5 70,123 68.5,119.5 65,118 68.5,116.5" />
         <polygon points="150,113 151.5,116.5 155,118 151.5,119.5 150,123 148.5,119.5 145,118 148.5,116.5" />
       </g>
@@ -292,8 +292,8 @@ export const PIP_CHEEK_SHAPES = [
     desc: 'Dois pequenos corações cheios de carinho',
     icon: '💖',
     svg: `
-      <path d="M70 120 C70 117 66 114 63 116 C60 118 60 122 70 126 C80 122 80 118 77 116 C74 114 70 117 70 120 Z" fill="#F472B6" opacity="0.75" transform="scale(0.8) translate(17, 26)" />
-      <path d="M150 120 C150 117 146 114 143 116 C140 118 140 122 150 126 C160 122 160 118 157 116 C154 114 150 117 150 120 Z" fill="#F472B6" opacity="0.75" transform="scale(0.8) translate(37, 26)" />
+      <path d="M70 122 C64 116 60 110 65 106 C69 103 70 107 70 107 C70 107 71 103 75 106 C80 110 76 116 70 122 Z" fill="#EC4899" opacity="0.85" />
+      <path d="M150 122 C144 116 140 110 145 106 C149 103 150 107 150 107 C150 107 151 103 155 106 C160 110 156 116 150 122 Z" fill="#EC4899" opacity="0.85" />
     `
   },
   {
@@ -302,8 +302,8 @@ export const PIP_CHEEK_SHAPES = [
     desc: 'Tons quentinhos de sol de outono',
     icon: '🍑',
     svg: `
-      <circle cx="70" cy="118" r="11" fill="#FED7AA" opacity="0.85" />
-      <circle cx="150" cy="118" r="11" fill="#FED7AA" opacity="0.85" />
+      <circle cx="70" cy="118" r="11" fill="#F97316" opacity="0.45" />
+      <circle cx="150" cy="118" r="11" fill="#F97316" opacity="0.45" />
     `
   },
   {
