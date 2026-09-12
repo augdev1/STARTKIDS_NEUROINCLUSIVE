@@ -71,6 +71,21 @@
   user-select: none;
 }
 
+.login-brand-emblem {
+  width: 86px;
+  height: auto;
+  max-width: 100px;
+  margin-bottom: 10px;
+  filter: drop-shadow(0 4px 12px rgba(25, 37, 56, 0.08));
+  transition: transform 0.3s ease;
+  user-select: none;
+  pointer-events: none;
+}
+
+.login-card-brand:hover .login-brand-emblem {
+  transform: scale(1.06) translateY(-2px);
+}
+
 .login-card-brand .brand-title.parappa-logo {
   font-size: 3.1rem;
   margin-bottom: 4px;
@@ -478,5 +493,10 @@
   .login-brand-header .brand-title.parappa-logo,
   .login-card-brand .brand-title.parappa-logo {
     font-size: 2.2rem;
+  }
+
+  .login-brand-emblem {
+    width: 72px;
+    margin-bottom: 6px;
   }
 }

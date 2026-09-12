@@ -31,7 +31,7 @@
     if ('caches' in window) {
       caches.keys().then(function(keys) {
         keys.forEach(function(key) {
-          if (key !== 'startkids-cache-v13') caches.delete(key);
+          if (key !== 'startkids-cache-v15') caches.delete(key);
         });
       });
     }
@@ -46,6 +46,7 @@
     <main class="login-card">
       <div class="login-hero-header">
         <div class="login-card-brand">
+          <img src="assets/startkids_logo_card.png" alt="Emblema Árvore e Arco-Íris StartKids" class="login-brand-emblem" width="86" height="77">
           <h1 class="brand-title parappa-logo" aria-label="StartKids">
             <span class="p-letter l-s">S</span><span class="p-letter l-t">t</span><span class="p-letter l-a">a</span><span class="p-letter l-r">r</span><span class="p-letter l-t2">t</span><span class="p-letter l-k">K</span><span class="p-letter l-i">i</span><span class="p-letter l-d">d</span><span class="p-letter l-s">s</span><span class="parappa-tm">™</span>
           </h1>
@@ -152,7 +153,7 @@
   <script src="js/emojiEnhancer.js"></script>
 
   <!-- PWA & Controlador Modular da Página de Login -->
-  <script type="module" src="js/pwaInstaller.js?v=14"></script>
-  <script type="module" src="js/login.js?v=14"></script>
+  <script type="module" src="js/pwaInstaller.js?v=15"></script>
+  <script type="module" src="js/login.js?v=15"></script>
 </body>
 </html>
