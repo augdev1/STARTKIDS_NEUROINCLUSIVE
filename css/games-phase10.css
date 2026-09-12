@@ -288,16 +288,29 @@
 }
 
 .puzzle-piece-card.is-dragging {
-  cursor: grabbing;
+  cursor: grabbing !important;
   z-index: 1000 !important;
   opacity: 0.95;
   box-shadow: 0 16px 32px rgba(22, 36, 56, 0.28) !important;
-  pointer-events: none;
+  transition: none !important;
 }
 
 .puzzle-piece-card.is-returning {
   transition: transform 0.32s cubic-bezier(0.2, 1, 0.4, 1) !important;
   z-index: 900;
+}
+
+/* Pista visual no slot quando peça está selecionada */
+.puzzle-slot.is-target-hint {
+  border-color: #F59E0B !important;
+  background: rgba(245, 158, 11, 0.14) !important;
+  box-shadow: 0 0 16px rgba(245, 158, 11, 0.45) !important;
+  animation: puzzle-slot-hint-pulse 1.2s infinite alternate ease-in-out;
+}
+
+@keyframes puzzle-slot-hint-pulse {
+  0% { transform: scale(1); border-color: #F59E0B; }
+  100% { transform: scale(1.04); border-color: #10B981; }
 }
 
 .puzzle-piece-svg-holder {

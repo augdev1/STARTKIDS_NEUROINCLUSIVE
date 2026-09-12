@@ -3450,6 +3450,71 @@ export class EducationalGamesManager {
       }
     };
 
+    // Função para localizar o slot sob o cursor ou sob o centro da peça com tolerância tátil
+    const findSlotAtPoint = (clientX, clientY, cardEl) => {
+      const cardRect = cardEl.getBoundingClientRect();
+      const cardCenterX = cardRect.left + cardRect.width / 2;
+      const cardCenterY = cardRect.top + cardRect.height / 2;
+
+      const slots = boardEl.querySelectorAll('.puzzle-slot');
+      let bestSlot = null;
+      let minDistance = Infinity;
+
+      for (const slot of slots) {
+        if (slot.classList.contains('is-filled')) continue;
+        const sRect = slot.getBoundingClientRect();
+        const sCenterX = sRect.left + sRect.width / 2;
+        const sCenterY = sRect.top + sRect.height / 2;
+
+        // Tolerância de encaixe ampla e acolhedora para crianças e toque mobile (36px)
+        const pad = 36;
+        const isCursorOver = (
+          clientX >= sRect.left - pad && clientX <= sRect.right + pad &&
+          clientY >= sRect.top - pad && clientY <= sRect.bottom + pad
+        );
+        const isCardOver = (
+          cardCenterX >= sRect.left - pad && cardCenterX <= sRect.right + pad &&
+          cardCenterY >= sRect.top - pad && cardCenterY <= sRect.bottom + pad
+        );
+
+        if (isCursorOver || isCardOver) {
+          const dist = Math.hypot(cardCenterX - sCenterX, cardCenterY - sCenterY);
+          if (dist < minDistance) {
+            minDistance = dist;
+            bestSlot = slot;
+          }
+        }
+      }
+      return bestSlot;
+    };
+
+    // Seleção de peça por toque/clique para suporte a motores finos
+    const selectPiece = (pieceId, cardEl) => {
+      if (selectedPieceId === pieceId) {
+        // Desmarca
+        selectedPieceId = null;
+        cardEl.classList.remove('is-selected');
+        boardEl.querySelectorAll('.puzzle-slot').forEach(s => s.classList.remove('is-target-hint'));
+        return;
+      }
+
+      selectedPieceId = pieceId;
+      trayEl.querySelectorAll('.puzzle-piece-card').forEach(c => c.classList.remove('is-selected'));
+      cardEl.classList.add('is-selected');
+      sound.playSoftTap();
+
+      // Pista visual: faz o espacinho correspondente brilhar suavemente no tabuleiro
+      boardEl.querySelectorAll('.puzzle-slot').forEach(s => s.classList.remove('is-target-hint'));
+      const pieceData = data.pieces.find(p => p.id === pieceId);
+      if (pieceData) {
+        const expectedSlotId = pieceData.r * cols + pieceData.c;
+        const targetSlot = boardEl.querySelector(`.puzzle-slot[data-slot-id="${expectedSlotId}"]`);
+        if (targetSlot && !targetSlot.classList.contains('is-filled')) {
+          targetSlot.classList.add('is-target-hint');
+        }
+      }
+    };
+
     // Encaixe da Peça com Sucesso
     const snapPieceIntoSlot = (pieceId, slotEl) => {
       const pieceData = data.pieces.find(p => p.id === pieceId);
@@ -3457,6 +3522,11 @@ export class EducationalGamesManager {
 
       placedPieces.add(pieceId);
       countEl.textContent = placedPieces.size;
+
+      // Limpa estados ativos
+      selectedPieceId = null;
+      boardEl.querySelectorAll('.puzzle-slot').forEach(s => s.classList.remove('is-target-hint', 'is-hovered'));
+      trayEl.querySelectorAll('.puzzle-piece-card').forEach(c => c.classList.remove('is-selected', 'is-dragging'));
 
       // Atualiza o slot com a peça renderizada nítida
       slotEl.classList.add('is-filled');
@@ -3472,16 +3542,13 @@ export class EducationalGamesManager {
       const trayCard = trayEl.querySelector(`.puzzle-piece-card[data-piece-id="${pieceId}"]`);
       if (trayCard) trayCard.remove();
 
-      // Som harmônico suave de encaixe
+      // Som harmônico doce de encaixe
       sound.playChord([392.00, 523.25, 659.25]);
 
-      // Confete sobre o slot encaixado
+      // Confete festivo sobre o slot encaixado
       const rect = slotEl.getBoundingClientRect();
       const stageRect = stage.getBoundingClientRect();
       spawnConfetti(rect.left + rect.width / 2 - stageRect.left, rect.top + rect.height / 2 - stageRect.top);
-
-      selectedPieceId = null;
-      trayEl.querySelectorAll('.puzzle-piece-card').forEach(c => c.classList.remove('is-selected'));
 
       // Verifica se completou o quebra-cabeça
       if (placedPieces.size === totalPieces) {
@@ -3502,7 +3569,7 @@ export class EducationalGamesManager {
       }
     };
 
-    // Configuração dos Eventos de Arraste e Clique nas Peças
+    // Configuração dos Eventos de Arraste e Toque nas Peças
     const attachPieceEvents = () => {
       const pieceCards = trayEl.querySelectorAll('.puzzle-piece-card');
 
@@ -3534,17 +3601,13 @@ export class EducationalGamesManager {
           }
 
           if (isDragging) {
-            card.style.transform = `translate3d(${dx}px, ${dy}px, 0) scale(1.12)`;
+            card.style.transform = `translate3d(${dx}px, ${dy}px, 0) scale(1.15)`;
 
-            const elem = document.elementFromPoint(e.clientX, e.clientY);
-            const slot = elem ? elem.closest('.puzzle-slot') : null;
+            const hoveredSlot = findSlotAtPoint(e.clientX, e.clientY, card);
             boardEl.querySelectorAll('.puzzle-slot').forEach(s => s.classList.remove('is-hovered'));
 
-            if (slot && !slot.classList.contains('is-filled')) {
-              const sId = parseInt(slot.getAttribute('data-slot-id'), 10);
-              if (sId === expectedSlotId) {
-                slot.classList.add('is-hovered');
-              }
+            if (hoveredSlot && !hoveredSlot.classList.contains('is-filled')) {
+              hoveredSlot.classList.add('is-hovered');
             }
           }
         });
@@ -3557,35 +3620,26 @@ export class EducationalGamesManager {
 
           if (isDragging) {
             isDragging = false;
-            const elem = document.elementFromPoint(e.clientX, e.clientY);
-            const slot = elem ? elem.closest('.puzzle-slot') : null;
+            card.classList.remove('is-dragging');
 
-            if (slot && !slot.classList.contains('is-filled')) {
-              const sId = parseInt(slot.getAttribute('data-slot-id'), 10);
+            const droppedSlot = findSlotAtPoint(e.clientX, e.clientY, card);
+            if (droppedSlot && !droppedSlot.classList.contains('is-filled')) {
+              const sId = parseInt(droppedSlot.getAttribute('data-slot-id'), 10);
               if (sId === expectedSlotId) {
-                snapPieceIntoSlot(pieceId, slot);
+                snapPieceIntoSlot(pieceId, droppedSlot);
                 return;
               }
             }
 
             // Se soltou fora ou no slot incorreto: retorno suave sem punição
-            card.classList.remove('is-dragging');
             card.classList.add('is-returning');
             card.style.transform = '';
             sound.playBoing();
             speech.speak("Quase lá! Procure o espacinho com o mesmo desenho!", { delayAfterEnd: 200 });
             setTimeout(() => card.classList.remove('is-returning'), 320);
           } else {
-            // Clique simples / Toque para selecionar
-            if (selectedPieceId === pieceId) {
-              selectedPieceId = null;
-              card.classList.remove('is-selected');
-            } else {
-              selectedPieceId = pieceId;
-              trayEl.querySelectorAll('.puzzle-piece-card').forEach(c => c.classList.remove('is-selected'));
-              card.classList.add('is-selected');
-              sound.playSoftTap();
-            }
+            // Clique simples / toque para selecionar
+            selectPiece(pieceId, card);
           }
         };
 
@@ -3594,23 +3648,35 @@ export class EducationalGamesManager {
       });
     };
 
-    // Eventos de clique nos slots para apoio ao toque simples
+    // Eventos de clique nos slots para apoio ao toque simples e acessibilidade
     const attachSlotEvents = () => {
       const slots = boardEl.querySelectorAll('.puzzle-slot');
       slots.forEach(slot => {
-        slot.addEventListener('click', () => {
-          if (isGameOver || !selectedPieceId || slot.classList.contains('is-filled')) return;
+        const handleSlotAction = () => {
+          if (isGameOver || slot.classList.contains('is-filled')) return;
           const slotId = parseInt(slot.getAttribute('data-slot-id'), 10);
-          const expectedSlotId = data.pieces.find(p => p.id === selectedPieceId)?.slotId ??
-                                (data.pieces.find(p => p.id === selectedPieceId)?.r * cols + data.pieces.find(p => p.id === selectedPieceId)?.c);
 
-          if (slotId === expectedSlotId) {
-            snapPieceIntoSlot(selectedPieceId, slot);
+          if (selectedPieceId !== null) {
+            const pieceData = data.pieces.find(p => p.id === selectedPieceId);
+            const expectedSlotId = pieceData ? (pieceData.r * cols + pieceData.c) : -1;
+
+            if (slotId === expectedSlotId) {
+              snapPieceIntoSlot(selectedPieceId, slot);
+            } else {
+              sound.playSoftTap();
+              speech.speak("Esta peça encaixa em outro lugar! Observe o desenho da pista.", { delayAfterEnd: 200 });
+            }
           } else {
-            sound.playSoftTap();
-            speech.speak("Esta peça encaixa em outro lugar! Observe o desenho da pista.", { delayAfterEnd: 200 });
+            // Nenhuma peça selecionada ainda: destaca a peça correspondente na bandeja
+            const matchingCard = trayEl.querySelector(`.puzzle-piece-card[data-slot-id="${slotId}"]`);
+            if (matchingCard) {
+              const pId = parseInt(matchingCard.getAttribute('data-piece-id'), 10);
+              selectPiece(pId, matchingCard);
+            }
           }
-        });
+        };
+
+        slot.addEventListener('click', handleSlotAction);
       });
     };
 
