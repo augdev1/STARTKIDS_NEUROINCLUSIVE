@@ -66,9 +66,9 @@
           <span>Entrar</span>
         </button>
 
-        <button class="btn-icon btn-wardrobe-pill" id="btnOpenWardrobeTop" aria-label="Abrir Camarim de 52 Acessórios">
-          <span class="hud-emoji">👗</span>
-          <span>Camarim</span>
+        <button class="btn-icon btn-wardrobe-pill" id="btnOpenWardrobeTop" aria-label="Abrir Camarim e Personalização do Pip">
+          <span class="hud-emoji">🎨</span>
+          <span>Personalizar Pip</span>
           <span class="collection-counter-badge" id="collectionCounterBadge">3 / 52</span>
         </button>
 
@@ -134,8 +134,8 @@
 
             <!-- Botão 3D estilo Brinquedo de Console -->
             <button class="btn-open-wardrobe btn-3d-bouncy" id="btnOpenWardrobeCard">
-              <span>👗</span>
-              <span>Camarim & Estilo (52 Itens) ✨</span>
+              <span>🎨</span>
+              <span>Personalizar Meu Pip ✨</span>
             </button>
           </div>
 
@@ -487,11 +487,11 @@
     </main>
   </div>
 
-  <!-- MODAL DO CAMARIM DO PIP (52 ACESSÓRIOS) -->
+  <!-- MODAL DO CAMARIM E PERSONALIZAÇÃO DO PIP -->
   <div class="wardrobe-modal" id="wardrobeModal" role="dialog" aria-modal="true" aria-label="Camarim de Personalização do Pip">
     <div class="wardrobe-box">
       <div class="wardrobe-header">
-        <h3 class="wardrobe-header-title">👗 Camarim do Pip (52 Acessórios)</h3>
+        <h3 class="wardrobe-header-title">🎨 Camarim & Personalização do Pip</h3>
         <button class="btn-close-modal" id="btnCloseWardrobe" aria-label="Fechar camarim">✕</button>
       </div>
 
@@ -501,12 +501,18 @@
           <div class="pip-avatar-container" id="wardrobePipPreview">
             <!-- SVG do Pip com itens equipados -->
           </div>
-          <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 12px; text-align: center;">
-            Toque nos itens ao lado para equipar ou retirar as roupinhas!
+          <p class="wardrobe-preview-hint">
+            Toque nos traços e acessórios ao lado para dar seu estilo ao Pip!
           </p>
+          <div class="wardrobe-quick-traits">
+            <button class="btn-trait-pill" data-cat="bodyColor">🎨 Cor</button>
+            <button class="btn-trait-pill" data-cat="eyeShape">👀 Olhos</button>
+            <button class="btn-trait-pill" data-cat="mouthShape">😊 Boca</button>
+            <button class="btn-trait-pill" data-cat="cheekShape">🌸 Bochechas</button>
+          </div>
         </div>
 
-        <!-- Catálogo com Abas e Grade de 52 Itens -->
+        <!-- Catálogo com Abas e Grade de Traços e Acessórios -->
         <div class="wardrobe-catalog-pane">
           <div class="wardrobe-tabs-bar" id="wardrobeCategoryTabs">
             <!-- Abas geradas via wardrobe.js -->
@@ -520,7 +526,7 @@
           </div>
 
           <div class="wardrobe-items-grid" id="wardrobeItemsGrid">
-            <!-- Cards dos 52 itens gerados dinamicamente -->
+            <!-- Cards de traços e dos 52 itens gerados dinamicamente -->
           </div>
         </div>
       </div>

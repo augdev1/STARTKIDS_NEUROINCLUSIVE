@@ -2308,6 +2308,118 @@ button:hover img.emoji,
   color: #FFFFFF;
 }
 
+/* --- Personalização do Avatar (Cores, Olhos, Boca, Bochechas) --- */
+.wardrobe-preview-hint {
+  font-size: 0.86rem;
+  color: var(--text-muted);
+  margin-top: 10px;
+  text-align: center;
+  line-height: 1.4;
+  max-width: 240px;
+}
+
+.wardrobe-quick-traits {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  margin-top: 14px;
+  width: 100%;
+}
+
+.btn-trait-pill {
+  background: #FFFFFF;
+  border: 1.5px solid rgba(0, 0, 0, 0.08);
+  border-radius: var(--radius-pill);
+  padding: 5px 12px;
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-main);
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-press);
+}
+
+.btn-trait-pill:hover {
+  background: #E8F5EF;
+  border-color: var(--primary);
+  color: var(--primary-dark);
+  transform: translateY(-1px);
+}
+
+.appearance-card {
+  position: relative;
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  border: 2px solid transparent;
+}
+
+.appearance-card:hover {
+  transform: translateY(-3px) scale(1.02);
+}
+
+.appearance-card.is-selected {
+  border-color: var(--primary);
+  background: #F0FDF4;
+  box-shadow: 0 6px 18px rgba(34, 197, 94, 0.18);
+}
+
+.appearance-box {
+  width: 100%;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.appearance-color-circle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.25s ease;
+}
+
+.appearance-card:hover .appearance-color-circle {
+  transform: scale(1.1);
+}
+
+.color-sparkle-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  opacity: 0.7;
+}
+
+.appearance-svg-preview {
+  background: #F8FAF9;
+  border-radius: 14px;
+  padding: 6px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 90%;
+  height: 100%;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.appearance-none-box {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: #F8FAF9;
+  border-radius: 14px;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+
 /* ==========================================================================
    MODAL DO BAÚ MÁGICO DE RECOMPENSAS (SLIM & CLEAN)
    ========================================================================== */

@@ -6,6 +6,12 @@
 import { sound } from './audio.js';
 import { ACCESSORIES_DATABASE } from './accessoriesData.js';
 import { authService } from './authService.js';
+import { 
+  PIP_BODY_COLORS, 
+  PIP_EYE_SHAPES, 
+  PIP_MOUTH_SHAPES, 
+  PIP_CHEEK_SHAPES 
+} from './appearanceData.js';
 
 export class MascotManager {
   constructor() {
@@ -43,7 +49,11 @@ export class MascotManager {
         face: null,
         clothes: null,
         pets: null,
-        auras: null
+        auras: null,
+        bodyColor: 'mint',
+        eyeShape: 'default',
+        mouthShape: 'default',
+        cheekShape: 'blush'
       },
       completedGamesCount: 0,
       starsCount: 3
@@ -59,6 +69,10 @@ export class MascotManager {
         if (!parsed.equipped || typeof parsed.equipped !== 'object') {
           parsed.equipped = { hats: 'leaf_hat', face: null, clothes: null, pets: null, auras: null };
         }
+        parsed.equipped.bodyColor = parsed.equipped.bodyColor || 'mint';
+        parsed.equipped.eyeShape = parsed.equipped.eyeShape || 'default';
+        parsed.equipped.mouthShape = parsed.equipped.mouthShape || 'default';
+        parsed.equipped.cheekShape = parsed.equipped.cheekShape || 'blush';
         return parsed;
       } catch (e) {}
     }
@@ -67,13 +81,19 @@ export class MascotManager {
 
   applyProgression(prog) {
     if (!prog) return;
+    const equipped = (prog.equipped_accessories && typeof prog.equipped_accessories === 'object') 
+      ? { ...prog.equipped_accessories } 
+      : { hats: 'leaf_hat', face: null, clothes: null, pets: null, auras: null };
+    equipped.bodyColor = equipped.bodyColor || this.data?.equipped?.bodyColor || 'mint';
+    equipped.eyeShape = equipped.eyeShape || this.data?.equipped?.eyeShape || 'default';
+    equipped.mouthShape = equipped.mouthShape || this.data?.equipped?.mouthShape || 'default';
+    equipped.cheekShape = equipped.cheekShape || this.data?.equipped?.cheekShape || 'blush';
+
     this.data = {
       unlockedAccessories: Array.isArray(prog.unlocked_accessories) 
         ? [...prog.unlocked_accessories] 
         : ['leaf_hat', 'star_glasses', 'pet_ladybug'],
-      equipped: (prog.equipped_accessories && typeof prog.equipped_accessories === 'object') 
-        ? { ...prog.equipped_accessories } 
-        : { hats: 'leaf_hat', face: null, clothes: null, pets: null, auras: null },
+      equipped,
       completedGamesCount: Array.isArray(prog.games_completed) ? prog.games_completed.length : 0,
       starsCount: typeof prog.stars === 'number' ? prog.stars : 3
     };
@@ -102,6 +122,21 @@ export class MascotManager {
         stars: this.data.starsCount
       });
     }
+  }
+
+  // Personaliza traços do Pip (Cor, Olhos, Boca, Bochechas)
+  setAppearance(type, id) {
+    if (!this.data.equipped) {
+      this.data.equipped = {};
+    }
+    this.data.equipped[type] = id;
+    this.saveData();
+    this.render();
+  }
+
+  getAppearance(type) {
+    if (!this.data.equipped) return null;
+    return this.data.equipped[type] || null;
   }
 
   // Desbloqueia a próxima recompensa mágica (usado no Baú)
@@ -151,9 +186,22 @@ export class MascotManager {
     return this.data.unlockedAccessories.includes(id);
   }
 
-  // Gera o SVG multicamadas do Pip
+  // Gera o SVG multicamadas do Pip com personalização dinâmica completa
   getSVG() {
-    // 1. Acessórios equipados
+    // 1. Configurações de Aparência (Cor, Olhos, Boca, Bochechas)
+    const bodyColorId = this.data.equipped.bodyColor || 'mint';
+    const colorConfig = PIP_BODY_COLORS.find(c => c.id === bodyColorId) || PIP_BODY_COLORS[0];
+
+    const eyeShapeId = this.data.equipped.eyeShape || 'default';
+    const eyeConfig = PIP_EYE_SHAPES.find(e => e.id === eyeShapeId) || PIP_EYE_SHAPES[0];
+
+    const mouthShapeId = this.data.equipped.mouthShape || 'default';
+    const mouthConfig = PIP_MOUTH_SHAPES.find(m => m.id === mouthShapeId) || PIP_MOUTH_SHAPES[0];
+
+    const cheekShapeId = this.data.equipped.cheekShape || 'blush';
+    const cheekConfig = PIP_CHEEK_SHAPES.find(c => c.id === cheekShapeId) || PIP_CHEEK_SHAPES[0];
+
+    // 2. Acessórios equipados
     const auraId = this.data.equipped.auras;
     const hatId = this.data.equipped.hats;
     const faceId = this.data.equipped.face;
@@ -170,12 +218,10 @@ export class MascotManager {
       <svg viewBox="0 0 220 220" width="100%" height="100%" class="anim-pip-breathe" style="overflow: visible; display: block;">
         <defs>
           <radialGradient id="pipGlow" cx="50%" cy="40%" r="55%">
-            <stop offset="0%" stop-color="#FFFFFF" />
-            <stop offset="60%" stop-color="#EBF4F2" />
-            <stop offset="100%" stop-color="#D5E8E2" />
+            ${colorConfig.gradientStops}
           </radialGradient>
           <filter id="gentleShadow" x="-10%" y="-10%" width="130%" height="130%">
-            <feDropShadow dx="0" dy="8" stdDeviation="6" flood-color="#3D6656" flood-opacity="0.12" />
+            <feDropShadow dx="0" dy="8" stdDeviation="6" flood-color="${colorConfig.shadowColor}" flood-opacity="0.13" />
           </filter>
         </defs>
 
@@ -188,35 +234,28 @@ export class MascotManager {
         <!-- Sombra no Chão (delimitada e suave) -->
         <ellipse cx="110" cy="200" rx="62" ry="10" fill="rgba(90, 143, 123, 0.15)" />
 
-        <!-- CAMADA 2: CORPO DO PIP -->
+        <!-- CAMADA 2: CORPO DO PIP (Cor Personalizável) -->
         <g filter="url(#gentleShadow)">
           <path d="M110 32 C65 32 45 75 45 125 C45 175 70 195 110 195 C150 195 175 175 175 125 C175 75 155 32 110 32 Z"
-                fill="url(#pipGlow)" stroke="#B3D4C9" stroke-width="2.5" />
+                fill="url(#pipGlow)" stroke="${colorConfig.stroke}" stroke-width="2.5" />
         </g>
 
-        <!-- Patinhas Suaves -->
-        <ellipse cx="78" cy="194" rx="14" ry="9" fill="#D5E8E2" stroke="#B3D4C9" stroke-width="2" />
-        <ellipse cx="142" cy="194" rx="14" ry="9" fill="#D5E8E2" stroke="#B3D4C9" stroke-width="2" />
+        <!-- Patinhas Suaves Harmonizadas -->
+        <ellipse cx="78" cy="194" rx="14" ry="9" fill="${colorConfig.limbs}" stroke="${colorConfig.stroke}" stroke-width="2" />
+        <ellipse cx="142" cy="194" rx="14" ry="9" fill="${colorConfig.limbs}" stroke="${colorConfig.stroke}" stroke-width="2" />
 
         <!-- Braços / Asinhas Macias -->
-        <ellipse cx="48" cy="132" rx="10" ry="18" transform="rotate(-15 48 132)" fill="#D5E8E2" stroke="#B3D4C9" stroke-width="2" />
-        <ellipse cx="172" cy="132" rx="10" ry="18" transform="rotate(15 172 132)" fill="#D5E8E2" stroke="#B3D4C9" stroke-width="2" />
+        <ellipse cx="48" cy="132" rx="10" ry="18" transform="rotate(-15 48 132)" fill="${colorConfig.limbs}" stroke="${colorConfig.stroke}" stroke-width="2" />
+        <ellipse cx="172" cy="132" rx="10" ry="18" transform="rotate(15 172 132)" fill="${colorConfig.limbs}" stroke="${colorConfig.stroke}" stroke-width="2" />
 
-        <!-- Bochechinhas Rosadas Suaves -->
-        <circle cx="70" cy="118" r="11" fill="#FCE0E5" opacity="0.8" />
-        <circle cx="150" cy="118" r="11" fill="#FCE0E5" opacity="0.8" />
+        <!-- Bochechinhas Personalizáveis -->
+        ${cheekConfig.svg}
 
-        <!-- Olhos Doces e Acolhedores -->
-        <g class="anim-pip-eye">
-          <ellipse cx="82" cy="104" rx="6.5" ry="9.5" fill="#2C3E38" />
-          <circle cx="80" cy="100" r="2.5" fill="#FFFFFF" />
-          
-          <ellipse cx="138" cy="104" rx="6.5" ry="9.5" fill="#2C3E38" />
-          <circle cx="136" cy="100" r="2.5" fill="#FFFFFF" />
-        </g>
+        <!-- Olhos com Expressão Escolhida -->
+        ${eyeConfig.svg}
 
-        <!-- Sorriso Calmo -->
-        <path d="M102 118 Q110 126 118 118" stroke="#2C3E38" stroke-width="2.8" stroke-linecap="round" fill="none" />
+        <!-- Sorriso / Boquinha Escolhida -->
+        ${mouthConfig.svg}
 
         <!-- CAMADA 3: ROUPAS, GOLAS E BROCHES FRONTAIS -->
         ${clothesItem ? clothesItem.svg : ''}
