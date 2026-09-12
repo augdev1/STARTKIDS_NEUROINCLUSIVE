@@ -102,7 +102,7 @@ O sistema adota uma arquitetura em camadas desacopladas, priorizando carregament
 
 ## 4. Módulos Educativos Disponíveis
 
-A plataforma disponibiliza nove módulos de atividades estruturadas com progressão pedagógica:
+A plataforma disponibiliza dez módulos de atividades estruturadas com progressão pedagógica:
 
 1. **O Espelho das Emoções (Competências Socioemocionais)**:
    Apresentação de cenários cotidianos vivenciados pelo mascote Pip para identificação e nomeação de estados afetivos. Cada cenário conta com texto acessível em destaque, botão de narração em áudio e feedback falado explicativo ao acertar, seguido de 2 segundos de pausa para consolidação emocional.
@@ -122,6 +122,8 @@ A plataforma disponibiliza nove módulos de atividades estruturadas com progress
    Navegação por caminhos com rastreamento contínuo por toque ou mouse, permitindo coletar itens mágicos e alcançar o objetivo com traçado suave e acolhedor.
 9. **O Jogo de Damas do Pip (Estratégia, Diagonais & Parceria Amigável)**:
    Mecânica adaptada de damas focada no aprendizado de diagonais e cooperação lúdica, equipada com inteligência acolhedora do Pip, suporte a arrastar peças e animações de movimento orgânicas.
+10. **O Quebra-Cabeça Acolhedor do Pip (Percepção Visual & Encaixe Tátil)**:
+    Montagem de cenários ilustrados encantadores com suporte a arrastar e soltar suave via Pointer Events ou clique simples, pistas visuais com silhueta fantasma de apoio, efeito magnético de encaixe (*snap*), celebração com confetes e ausência de penalidades.
 
 ---
 
@@ -135,6 +137,7 @@ A plataforma disponibiliza nove módulos de atividades estruturadas com progress
 |   |-- animations.css         # Microinterações e animações visuais fluidas
 |   |-- games-phase6-7.css     # Estilos dedicados aos Jogos 6 (Velha) e 7 (Memória)
 |   |-- games-phase8-9.css     # Estilos dedicados aos Jogos 8 (Labirinto) e 9 (Damas)
+|   |-- games-phase10.css      # Estilos dedicados ao Jogo 10 (Quebra-Cabeça Acolhedor)
 |   |-- login.css              # Interface de autenticação, feedback e PWA
 |   +-- style.css              # Design system global e acessibilidade sensorial
 |-- js/                        # Módulos lógicos da aplicação cliente
@@ -143,7 +146,7 @@ A plataforma disponibiliza nove módulos de atividades estruturadas com progress
 |   |-- audio.js               # Motor de síntese sonora pentatônica (Web Audio API)
 |   |-- authService.js         # Cliente de comunicação com a API de autenticação
 |   |-- calmMode.js            # Módulo de respiração diafragmática guiada
-|   |-- educationalGames.js    # Lógica dos 9 módulos pedagógicos interativos
+|   |-- educationalGames.js    # Lógica dos 10 módulos pedagógicos interativos
 |   |-- emojiEnhancer.js       # Tratamento de renderização de glifos vetoriais
 |   |-- login.js               # Gerenciador da interface de autenticação e regras de acesso
 |   |-- mascot.js              # Sistema de renderização multicamada do Pip (52 itens)

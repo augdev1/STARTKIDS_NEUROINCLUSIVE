@@ -1,0 +1,388 @@
+/* ==========================================================================
+   FASE 10: O QUEBRA-CABEÇA ACOLHEDOR DO PIP
+   Estilos dedicados, ultra-responsivos e neuroinclusivos (Mobile & Desktop)
+   ========================================================================== */
+
+/* Limitação de tamanho para imagens de emoji do EmojiEnhancer */
+.puzzle-slot img.emoji,
+.puzzle-piece-card img.emoji,
+.puzzle-status-pill img.emoji {
+  width: 32px !important;
+  height: 32px !important;
+  margin: 0 !important;
+  vertical-align: middle !important;
+  display: inline-block !important;
+}
+
+/* Card Temático no Hub de Jogos */
+.game-hub-card.theme-purple {
+  background: linear-gradient(180deg, #FFFFFF 0%, #FAF5FF 100%) !important;
+}
+
+.pill-puzzle {
+  background: #F3E8FF !important;
+  color: #6B21A8 !important;
+}
+
+.btn-play-purple {
+  background: #9333EA !important;
+  box-shadow: 0 4px 14px rgba(147, 51, 234, 0.35) !important;
+}
+
+/* ==========================================================================
+   ARENA PRINCIPAL DO QUEBRA-CABEÇA
+   ========================================================================== */
+.puzzle-arena {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  gap: 16px;
+  user-select: none;
+  touch-action: none;
+}
+
+/* Barra Superior de Status */
+.puzzle-status-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 580px;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.puzzle-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #FFFFFF;
+  padding: 8px 16px;
+  border-radius: var(--radius-pill, 9999px);
+  font-family: var(--font-body, system-ui, sans-serif);
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: var(--primary-dark, #162438);
+  box-shadow: 0 2px 8px rgba(25, 37, 56, 0.06);
+  border: 1.5px solid rgba(22, 36, 56, 0.06);
+}
+
+.puzzle-btn-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #EFF6FF;
+  color: #1D4ED8;
+  border: 1.5px solid #BFDBFE;
+  padding: 8px 14px;
+  border-radius: var(--radius-pill, 9999px);
+  font-family: var(--font-body, system-ui, sans-serif);
+  font-weight: 700;
+  font-size: 0.86rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.puzzle-btn-hint:hover {
+  background: #DBEAFE;
+  transform: translateY(-1px);
+}
+
+.puzzle-btn-hint.is-active {
+  background: #FEF3C7;
+  color: #92400E;
+  border-color: #FDE68A;
+}
+
+/* ==========================================================================
+   QUADRO / TABULEIRO DE ENCAIXE (PUZZLE BOARD)
+   ========================================================================== */
+.puzzle-board-wrapper {
+  position: relative;
+  background: #FFFFFF;
+  padding: 14px;
+  border-radius: 24px;
+  box-shadow: 0 8px 28px rgba(22, 36, 56, 0.08), inset 0 2px 6px rgba(255, 255, 255, 0.8);
+  border: 3px solid #E2E8F0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.puzzle-board-wrapper.puzzle-completed {
+  border-color: #10B981;
+  box-shadow: 0 0 28px rgba(16, 185, 129, 0.35), 0 8px 28px rgba(22, 36, 56, 0.08);
+  animation: puzzle-victory-pulse 2s ease infinite alternate;
+}
+
+@keyframes puzzle-victory-pulse {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.02); }
+}
+
+.puzzle-board {
+  display: grid;
+  gap: 6px;
+  background: #F8FAFC;
+  padding: 6px;
+  border-radius: 18px;
+  border: 2px dashed #CBD5E1;
+  width: 100%;
+  max-width: 440px;
+  box-sizing: border-box;
+}
+
+/* Slots de Encaixe */
+.puzzle-slot {
+  position: relative;
+  background: #F1F5F9;
+  border-radius: 12px;
+  border: 2px dashed #CBD5E1;
+  overflow: hidden;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 4 / 3;
+  transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* Silhueta Fantasma de Pista Visual */
+.puzzle-slot-ghost {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.22;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.puzzle-slot.hint-off .puzzle-slot-ghost {
+  opacity: 0.04;
+}
+
+.puzzle-slot-landmark {
+  position: absolute;
+  font-size: 1.4rem;
+  opacity: 0.45;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Slot quando peça está próxima (hover de arraste) */
+.puzzle-slot.is-hovered {
+  border-color: #10B981 !important;
+  background: rgba(16, 185, 129, 0.15) !important;
+  transform: scale(1.03);
+  box-shadow: 0 0 16px rgba(16, 185, 129, 0.4);
+}
+
+/* Slot com Peça Encaixada */
+.puzzle-slot.is-filled {
+  border: 2px solid transparent !important;
+  background: transparent !important;
+  cursor: default;
+}
+
+.puzzle-slot.is-filled .puzzle-slot-landmark {
+  display: none;
+}
+
+.puzzle-slot-content {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  animation: puzzle-snap-in 0.38s cubic-bezier(0.2, 1.2, 0.4, 1);
+}
+
+@keyframes puzzle-snap-in {
+  0% { transform: scale(1.18); filter: brightness(1.3); }
+  60% { transform: scale(0.96); }
+  100% { transform: scale(1); filter: brightness(1); }
+}
+
+/* ==========================================================================
+   BANDEJA DE PEÇAS SOLTAS (PUZZLE TRAY)
+   ========================================================================== */
+.puzzle-tray-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 580px;
+  background: #FFFFFF;
+  padding: 14px 18px;
+  border-radius: 20px;
+  box-shadow: 0 4px 16px rgba(22, 36, 56, 0.05);
+  border: 2px solid #E2E8F0;
+  gap: 10px;
+}
+
+.puzzle-tray-title {
+  font-family: var(--font-body, system-ui, sans-serif);
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text-muted, #64748B);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.puzzle-tray-pieces {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 90px;
+  padding: 4px;
+}
+
+/* Card da Peça Solta na Bandeja */
+.puzzle-piece-card {
+  position: relative;
+  width: 100px;
+  aspect-ratio: 4 / 3;
+  border-radius: 14px;
+  border: 2.5px solid #CBD5E1;
+  background: #FFFFFF;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(22, 36, 56, 0.1);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.puzzle-piece-card:hover {
+  transform: translateY(-3px) scale(1.04);
+  box-shadow: 0 8px 18px rgba(22, 36, 56, 0.16);
+  border-color: #38BDF8;
+}
+
+.puzzle-piece-card:active {
+  cursor: grabbing;
+}
+
+.puzzle-piece-card.is-selected {
+  border-color: #F59E0B !important;
+  box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.3), 0 8px 18px rgba(245, 158, 11, 0.25) !important;
+  transform: scale(1.06);
+  animation: puzzle-piece-pulse 1.2s infinite alternate ease-in-out;
+}
+
+@keyframes puzzle-piece-pulse {
+  0% { transform: scale(1.04); }
+  100% { transform: scale(1.08); }
+}
+
+.puzzle-piece-card.is-dragging {
+  cursor: grabbing;
+  z-index: 1000 !important;
+  opacity: 0.95;
+  box-shadow: 0 16px 32px rgba(22, 36, 56, 0.28) !important;
+  pointer-events: none;
+}
+
+.puzzle-piece-card.is-returning {
+  transition: transform 0.32s cubic-bezier(0.2, 1, 0.4, 1) !important;
+  z-index: 900;
+}
+
+.puzzle-piece-svg-holder {
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.puzzle-piece-badge {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  background: rgba(15, 23, 42, 0.65);
+  color: #FFFFFF;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 8px;
+  backdrop-filter: blur(4px);
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   CONFETES E ANIMAÇÕES DE COMEMORAÇÃO
+   ========================================================================== */
+.puzzle-confetti-burst {
+  position: absolute;
+  pointer-events: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  animation: puzzle-confetti-fall 1.2s ease forwards;
+  z-index: 200;
+}
+
+@keyframes puzzle-confetti-fall {
+  0% { transform: translate(0, 0) scale(1); opacity: 1; }
+  100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+}
+
+/* ==========================================================================
+   RESPONSIVIDADE (Tablets e Smartphones)
+   ========================================================================== */
+@media (max-width: 600px) {
+  .puzzle-board {
+    max-width: 330px;
+    gap: 4px;
+    padding: 4px;
+  }
+
+  .puzzle-slot {
+    border-radius: 10px;
+  }
+
+  .puzzle-slot-landmark {
+    font-size: 1.1rem;
+  }
+
+  .puzzle-piece-card {
+    width: 78px;
+    border-radius: 10px;
+  }
+
+  .puzzle-status-bar {
+    max-width: 360px;
+    justify-content: center;
+  }
+
+  .puzzle-status-pill {
+    padding: 6px 12px;
+    font-size: 0.84rem;
+  }
+
+  .puzzle-btn-hint {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .puzzle-board {
+    max-width: 290px;
+  }
+
+  .puzzle-piece-card {
+    width: 66px;
+  }
+}

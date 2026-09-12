@@ -483,6 +483,282 @@ export const GAME_POOLS = {
         { r: 0, c: 1 }, { r: 0, c: 5 }, { r: 1, c: 4 }, { r: 2, c: 1 }
       ]
     }
+  ],
+
+  // Jogo 10: O Quebra-Cabeça Acolhedor do Pip (Percepção Visual & Encaixe Tátil)
+  10: [
+    {
+      themeName: "Piquenique no Bosque",
+      instruction: "Arraste as peças ou toque nelas para montar o lindo piquenique do Pip!",
+      width: 400,
+      height: 300,
+      rows: 2,
+      cols: 2,
+      pieces: [
+        { id: 0, r: 0, c: 0, icon: "🐶", name: "Pip no Bosque", hint: "O Pip sorrindo no céu azul!" },
+        { id: 1, r: 0, c: 1, icon: "🦋", name: "Borboleta e Arco-Íris", hint: "A borboleta perto do arco-íris!" },
+        { id: 2, r: 1, c: 0, icon: "🍎", name: "Cesta de Maçãs", hint: "A toalha de piquenique com frutas!" },
+        { id: 3, r: 1, c: 1, icon: "🌻", name: "Girassol Dourado", hint: "O girassol grandão na relva!" }
+      ],
+      svgContent: `
+        <defs>
+          <linearGradient id="pzSky1" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#7DD3FC"/>
+            <stop offset="100%" stop-color="#E0F2FE"/>
+          </linearGradient>
+          <linearGradient id="pzGrass1" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#86EFAC"/>
+            <stop offset="100%" stop-color="#22C55E"/>
+          </linearGradient>
+        </defs>
+        <rect width="400" height="300" fill="url(#pzSky1)"/>
+        <circle cx="38" cy="38" r="28" fill="#FDE047" opacity="0.9"/>
+        <circle cx="38" cy="38" r="36" fill="#FDE047" opacity="0.3"/>
+        <path d="M 170 120 A 130 130 0 0 1 390 120" fill="none" stroke="#F43F5E" stroke-width="8" opacity="0.85"/>
+        <path d="M 178 120 A 122 122 0 0 1 382 120" fill="none" stroke="#FB923C" stroke-width="8" opacity="0.85"/>
+        <path d="M 186 120 A 114 114 0 0 1 374 120" fill="none" stroke="#FACC15" stroke-width="8" opacity="0.85"/>
+        <path d="M 194 120 A 106 106 0 0 1 366 120" fill="none" stroke="#4ADE80" stroke-width="8" opacity="0.85"/>
+        <path d="M 202 120 A 98 98 0 0 1 358 120" fill="none" stroke="#38BDF8" stroke-width="8" opacity="0.85"/>
+        <path d="M 0 180 Q 100 130 220 170 T 400 150 L 400 300 L 0 300 Z" fill="url(#pzGrass1)"/>
+        <g transform="translate(100, 140)">
+          <ellipse cx="0" cy="48" rx="42" ry="12" fill="rgba(15, 23, 42, 0.15)"/>
+          <ellipse cx="0" cy="10" rx="34" ry="38" fill="#3B82F6"/>
+          <ellipse cx="0" cy="18" rx="22" ry="24" fill="#DBEAFE"/>
+          <circle cx="0" cy="-28" r="32" fill="#3B82F6"/>
+          <ellipse cx="-28" cy="-18" rx="10" ry="22" fill="#1D4ED8" transform="rotate(-15 -28 -18)"/>
+          <ellipse cx="28" cy="-18" rx="10" ry="22" fill="#1D4ED8" transform="rotate(15 28 -18)"/>
+          <circle cx="-10" cy="-30" r="4.5" fill="#0F172A"/>
+          <circle cx="10" cy="-30" r="4.5" fill="#0F172A"/>
+          <circle cx="-8" cy="-32" r="1.5" fill="#FFFFFF"/>
+          <circle cx="12" cy="-32" r="1.5" fill="#FFFFFF"/>
+          <ellipse cx="-18" cy="-22" rx="5" ry="3" fill="#FDA4AF" opacity="0.8"/>
+          <ellipse cx="18" cy="-22" rx="5" ry="3" fill="#FDA4AF" opacity="0.8"/>
+          <ellipse cx="0" cy="-22" rx="5" ry="4" fill="#0F172A"/>
+          <path d="M -8 -16 Q 0 -10 8 -16" fill="none" stroke="#0F172A" stroke-width="2.5" stroke-linecap="round"/>
+          <ellipse cx="-32" cy="0" rx="9" ry="18" fill="#3B82F6" transform="rotate(-25 -32 0)"/>
+          <ellipse cx="32" cy="0" rx="9" ry="18" fill="#3B82F6" transform="rotate(25 32 0)"/>
+        </g>
+        <g transform="translate(60, 225)">
+          <polygon points="0,35 120,20 150,65 20,80" fill="#FEE2E2" stroke="#EF4444" stroke-width="2"/>
+          <line x1="30" y1="28" x2="50" y2="76" stroke="#FCA5A5" stroke-width="2"/>
+          <line x1="70" y1="24" x2="90" y2="72" stroke="#FCA5A5" stroke-width="2"/>
+          <line x1="110" y1="20" x2="130" y2="68" stroke="#FCA5A5" stroke-width="2"/>
+          <rect x="50" y="32" width="46" height="28" rx="6" fill="#B45309"/>
+          <ellipse cx="64" cy="30" rx="8" ry="8" fill="#EF4444"/>
+          <ellipse cx="80" cy="31" rx="8" ry="8" fill="#EF4444"/>
+          <ellipse cx="72" cy="25" rx="7" ry="7" fill="#F87171"/>
+        </g>
+        <g transform="translate(300, 75)">
+          <path d="M 0 0 C -25 -25 -35 5 0 8 C -30 20 -15 35 0 10 Z" fill="#F472B6" opacity="0.9"/>
+          <path d="M 0 0 C 25 -25 35 5 0 8 C 30 20 15 35 0 10 Z" fill="#F472B6" opacity="0.9"/>
+          <ellipse cx="0" cy="5" rx="3" ry="12" fill="#475569"/>
+          <circle cx="0" cy="-9" r="4" fill="#475569"/>
+        </g>
+        <g transform="translate(320, 220)">
+          <path d="M 0 0 Q 5 40 -10 75" fill="none" stroke="#15803D" stroke-width="7" stroke-linecap="round"/>
+          <ellipse cx="18" cy="35" rx="16" ry="8" fill="#22C55E" transform="rotate(25 18 35)"/>
+          <ellipse cx="-18" cy="50" rx="16" ry="8" fill="#22C55E" transform="rotate(-25 -18 50)"/>
+          <circle cx="0" cy="0" r="42" fill="#F59E0B" opacity="0.25"/>
+          <circle cx="0" cy="0" r="32" fill="#FBBF24"/>
+          <circle cx="0" cy="0" r="18" fill="#78350F"/>
+          <circle cx="-5" cy="-4" r="3" fill="#451A03"/>
+          <circle cx="5" cy="5" r="3" fill="#451A03"/>
+        </g>
+      `
+    },
+    {
+      themeName: "O Barquinho das Estrelas",
+      instruction: "Encaixe as pecinhas para navegar com o Pip sob o céu estrelado!",
+      width: 420,
+      height: 280,
+      rows: 2,
+      cols: 3,
+      pieces: [
+        { id: 0, r: 0, c: 0, icon: "✨", name: "Céu Noturno", hint: "As estrelinhas no alto à esquerda!" },
+        { id: 1, r: 0, c: 1, icon: "🌙", name: "Lua Dourada", hint: "A lua sorridente brilhando no meio!" },
+        { id: 2, r: 0, c: 2, icon: "🌟", name: "Estrela Cadente", hint: "O rastro de luz à direita!" },
+        { id: 3, r: 1, c: 0, icon: "🐟", name: "Ondas e Peixinho", hint: "O peixinho saltador nas ondas!" },
+        { id: 4, r: 1, c: 1, icon: "⛵", name: "Barquinho do Pip", hint: "O barquinho velejando na água!" },
+        { id: 5, r: 1, c: 2, icon: "🗼", name: "Farol Iluminado", hint: "O farol encantado na beirinha!" }
+      ],
+      svgContent: `
+        <defs>
+          <linearGradient id="pzNightSky" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#0F172A"/>
+            <stop offset="60%" stop-color="#1E293B"/>
+            <stop offset="100%" stop-color="#334155"/>
+          </linearGradient>
+          <linearGradient id="pzSea" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#0284C7"/>
+            <stop offset="100%" stop-color="#0369A1"/>
+          </linearGradient>
+        </defs>
+        <rect width="420" height="280" fill="url(#pzNightSky)"/>
+        <circle cx="45" cy="35" r="2.5" fill="#FEF08A"/>
+        <circle cx="85" cy="65" r="3.5" fill="#FEF08A"/>
+        <circle cx="120" cy="25" r="2" fill="#FEF08A"/>
+        <circle cx="340" cy="30" r="3" fill="#FEF08A"/>
+        <circle cx="390" cy="60" r="2.5" fill="#FEF08A"/>
+        <line x1="310" y1="40" x2="360" y2="70" stroke="#FDE047" stroke-width="2.5" stroke-linecap="round" opacity="0.8"/>
+        <g transform="translate(210, 65)">
+          <path d="M 0 -38 A 42 42 0 1 0 35 30 A 34 34 0 1 1 0 -38 Z" fill="#FBBF24"/>
+          <circle cx="-12" cy="-4" r="3.5" fill="#78350F"/>
+          <path d="M -18 8 Q -10 16 -2 8" fill="none" stroke="#78350F" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="-18" cy="3" r="4" fill="#FDA4AF" opacity="0.8"/>
+        </g>
+        <path d="M 0 160 Q 70 145 140 160 T 280 160 T 420 160 L 420 280 L 0 280 Z" fill="url(#pzSea)"/>
+        <path d="M 0 190 Q 60 178 130 190 T 270 190 T 420 190 L 420 280 L 0 280 Z" fill="#0284C7" opacity="0.6"/>
+        <g transform="translate(70, 200)">
+          <ellipse cx="0" cy="0" rx="14" ry="8" fill="#FB923C"/>
+          <polygon points="-12,0 -22,-7 -22,7" fill="#F97316"/>
+          <circle cx="8" cy="-2" r="2" fill="#FFFFFF"/>
+          <circle cx="9" cy="-2" r="1" fill="#0F172A"/>
+        </g>
+        <g transform="translate(210, 195)">
+          <path d="M -38 12 Q 0 30 38 12 L 28 32 Q 0 38 -28 32 Z" fill="#B45309"/>
+          <line x1="0" y1="12" x2="0" y2="-45" stroke="#78350F" stroke-width="4" stroke-linecap="round"/>
+          <polygon points="2,-42 2,6 36,-12" fill="#F8FAFC" opacity="0.95"/>
+          <circle cx="-6" cy="-2" r="14" fill="#3B82F6"/>
+          <ellipse cx="-16" cy="-4" rx="4" ry="10" fill="#1D4ED8" transform="rotate(-15 -16 -4)"/>
+          <circle cx="-10" cy="-3" r="2" fill="#0F172A"/>
+          <circle cx="-3" cy="-3" r="2" fill="#0F172A"/>
+          <path d="M -8 2 Q -6 6 -4 2" fill="none" stroke="#0F172A" stroke-width="1.5"/>
+          <circle cx="28" cy="18" r="7" fill="#FEF08A" opacity="0.9"/>
+        </g>
+        <g transform="translate(365, 175)">
+          <polygon points="-14,80 14,80 8,0 -8,0" fill="#EF4444"/>
+          <rect x="-8" y="20" width="16" height="16" fill="#FFFFFF"/>
+          <rect x="-8" y="50" width="16" height="16" fill="#FFFFFF"/>
+          <rect x="-10" y="-12" width="20" height="12" fill="#FBBF24"/>
+          <polygon points="-8,-12 0,-24 8,-12" fill="#DC2626"/>
+          <polygon points="10,-6 60,-30 60,18" fill="#FEF08A" opacity="0.35"/>
+        </g>
+      `
+    },
+    {
+      themeName: "O Castelo do Arco-Íris",
+      instruction: "Monte o grande castelo mágico de cristal do Pip!",
+      width: 420,
+      height: 280,
+      rows: 2,
+      cols: 3,
+      pieces: [
+        { id: 0, r: 0, c: 0, icon: "🏰", name: "Torre da Esquerda", hint: "A torre lateral com bandeirinha!" },
+        { id: 1, r: 0, c: 1, icon: "🌈", name: "Arco-Íris e Relógio", hint: "A cúpula mágica e o arco-íris!" },
+        { id: 2, r: 0, c: 2, icon: "⭐", name: "Torre Dourada", hint: "A torre reluzente da direita!" },
+        { id: 3, r: 1, c: 0, icon: "🍄", name: "Jardim Encantado", hint: "Os cogumelos coloridos no gramado!" },
+        { id: 4, r: 1, c: 1, icon: "👑", name: "Portão Real do Pip", hint: "O Pip de coroa na porta do castelo!" },
+        { id: 5, r: 1, c: 2, icon: "🌸", name: "Flores do Reino", hint: "O canteiro de flores reluzentes!" }
+      ],
+      svgContent: `
+        <defs>
+          <linearGradient id="pzCastleSky" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#FDF4FF"/>
+            <stop offset="100%" stop-color="#E9D5FF"/>
+          </linearGradient>
+        </defs>
+        <rect width="420" height="280" fill="url(#pzCastleSky)"/>
+        <path d="M 40 180 A 170 170 0 0 1 380 180" fill="none" stroke="#F43F5E" stroke-width="10" opacity="0.8"/>
+        <path d="M 50 180 A 160 160 0 0 1 370 180" fill="none" stroke="#FB923C" stroke-width="10" opacity="0.8"/>
+        <path d="M 60 180 A 150 150 0 0 1 360 180" fill="none" stroke="#FACC15" stroke-width="10" opacity="0.8"/>
+        <path d="M 70 180 A 140 140 0 0 1 350 180" fill="none" stroke="#4ADE80" stroke-width="10" opacity="0.8"/>
+        <path d="M 80 180 A 130 130 0 0 1 340 180" fill="none" stroke="#38BDF8" stroke-width="10" opacity="0.8"/>
+        <path d="M 90 180 A 120 120 0 0 1 330 180" fill="none" stroke="#A855F7" stroke-width="10" opacity="0.8"/>
+        <rect y="210" width="420" height="70" fill="#86EFAC"/>
+        <rect x="70" y="80" width="45" height="140" fill="#E2E8F0" rx="4"/>
+        <polygon points="65,80 92,20 120,80" fill="#3B82F6"/>
+        <circle cx="92.5" cy="110" r="10" fill="#93C5FD"/>
+        <rect x="305" y="80" width="45" height="140" fill="#E2E8F0" rx="4"/>
+        <polygon points="300,80 327.5,20 355,80" fill="#F59E0B"/>
+        <circle cx="327.5" cy="110" r="10" fill="#FDE68A"/>
+        <rect x="135" y="100" width="150" height="120" fill="#F1F5F9" rx="6"/>
+        <polygon points="135,100 210,35 285,100" fill="#8B5CF6"/>
+        <circle cx="210" cy="85" r="16" fill="#FEF08A"/>
+        <polygon points="210,75 214,83 222,83 216,88 218,96 210,91 202,96 204,88 198,83 206,83" fill="#F59E0B"/>
+        <path d="M 180 220 L 180 160 A 30 30 0 0 1 240 160 L 240 220 Z" fill="#78350F"/>
+        <g transform="translate(210, 185)">
+          <circle cx="0" cy="0" r="16" fill="#3B82F6"/>
+          <circle cx="-5" cy="-2" r="2" fill="#0F172A"/>
+          <circle cx="5" cy="-2" r="2" fill="#0F172A"/>
+          <path d="M -4 4 Q 0 8 4 4" fill="none" stroke="#0F172A" stroke-width="1.5"/>
+          <polygon points="-10,-14 -12,-24 -5,-18 0,-26 5,-18 12,-24 10,-14" fill="#FBBF24"/>
+        </g>
+        <g transform="translate(45, 230)">
+          <ellipse cx="0" cy="8" rx="5" ry="12" fill="#FFFFFF"/>
+          <path d="M -14 8 A 14 14 0 0 1 14 8 Z" fill="#EF4444"/>
+          <circle cx="-4" cy="2" r="2.5" fill="#FFFFFF"/>
+          <circle cx="5" cy="3" r="2" fill="#FFFFFF"/>
+        </g>
+        <g transform="translate(380, 235)">
+          <circle cx="0" cy="0" r="10" fill="#F472B6"/>
+          <circle cx="0" cy="0" r="4" fill="#FDE047"/>
+        </g>
+      `
+    },
+    {
+      themeName: "O Fundo do Mar dos Golfinhos",
+      instruction: "Mergulhe com o Pip e monte os amiguinhos do oceano!",
+      width: 420,
+      height: 280,
+      rows: 2,
+      cols: 3,
+      pieces: [
+        { id: 0, r: 0, c: 0, icon: "🐢", name: "Tartaruguinha", hint: "A tartaruguinha nadando lá no topo!" },
+        { id: 1, r: 0, c: 1, icon: "🐬", name: "Golfinho Saltarico", hint: "O golfinho alegre na água límpida!" },
+        { id: 2, r: 0, c: 2, icon: "🫧", name: "Bolhas de Luz", hint: "A luz do sol e bolhinhas cristalinas!" },
+        { id: 3, r: 1, c: 0, icon: "🪸", name: "Coral Cor-de-Rosa", hint: "O coral fofinho na areia!" },
+        { id: 4, r: 1, c: 1, icon: "🤿", name: "Pip Mergulhador", hint: "O Pip com máscara de mergulho!" },
+        { id: 5, r: 1, c: 2, icon: "💎", name: "Baú de Pérolas", hint: "O baú dourado cheio de tesouros!" }
+      ],
+      svgContent: `
+        <defs>
+          <linearGradient id="pzSeaDepth" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#38BDF8"/>
+            <stop offset="60%" stop-color="#0284C7"/>
+            <stop offset="100%" stop-color="#0F766E"/>
+          </linearGradient>
+        </defs>
+        <rect width="420" height="280" fill="url(#pzSeaDepth)"/>
+        <polygon points="50,0 90,0 160,200 100,200" fill="#FFFFFF" opacity="0.15"/>
+        <polygon points="200,0 240,0 320,220 260,220" fill="#FFFFFF" opacity="0.15"/>
+        <polygon points="320,0 360,0 410,180 370,180" fill="#FFFFFF" opacity="0.12"/>
+        <path d="M 0 230 Q 120 215 240 235 T 420 225 L 420 280 L 0 280 Z" fill="#FDE68A"/>
+        <g transform="translate(65, 70)">
+          <ellipse cx="0" cy="0" rx="20" ry="14" fill="#15803D"/>
+          <circle cx="20" cy="-4" r="7" fill="#22C55E"/>
+          <ellipse cx="10" cy="14" rx="8" ry="4" fill="#22C55E"/>
+          <ellipse cx="-10" cy="14" rx="8" ry="4" fill="#22C55E"/>
+        </g>
+        <g transform="translate(200, 75)">
+          <path d="M -30 18 Q 0 -25 35 -5 Q 15 15 -10 18 Z" fill="#67E8F9"/>
+          <polygon points="35,-5 48,-15 44,5" fill="#06B6D4"/>
+          <polygon points="2,-16 -4,-30 -8,-16" fill="#06B6D4"/>
+          <circle cx="-16" cy="4" r="2.5" fill="#0F172A"/>
+        </g>
+        <circle cx="350" cy="50" r="8" fill="none" stroke="#E0F2FE" stroke-width="2" opacity="0.7"/>
+        <circle cx="365" cy="85" r="5" fill="none" stroke="#E0F2FE" stroke-width="1.5" opacity="0.7"/>
+        <g transform="translate(60, 235)">
+          <path d="M 0 0 Q -15 -35 0 -45 T 15 -30 T 0 0" fill="#F43F5E"/>
+          <path d="M 12 0 Q 30 -25 20 -40 T 5 -15" fill="#FB7185"/>
+          <circle cx="-25" cy="15" r="10" fill="#FBBF24"/>
+        </g>
+        <g transform="translate(210, 185)">
+          <circle cx="0" cy="0" r="24" fill="#3B82F6"/>
+          <rect x="-16" y="-10" width="32" height="18" rx="8" fill="#FEF08A" stroke="#CA8A04" stroke-width="2"/>
+          <rect x="-12" y="-7" width="24" height="12" rx="4" fill="#67E8F9" opacity="0.75"/>
+          <circle cx="-6" cy="-2" r="2.5" fill="#0F172A"/>
+          <circle cx="6" cy="-2" r="2.5" fill="#0F172A"/>
+          <path d="M 14 -2 L 24 -2 L 24 -24" fill="none" stroke="#EF4444" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="25" cy="-30" r="4" fill="#E0F2FE" opacity="0.8"/>
+        </g>
+        <g transform="translate(360, 235)">
+          <rect x="-24" y="-8" width="48" height="30" rx="4" fill="#B45309"/>
+          <path d="M -24 -8 Q 0 -26 24 -8 Z" fill="#F59E0B"/>
+          <circle cx="0" cy="-6" r="8" fill="#FFFFFF"/>
+          <circle cx="-2" cy="-8" r="2" fill="#E0F2FE"/>
+        </g>
+      `
+    }
   ]
 };
 
@@ -661,6 +937,7 @@ export class EducationalGamesManager {
     else if (this.currentGameId === 7) this.renderMemoryGame();
     else if (this.currentGameId === 8) this.renderMazeGame();
     else if (this.currentGameId === 9) this.renderCheckersGame();
+    else if (this.currentGameId === 10) this.renderPuzzleGame();
   }
 
   // ==========================================================================
@@ -3050,5 +3327,297 @@ export class EducationalGamesManager {
       this.app.showView('hub');
       mascot.render();
     };
+  }
+
+  // ==========================================================================
+  // JOGO 10: O QUEBRA-CABEÇA ACOLHEDOR DO PIP (Percepção Visual & Encaixe Tátil)
+  // ==========================================================================
+  renderPuzzleGame() {
+    const data = (this.activeRounds && this.activeRounds[this.currentRound - 1]) || GAME_POOLS[10][0];
+
+    this.setGameHeader(
+      "Quebra-Cabeça Acolhedor",
+      `Tema: ${data.themeName} • Encaixe as peças encantadas!`,
+      data.instruction
+    );
+
+    const stage = document.getElementById('gameActiveStage');
+    const rows = data.rows;
+    const cols = data.cols;
+    const totalPieces = data.pieces.length;
+    const pw = data.width / cols;
+    const ph = data.height / rows;
+
+    let placedPieces = new Set();
+    let selectedPieceId = null;
+    let isHintActive = true;
+    let isGameOver = false;
+
+    // Embaralha as peças para a bandeja inicial
+    const shuffledPieces = [...data.pieces].sort(() => Math.random() - 0.5);
+
+    stage.innerHTML = `
+      <div class="puzzle-arena" role="region" aria-label="Quebra-Cabeça Acolhedor do Pip">
+        <div class="puzzle-status-bar">
+          <div class="puzzle-status-pill">
+            <span>🧩</span> <span>${data.themeName}</span>
+          </div>
+          <div class="puzzle-status-pill">
+            <span>⭐</span> Encaixadas: <strong id="puzzlePlacedCount">0</strong> / <strong>${totalPieces}</strong>
+          </div>
+          <button class="puzzle-btn-hint is-active" id="btnTogglePuzzleHint" type="button" aria-label="Alternar pistas visuais">
+            <span>👁️</span> <span>Pista Visual: Ligada</span>
+          </button>
+        </div>
+
+        <!-- Tabuleiro do Quebra-Cabeça -->
+        <div class="puzzle-board-wrapper" id="puzzleBoardWrapper">
+          <div class="puzzle-board" id="puzzleBoard" style="grid-template-columns: repeat(${cols}, 1fr); grid-template-rows: repeat(${rows}, 1fr);" role="grid" aria-label="Quadro do Quebra-Cabeça">
+            ${Array.from({ length: totalPieces }).map((_, slotId) => {
+              const r = Math.floor(slotId / cols);
+              const c = slotId % cols;
+              const p = data.pieces.find(item => item.r === r && item.c === c);
+              return `
+                <div class="puzzle-slot" data-slot-id="${slotId}" data-r="${r}" data-c="${c}" role="gridcell" aria-label="Espaço ${p ? p.name : slotId + 1}">
+                  <div class="puzzle-slot-ghost" aria-hidden="true">
+                    <svg viewBox="${c * pw} ${r * ph} ${pw} ${ph}" width="100%" height="100%" preserveAspectRatio="none">
+                      ${data.svgContent}
+                    </svg>
+                  </div>
+                  <span class="puzzle-slot-landmark" aria-hidden="true">${p ? p.icon : '✨'}</span>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+
+        <!-- Bandeja de Peças Soltas -->
+        <div class="puzzle-tray-wrapper">
+          <div class="puzzle-tray-title">
+            <span>🎨</span>
+            <span>Peças para encaixar (Arraste com o dedo/mouse ou clique para posicionar):</span>
+          </div>
+          <div class="puzzle-tray-pieces" id="puzzleTray">
+            ${shuffledPieces.map(p => `
+              <div class="puzzle-piece-card" data-piece-id="${p.id}" data-slot-id="${p.r * cols + p.c}" role="button" tabindex="0" aria-label="Peça: ${p.name}">
+                <div class="puzzle-piece-svg-holder" aria-hidden="true">
+                  <svg viewBox="${p.c * pw} ${p.r * ph} ${pw} ${ph}" width="100%" height="100%" preserveAspectRatio="none">
+                    ${data.svgContent}
+                  </svg>
+                </div>
+                <div class="puzzle-piece-badge" aria-hidden="true">${p.icon}</div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      </div>
+    `;
+
+    const boardWrapperEl = document.getElementById('puzzleBoardWrapper');
+    const boardEl = document.getElementById('puzzleBoard');
+    const trayEl = document.getElementById('puzzleTray');
+    const countEl = document.getElementById('puzzlePlacedCount');
+    const hintBtn = document.getElementById('btnTogglePuzzleHint');
+
+    // Alternar Pista Visual (Fantasma do desenho completo)
+    hintBtn.onclick = () => {
+      isHintActive = !isHintActive;
+      hintBtn.classList.toggle('is-active', isHintActive);
+      hintBtn.innerHTML = isHintActive
+        ? '<span>👁️</span> <span>Pista Visual: Ligada</span>'
+        : '<span>👁️</span> <span>Pista Visual: Suave</span>';
+      boardEl.querySelectorAll('.puzzle-slot').forEach(slot => {
+        slot.classList.toggle('hint-off', !isHintActive);
+      });
+      sound.playSoftTap();
+    };
+
+    // Função de Confetes Mágicos
+    const spawnConfetti = (x, y) => {
+      const colors = ['#F59E0B', '#10B981', '#3B82F6', '#EC4899', '#8B5CF6'];
+      for (let i = 0; i < 16; i++) {
+        const p = document.createElement('div');
+        p.className = 'puzzle-confetti-burst';
+        const angle = Math.random() * Math.PI * 2;
+        const dist = 30 + Math.random() * 55;
+        p.style.setProperty('--tx', `${Math.cos(angle) * dist}px`);
+        p.style.setProperty('--ty', `${Math.sin(angle) * dist}px`);
+        p.style.background = colors[Math.floor(Math.random() * colors.length)];
+        p.style.left = `${x}px`;
+        p.style.top = `${y}px`;
+        stage.appendChild(p);
+        setTimeout(() => p.remove(), 1200);
+      }
+    };
+
+    // Encaixe da Peça com Sucesso
+    const snapPieceIntoSlot = (pieceId, slotEl) => {
+      const pieceData = data.pieces.find(p => p.id === pieceId);
+      if (!pieceData) return;
+
+      placedPieces.add(pieceId);
+      countEl.textContent = placedPieces.size;
+
+      // Atualiza o slot com a peça renderizada nítida
+      slotEl.classList.add('is-filled');
+      slotEl.innerHTML = `
+        <div class="puzzle-slot-content" aria-hidden="true">
+          <svg viewBox="${pieceData.c * pw} ${pieceData.r * ph} ${pw} ${ph}" width="100%" height="100%" preserveAspectRatio="none">
+            ${data.svgContent}
+          </svg>
+        </div>
+      `;
+
+      // Remove da bandeja
+      const trayCard = trayEl.querySelector(`.puzzle-piece-card[data-piece-id="${pieceId}"]`);
+      if (trayCard) trayCard.remove();
+
+      // Som harmônico suave de encaixe
+      sound.playChord([392.00, 523.25, 659.25]);
+
+      // Confete sobre o slot encaixado
+      const rect = slotEl.getBoundingClientRect();
+      const stageRect = stage.getBoundingClientRect();
+      spawnConfetti(rect.left + rect.width / 2 - stageRect.left, rect.top + rect.height / 2 - stageRect.top);
+
+      selectedPieceId = null;
+      trayEl.querySelectorAll('.puzzle-piece-card').forEach(c => c.classList.remove('is-selected'));
+
+      // Verifica se completou o quebra-cabeça
+      if (placedPieces.size === totalPieces) {
+        isGameOver = true;
+        boardWrapperEl.classList.add('puzzle-completed');
+        sound.playTriumph();
+
+        speech.speak(`Parabéns! Você completou o quebra-cabeça de ${data.themeName} com muita paciência e alegria!`, {
+          force: true,
+          delayAfterEnd: 2000,
+          onEnd: () => {
+            this.updateRoundStep(this.currentRound + 1);
+            this.loadRound();
+          }
+        });
+      } else {
+        speech.speak(`Muito bem! Você encaixou: ${pieceData.name}!`, { delayAfterEnd: 300 });
+      }
+    };
+
+    // Configuração dos Eventos de Arraste e Clique nas Peças
+    const attachPieceEvents = () => {
+      const pieceCards = trayEl.querySelectorAll('.puzzle-piece-card');
+
+      pieceCards.forEach(card => {
+        let isDragging = false;
+        let startX = 0, startY = 0;
+        let currentPointerId = null;
+
+        const pieceId = parseInt(card.getAttribute('data-piece-id'), 10);
+        const expectedSlotId = parseInt(card.getAttribute('data-slot-id'), 10);
+
+        card.addEventListener('pointerdown', (e) => {
+          if (isGameOver) return;
+          startX = e.clientX;
+          startY = e.clientY;
+          currentPointerId = e.pointerId;
+          try { card.setPointerCapture(e.pointerId); } catch (_) { }
+        });
+
+        card.addEventListener('pointermove', (e) => {
+          if (currentPointerId !== e.pointerId || isGameOver) return;
+          const dx = e.clientX - startX;
+          const dy = e.clientY - startY;
+
+          if (!isDragging && Math.hypot(dx, dy) > 6) {
+            isDragging = true;
+            card.classList.add('is-dragging');
+            sound.playSoftTap();
+          }
+
+          if (isDragging) {
+            card.style.transform = `translate3d(${dx}px, ${dy}px, 0) scale(1.12)`;
+
+            const elem = document.elementFromPoint(e.clientX, e.clientY);
+            const slot = elem ? elem.closest('.puzzle-slot') : null;
+            boardEl.querySelectorAll('.puzzle-slot').forEach(s => s.classList.remove('is-hovered'));
+
+            if (slot && !slot.classList.contains('is-filled')) {
+              const sId = parseInt(slot.getAttribute('data-slot-id'), 10);
+              if (sId === expectedSlotId) {
+                slot.classList.add('is-hovered');
+              }
+            }
+          }
+        });
+
+        const handlePointerUp = (e) => {
+          if (currentPointerId !== e.pointerId) return;
+          try { card.releasePointerCapture(e.pointerId); } catch (_) { }
+          currentPointerId = null;
+          boardEl.querySelectorAll('.puzzle-slot').forEach(s => s.classList.remove('is-hovered'));
+
+          if (isDragging) {
+            isDragging = false;
+            const elem = document.elementFromPoint(e.clientX, e.clientY);
+            const slot = elem ? elem.closest('.puzzle-slot') : null;
+
+            if (slot && !slot.classList.contains('is-filled')) {
+              const sId = parseInt(slot.getAttribute('data-slot-id'), 10);
+              if (sId === expectedSlotId) {
+                snapPieceIntoSlot(pieceId, slot);
+                return;
+              }
+            }
+
+            // Se soltou fora ou no slot incorreto: retorno suave sem punição
+            card.classList.remove('is-dragging');
+            card.classList.add('is-returning');
+            card.style.transform = '';
+            sound.playBoing();
+            speech.speak("Quase lá! Procure o espacinho com o mesmo desenho!", { delayAfterEnd: 200 });
+            setTimeout(() => card.classList.remove('is-returning'), 320);
+          } else {
+            // Clique simples / Toque para selecionar
+            if (selectedPieceId === pieceId) {
+              selectedPieceId = null;
+              card.classList.remove('is-selected');
+            } else {
+              selectedPieceId = pieceId;
+              trayEl.querySelectorAll('.puzzle-piece-card').forEach(c => c.classList.remove('is-selected'));
+              card.classList.add('is-selected');
+              sound.playSoftTap();
+            }
+          }
+        };
+
+        card.addEventListener('pointerup', handlePointerUp);
+        card.addEventListener('pointercancel', handlePointerUp);
+      });
+    };
+
+    // Eventos de clique nos slots para apoio ao toque simples
+    const attachSlotEvents = () => {
+      const slots = boardEl.querySelectorAll('.puzzle-slot');
+      slots.forEach(slot => {
+        slot.addEventListener('click', () => {
+          if (isGameOver || !selectedPieceId || slot.classList.contains('is-filled')) return;
+          const slotId = parseInt(slot.getAttribute('data-slot-id'), 10);
+          const expectedSlotId = data.pieces.find(p => p.id === selectedPieceId)?.slotId ??
+                                (data.pieces.find(p => p.id === selectedPieceId)?.r * cols + data.pieces.find(p => p.id === selectedPieceId)?.c);
+
+          if (slotId === expectedSlotId) {
+            snapPieceIntoSlot(selectedPieceId, slot);
+          } else {
+            sound.playSoftTap();
+            speech.speak("Esta peça encaixa em outro lugar! Observe o desenho da pista.", { delayAfterEnd: 200 });
+          }
+        });
+      });
+    };
+
+    attachPieceEvents();
+    attachSlotEvents();
+
+    // Narração inicial acolhedora da instrução
+    speech.speak(`Fase 10: Quebra-Cabeça Acolhedor. ${data.instruction}`, { delayAfterEnd: 600 });
   }
 }
