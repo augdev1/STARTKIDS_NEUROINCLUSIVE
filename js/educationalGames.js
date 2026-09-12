@@ -3358,6 +3358,7 @@ export class EducationalGamesManager {
 
     stage.innerHTML = `
       <div class="puzzle-arena" role="region" aria-label="Quebra-Cabeça Acolhedor do Pip">
+        <!-- Barra Superior de Informações -->
         <div class="puzzle-status-bar">
           <div class="puzzle-status-pill">
             <span>🧩</span> <span>${data.themeName}</span>
@@ -3365,33 +3366,63 @@ export class EducationalGamesManager {
           <div class="puzzle-status-pill">
             <span>⭐</span> Encaixadas: <strong id="puzzlePlacedCount">0</strong> / <strong>${totalPieces}</strong>
           </div>
-          <button class="puzzle-btn-hint is-active" id="btnTogglePuzzleHint" type="button" aria-label="Alternar pistas visuais">
-            <span>👁️</span> <span>Pista Visual: Ligada</span>
+          <button class="puzzle-btn-hint is-active" id="btnTogglePuzzleHint" type="button" aria-label="Alternar nitidez das pistas no tabuleiro">
+            <span>👁️</span> <span>Pistas no Tabuleiro: Nítidas</span>
           </button>
         </div>
 
-        <!-- Tabuleiro do Quebra-Cabeça -->
-        <div class="puzzle-board-wrapper" id="puzzleBoardWrapper">
-          <div class="puzzle-board" id="puzzleBoard" style="grid-template-columns: repeat(${cols}, 1fr); grid-template-rows: repeat(${rows}, 1fr);" role="grid" aria-label="Quadro do Quebra-Cabeça">
-            ${Array.from({ length: totalPieces }).map((_, slotId) => {
-              const r = Math.floor(slotId / cols);
-              const c = slotId % cols;
-              const p = data.pieces.find(item => item.r === r && item.c === c);
-              return `
-                <div class="puzzle-slot" data-slot-id="${slotId}" data-r="${r}" data-c="${c}" role="gridcell" aria-label="Espaço ${p ? p.name : slotId + 1}">
-                  <div class="puzzle-slot-ghost" aria-hidden="true">
-                    <svg viewBox="${c * pw} ${r * ph} ${pw} ${ph}" width="100%" height="100%" preserveAspectRatio="none">
-                      ${data.svgContent}
-                    </svg>
-                  </div>
-                  <span class="puzzle-slot-landmark" aria-hidden="true">${p ? p.icon : '✨'}</span>
-                </div>
-              `;
-            }).join('')}
+        <!-- Palco Central: Imagem Modelo de Referência + Tabuleiro de Encaixe -->
+        <div class="puzzle-gameplay-stage">
+
+          <!-- 1. Imagem Modelo de Referência (A imagem completa para a criança olhar e se guiar!) -->
+          <div class="puzzle-reference-panel" id="puzzleReferencePanel">
+            <div class="puzzle-reference-header">
+              <span>🖼️</span>
+              <span>Imagem de Referência:</span>
+            </div>
+            <div class="puzzle-reference-frame" title="Este é o desenho completo pronto! Olhe aqui para saber onde cada peça vai.">
+              <div class="puzzle-reference-svg">
+                <svg viewBox="0 0 ${data.width} ${data.height}" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+                  ${data.svgContent}
+                </svg>
+              </div>
+              <div class="puzzle-reference-tag">
+                <span>👀 Modelo Completo</span>
+              </div>
+            </div>
           </div>
+
+          <!-- 2. Tabuleiro de Encaixe com as Silhuetas Nítidas -->
+          <div class="puzzle-board-wrapper" id="puzzleBoardWrapper">
+            <div class="puzzle-board-header">
+              <span>🎯</span>
+              <span>Seu Tabuleiro (Encaixe as peças aqui):</span>
+            </div>
+
+            <div class="puzzle-board" id="puzzleBoard" style="grid-template-columns: repeat(${cols}, 1fr); grid-template-rows: repeat(${rows}, 1fr);" role="grid" aria-label="Quadro do Quebra-Cabeça">
+              ${Array.from({ length: totalPieces }).map((_, slotId) => {
+                const r = Math.floor(slotId / cols);
+                const c = slotId % cols;
+                const p = data.pieces.find(item => item.r === r && item.c === c);
+                return `
+                  <div class="puzzle-slot" data-slot-id="${slotId}" data-r="${r}" data-c="${c}" role="gridcell" aria-label="Espaço ${p ? p.name : slotId + 1}" title="Encaixe a peça: ${p ? p.name : ''}">
+                    <!-- Desenho de referência nítido no próprio espaço -->
+                    <div class="puzzle-slot-ghost" aria-hidden="true">
+                      <svg viewBox="${c * pw} ${r * ph} ${pw} ${ph}" width="100%" height="100%" preserveAspectRatio="none">
+                        ${data.svgContent}
+                      </svg>
+                    </div>
+                    <!-- Badge com o mesmo ícone da peça para relacionamento imediato -->
+                    <div class="puzzle-slot-badge" aria-hidden="true">${p ? p.icon : '✨'}</div>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+          </div>
+
         </div>
 
-        <!-- Bandeja de Peças Soltas -->
+        <!-- 3. Bandeja de Peças Soltas para Encaixar -->
         <div class="puzzle-tray-wrapper">
           <div class="puzzle-tray-title">
             <span>🎨</span>
@@ -3399,7 +3430,7 @@ export class EducationalGamesManager {
           </div>
           <div class="puzzle-tray-pieces" id="puzzleTray">
             ${shuffledPieces.map(p => `
-              <div class="puzzle-piece-card" data-piece-id="${p.id}" data-slot-id="${p.r * cols + p.c}" role="button" tabindex="0" aria-label="Peça: ${p.name}">
+              <div class="puzzle-piece-card" data-piece-id="${p.id}" data-slot-id="${p.r * cols + p.c}" role="button" tabindex="0" aria-label="Peça: ${p.name}" title="${p.name}">
                 <div class="puzzle-piece-svg-holder" aria-hidden="true">
                   <svg viewBox="${p.c * pw} ${p.r * ph} ${pw} ${ph}" width="100%" height="100%" preserveAspectRatio="none">
                     ${data.svgContent}
@@ -3419,13 +3450,13 @@ export class EducationalGamesManager {
     const countEl = document.getElementById('puzzlePlacedCount');
     const hintBtn = document.getElementById('btnTogglePuzzleHint');
 
-    // Alternar Pista Visual (Fantasma do desenho completo)
+    // Alternar Pistas no Tabuleiro (Nítidas ou Suaves)
     hintBtn.onclick = () => {
       isHintActive = !isHintActive;
       hintBtn.classList.toggle('is-active', isHintActive);
       hintBtn.innerHTML = isHintActive
-        ? '<span>👁️</span> <span>Pista Visual: Ligada</span>'
-        : '<span>👁️</span> <span>Pista Visual: Suave</span>';
+        ? '<span>👁️</span> <span>Pistas no Tabuleiro: Nítidas</span>'
+        : '<span>👁️</span> <span>Pistas no Tabuleiro: Suaves</span>';
       boardEl.querySelectorAll('.puzzle-slot').forEach(slot => {
         slot.classList.toggle('hint-off', !isHintActive);
       });
