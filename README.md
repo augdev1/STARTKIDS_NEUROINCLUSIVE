@@ -123,7 +123,7 @@ A plataforma disponibiliza dez módulos de atividades estruturadas com progress�
 9. **O Jogo de Damas do Pip (Estratégia, Diagonais & Parceria Amigável)**:
    Mecânica adaptada de damas focada no aprendizado de diagonais e cooperação lúdica, equipada com inteligência acolhedora do Pip, suporte a arrastar peças e animações de movimento orgânicas.
 10. **O Quebra-Cabeça Acolhedor do Pip (Percepção Visual & Encaixe Tátil)**:
-    Montagem de cenários ilustrados encantadores com suporte a arrastar e soltar suave via Pointer Events ou clique simples, pistas visuais com silhueta fantasma de apoio, efeito magnético de encaixe (*snap*), celebração com confetes e ausência de penalidades.
+    Montagem de cenários ilustrados encantadores com suporte a arrastar e soltar suave via Pointer Events ou clique simples, pistas visuais com silhueta fantasma de apoio acompanhada de painel com imagem de referência para associação visual imediata das peças, efeito magnético de encaixe (*snap*), celebração com confetes e ausência de penalidades.
 
 ---
 
@@ -142,6 +142,7 @@ A plataforma disponibiliza dez módulos de atividades estruturadas com progress�
 |   +-- style.css              # Design system global e acessibilidade sensorial
 |-- js/                        # Módulos lógicos da aplicação cliente
 |   |-- accessoriesData.js     # Catálogo de roupinhas e itens customizáveis do Pip
+|   |-- appearanceData.js      # Catálogo de traços corporais (cores, olhos, bocas e bochechas)
 |   |-- app.js                 # Bootstrap da SPA e orquestração global
 |   |-- audio.js               # Motor de síntese sonora pentatônica (Web Audio API)
 |   |-- authService.js         # Cliente de comunicação com a API de autenticação
@@ -250,6 +251,27 @@ A solução adota uma topologia híbrida para alta disponibilidade e baixa latê
 
 ---
 
-## 10. Licença
+## 10. Registro de Atualizações e Melhorias Recentes
+
+As implementações e melhorias adicionadas recentemente ao projeto englobam:
+
+- **Identidade Visual e Emblema PWA**:
+  - Ajuste dos ícones de instalação da aplicação PWA (`manifest.json`, `icon-192.png`, `icon-512.png`), mantendo exclusivamente o emblema da árvore e do arco-íris e removendo o nome do aplicativo do ícone para garantir clareza visual nas telas iniciais de celulares e tablets.
+- **Jogo 10: O Quebra-Cabeça Acolhedor do Pip**:
+  - Inclusão do 10º módulo pedagógico estruturado com mecânica de encaixe tátil livre de frustração.
+  - Implementação de painel de referência visual com a ilustração completa em miniatura, facilitando a identificação e a correlação direta de cada peça pela criança.
+  - Interação unificada via Pointer Events (arraste e solte fluido por toque capacitivo, caneta stylus ou mouse) e opção por cliques simples.
+  - Conformidade com as diretrizes neuroinclusivas: animações suaves, celebração com confetes, ausência de penalidades e pausa de 2 segundos pós-locução para absorção cognitiva.
+- **Camarim & Personalização Dinâmica do Pip (`js/appearanceData.js`)**:
+  - Sistema de personalização livre de traços: 8 cores pastéis de alto contraste ("Menta Suave", "Algodão Doce", "Céu Sereno", etc.), 6 formatos de olhinhos expressivos, 6 formatos de boquinhas/sorrisos e 5 tipos de bochechas, combináveis com os 52 acessórios desbloqueáveis.
+  - Arquitetura de renderização SVG à prova de falhas: eliminação de filtros SVG suscetíveis a colisões no DOM, geração de IDs de gradiente únicos por instância (`pipGlow_${uid}`) e camada base sólida (`swatch`), assegurando 100% de visibilidade e nitidez do mascote tanto no Hub quanto no modal do Camarim em todos os navegadores.
+- **Otimização da Barra de Navegação Superior**:
+  - Remoção do botão de alto contraste do cabeçalho de navegação, mantendo todos os utilitários alinhados lado a lado em linha única, sem deslocar ou quebrar a linha do botão "Modo Calma".
+- **Ciclo de Cache e Atualização do PWA (v20)**:
+  - Elevação do ciclo de cache do Service Worker (`startkids-cache-v20`) e inclusão de cache-busters nos arquivos HTML e módulos JS/CSS, garantindo atualização e entrega instantânea das melhorias sem retenção de cache antigo nos navegadores.
+
+---
+
+## 11. Licença
 
 Este projeto é disponibilizado sob os termos da Licença **MIT**. Consulte o arquivo `LICENSE` para informações completas.
