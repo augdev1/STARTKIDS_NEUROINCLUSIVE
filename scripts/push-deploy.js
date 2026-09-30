@@ -31,13 +31,13 @@ async function main() {
   console.log('   STARKIDS: COMMIT & DEPLOY INSTANTÂNEO');
   console.log('==========================================\n');
 
-  // 1. Checagem de Sintaxe
-  console.log('🔍 [1/4] Verificando integridade e sintaxe do código...');
+  // 1. Checagem Completa via Test Harness
+  console.log('🧪 [1/4] Executando Test Harness (Sintaxe, APIs, Segurança e Acessibilidade)...');
   try {
-    execSync('npm run test:syntax', { stdio: 'inherit' });
-    console.log('✅ Sintaxe validada com sucesso!\n');
+    execSync('npm run test:harness', { stdio: 'inherit' });
+    console.log('✅ Suíte do Test Harness aprovada com 100% de sucesso!\n');
   } catch (err) {
-    console.error('\n❌ Erro de sintaxe detectado! Corrija os arquivos antes de subir para produção.');
+    console.error('\n❌ Falha no Test Harness! Corrija os testes antes de subir para produção.');
     process.exit(1);
   }
 

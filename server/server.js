@@ -452,8 +452,9 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(rootDir, 'login.html'));
 });
 
-// Inicialização se executado diretamente
-if (process.env.NODE_ENV !== 'test' && !process.env.VERCEL) {
+// Inicialização se executado diretamente (ignora quando executado via test runner)
+const isTestEnv = process.env.NODE_ENV === 'test' || process.argv.some(arg => arg.includes('test') || arg.includes('tests'));
+if (!isTestEnv && !process.env.VERCEL) {
   initDB().then(() => {
     app.listen(PORT, () => {
       logger.info('BOOT', `🌟 StartKids Server rodando em http://localhost:${PORT}`);

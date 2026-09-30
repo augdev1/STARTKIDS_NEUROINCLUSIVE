@@ -1,0 +1,31 @@
+name: StarKids Test Harness CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test-harness:
+    name: Test Harness (APIs, Unit, Security & A11y)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Instalar Dependências
+        run: npm ci
+
+      - name: Executar Validação de Sintaxe
+        run: npm run test:syntax
+
+      - name: Executar Test Harness com Cobertura
+        run: npm run test:coverage

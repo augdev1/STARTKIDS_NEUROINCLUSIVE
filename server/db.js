@@ -10,8 +10,14 @@ dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const rootDir = path.resolve(__dirname, '..');
-const localDataDir = path.join(rootDir, 'data');
-const localDbFile = path.join(localDataDir, 'local_db.json');
+
+export function getLocalDataDir() {
+  return process.env.DATA_DIR ? path.resolve(rootDir, process.env.DATA_DIR) : path.join(rootDir, 'data');
+}
+
+export function getLocalDbFile() {
+  return process.env.LOCAL_DB_FILE ? path.resolve(rootDir, process.env.LOCAL_DB_FILE) : path.join(getLocalDataDir(), 'local_db.json');
+}
 
 const { Pool } = pg;
 
@@ -26,25 +32,42 @@ export const pool = new Pool({
 export let isPgConnected = false;
 
 // Helpers para persistência local de fallback
-function getLocalDB() {
+export function getLocalDB() {
+  const dir = getLocalDataDir();
+  const file = getLocalDbFile();
   try {
-    if (!fs.existsSync(localDataDir)) fs.mkdirSync(localDataDir, { recursive: true });
-    if (!fs.existsSync(localDbFile)) {
-      fs.writeFileSync(localDbFile, JSON.stringify({ users: [], progression: {} }, null, 2));
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+    if (!fs.existsSync(file)) {
+      fs.writeFileSync(file, JSON.stringify({ users: [], progression: {} }, null, 2));
     }
-    const raw = fs.readFileSync(localDbFile, 'utf-8');
+    const raw = fs.readFileSync(file, 'utf-8');
     return JSON.parse(raw);
   } catch {
     return { users: [], progression: {} };
   }
 }
 
-function saveLocalDB(data) {
+export function saveLocalDB(data) {
+  const dir = getLocalDataDir();
+  const file = getLocalDbFile();
   try {
-    if (!fs.existsSync(localDataDir)) fs.mkdirSync(localDataDir, { recursive: true });
-    fs.writeFileSync(localDbFile, JSON.stringify(data, null, 2));
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(file, JSON.stringify(data, null, 2));
   } catch (e) {
-    console.warn('Erro ao salvar local_db.json:', e.message);
+    console.warn('Erro ao salvar banco local:', e.message);
+  }
+}
+
+export function resetLocalDB(initialData = { users: [], progression: {} }) {
+  saveLocalDB(initialData);
+  return initialData;
+}
+
+export async function closeDB() {
+  if (pool) {
+    try {
+      await pool.end();
+    } catch {}
   }
 }
 
@@ -233,7 +256,8 @@ export async function getUserProgression(userId) {
 
   // Fallback local
   const db = getLocalDB();
-  return db.progression[userId] || null;
+  if (!db || !db.progression) return null;
+  return db.progression[userId] || db.progression[String(userId)] || null;
 }
 
 /**

@@ -270,8 +270,15 @@ As implementações e melhorias adicionadas recentemente ao projeto englobam:
 - **Ciclo de Cache e Atualização do PWA (v20)**:
   - Elevação do ciclo de cache do Service Worker (`startkids-cache-v20`) e inclusão de cache-busters nos arquivos HTML e módulos JS/CSS, garantindo atualização e entrega instantânea das melhorias sem retenção de cache antigo nos navegadores.
 
+- **Infraestrutura de Test Harness & CI/CD (`tests/`)**:
+  - Implementação de Test Harness com sandbox isolada (`tests/fixtures/test_db.json`), garantindo que a base de dados de produção nunca seja afetada durante os testes.
+  - Suíte com 26 testes automatizados cobrindo autenticação, persistência de baú e acessórios, headers de segurança HTTP, síntese de voz (TTS), criptografia HMAC de tokens e auditoria de acessibilidade/PWA.
+  - Comandos dedicados adicionados ao projeto: `npm test`, `npm run test:api`, `npm run test:unit`, `npm run test:coverage` e `npm run test:harness`.
+  - Integração do Harness como portão de qualidade pré-deploy no `scripts/push-deploy.js` e esteira de CI via GitHub Actions (`.github/workflows/test-harness.yml`).
+
 ---
 
 ## 11. Licença
 
 Este projeto é disponibilizado sob os termos da Licença **MIT**. Consulte o arquivo `LICENSE` para informações completas.
+
