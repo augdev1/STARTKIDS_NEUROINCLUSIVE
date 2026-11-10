@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { initDB, findUserByUsername, createUser, getUserProgression, saveUserProgression } from './db.js';
+import { initDB, findUserByUsername, createUser, getUserProgression, saveUserProgression, isPgConnected, getEffectiveConnectionString } from './db.js';
 import { hashPassword, comparePassword, createSessionToken, verifySessionToken } from './auth.js';
 import { logger } from './logger.js';
 
@@ -126,7 +126,20 @@ function requireAuth(req, res, next) {
  * Health check
  */
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', app: 'StartKids', time: new Date().toISOString() });
+  const connStr = getEffectiveConnectionString();
+  const sanitized = connStr ? connStr.replace(/\/\/[^@]+@/, '//***@').split('?')[0] : 'nenhuma';
+  res.json({
+    status: 'ok',
+    app: 'StartKids',
+    time: new Date().toISOString(),
+    isPgConnected,
+    dbInfo: {
+      has_DATABASE_URL: !!process.env.DATABASE_URL,
+      has_POSTGRES_URL: !!process.env.POSTGRES_URL,
+      has_POSTGRES_HOST: !!process.env.POSTGRES_HOST,
+      targetHost: sanitized
+    }
+  });
 });
 
 // Cache em memória para os áudios neurais gerados (otimiza resposta para < 5ms)

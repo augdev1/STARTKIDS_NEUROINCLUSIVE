@@ -22,6 +22,10 @@ export function getLocalDbFile() {
 const { Pool } = pg;
 
 export function getEffectiveConnectionString() {
+  // Prioriza o banco nativo Vercel Postgres / Neon se presente
+  if (process.env.POSTGRES_URL && (process.env.POSTGRES_URL.includes('.vercel-storage.com') || process.env.POSTGRES_URL.includes('.neon.tech') || !process.env.DATABASE_URL || process.env.DATABASE_URL.includes('render.com'))) {
+    return process.env.POSTGRES_URL;
+  }
   if (process.env.DATABASE_URL) return process.env.DATABASE_URL;
   if (process.env.POSTGRES_URL) return process.env.POSTGRES_URL;
   if (process.env.POSTGRES_URL_NON_POOLING) return process.env.POSTGRES_URL_NON_POOLING;
