@@ -11,11 +11,30 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const rootDir = path.resolve(__dirname, '..');
 
+export function getSeedDbFile() {
+  const candidates = [
+    path.join(rootDir, 'data', 'local_db.json'),
+    path.join(process.cwd(), 'data', 'local_db.json'),
+    path.join(rootDir, 'local_db.json'),
+    path.join(process.cwd(), 'local_db.json')
+  ];
+  for (const c of candidates) {
+    if (fs.existsSync(c)) return c;
+  }
+  return null;
+}
+
 export function getLocalDataDir() {
+  if (process.env.VERCEL) {
+    return '/tmp';
+  }
   return process.env.DATA_DIR ? path.resolve(rootDir, process.env.DATA_DIR) : path.join(rootDir, 'data');
 }
 
 export function getLocalDbFile() {
+  if (process.env.VERCEL) {
+    return '/tmp/local_db.json';
+  }
   return process.env.LOCAL_DB_FILE ? path.resolve(rootDir, process.env.LOCAL_DB_FILE) : path.join(getLocalDataDir(), 'local_db.json');
 }
 
@@ -65,9 +84,38 @@ export function getLocalDB() {
   const file = getLocalDbFile();
   try {
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+
+    const isIsolatedTest = process.env.NODE_ENV === 'test' || !!process.env.LOCAL_DB_FILE;
+    let shouldSeed = !fs.existsSync(file);
+
+    if (!shouldSeed && !isIsolatedTest) {
+      try {
+        const current = JSON.parse(fs.readFileSync(file, 'utf-8'));
+        if (!current.users || current.users.length === 0) {
+          shouldSeed = true;
+        }
+      } catch {
+        shouldSeed = false;
+      }
+    }
+
+    if (shouldSeed && !isIsolatedTest) {
+      const seedFile = getSeedDbFile();
+      if (seedFile && fs.existsSync(seedFile)) {
+        try {
+          const seedRaw = fs.readFileSync(seedFile, 'utf-8');
+          fs.writeFileSync(file, seedRaw);
+          return JSON.parse(seedRaw);
+        } catch (e) {
+          console.warn('Erro ao ler seed db:', e.message);
+        }
+      }
+    }
+
     if (!fs.existsSync(file)) {
       fs.writeFileSync(file, JSON.stringify({ users: [], progression: {} }, null, 2));
     }
+
     const raw = fs.readFileSync(file, 'utf-8');
     return JSON.parse(raw);
   } catch {
