@@ -174,7 +174,8 @@ export async function initDB() {
     }
   } catch (err) {
     isPgConnected = false;
-    logger.warn('DB', `ℹ️ PostgreSQL não acessível no momento: ${err.message}`);
+    const sanitizedTarget = connectionString ? connectionString.replace(/\/\/[^@]+@/, '//***@').split('?')[0] : 'nenhuma';
+    logger.warn('DB', `ℹ️ PostgreSQL não acessível [${sanitizedTarget}]: ${err.message}`);
     logger.info('DB', '🛡️ Ativando persistência em arquivo seguro local (em Docker ou Vercel o PostgreSQL será utilizado automaticamente).');
     getLocalDB(); // inicializa arquivo local
   }
