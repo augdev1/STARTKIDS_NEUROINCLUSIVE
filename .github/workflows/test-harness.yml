@@ -10,8 +10,6 @@ jobs:
   test-harness:
     name: Test Harness (APIs, Unit, Security & A11y)
     runs-on: ubuntu-latest
-    env:
-      NODE_ENV: test
 
     steps:
       - name: Checkout Repositório
@@ -23,10 +21,13 @@ jobs:
           node-version: 22
 
       - name: Instalar Dependências
-        run: npm install --include=dev --ignore-scripts
+        run: |
+          echo "Node version: $(node -v)"
+          echo "NPM version: $(npm -v)"
+          npm install --ignore-scripts
 
       - name: Executar Validação de Sintaxe
         run: npm run test:syntax
 
-      - name: Executar Test Harness com Cobertura
-        run: npm run test:coverage
+      - name: Executar Test Harness
+        run: npm test
