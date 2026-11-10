@@ -11,6 +11,21 @@ jobs:
     name: Test Harness (APIs, Unit, Security & A11y)
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: starkids
+          POSTGRES_PASSWORD: starkids_pass
+          POSTGRES_DB: starkids_db
+        ports:
+          - 5433:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       - name: Checkout Repositório
         uses: actions/checkout@v4
@@ -28,4 +43,6 @@ jobs:
         run: npm run test:syntax
 
       - name: Executar Test Harness com Cobertura
+        env:
+          DATABASE_URL: postgres://starkids:starkids_pass@localhost:5433/starkids_db
         run: npm run test:coverage
