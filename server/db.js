@@ -21,12 +21,35 @@ export function getLocalDbFile() {
 
 const { Pool } = pg;
 
-const connectionString = process.env.DATABASE_URL || 'postgres://starkids:starkids_pass@localhost:5432/starkids_db';
+export function getEffectiveConnectionString() {
+  if (process.env.DATABASE_URL) return process.env.DATABASE_URL;
+  if (process.env.POSTGRES_URL) return process.env.POSTGRES_URL;
+  if (process.env.POSTGRES_URL_NON_POOLING) return process.env.POSTGRES_URL_NON_POOLING;
+  if (process.env.POSTGRES_PRISMA_URL) return process.env.POSTGRES_PRISMA_URL;
+  if (process.env.POSTGRES_HOST && process.env.POSTGRES_USER) {
+    const user = process.env.POSTGRES_USER;
+    const pass = process.env.POSTGRES_PASSWORD || '';
+    const host = process.env.POSTGRES_HOST;
+    const db = process.env.POSTGRES_DATABASE || 'starkids_db';
+    return `postgres://${user}:${pass}@${host}/${db}?sslmode=require`;
+  }
+  return 'postgres://starkids:starkids_pass@localhost:5432/starkids_db';
+}
+
+const connectionString = getEffectiveConnectionString();
 const isProduction = process.env.NODE_ENV === 'production' || !!process.env.VERCEL;
+const isLocal = connectionString.includes('localhost') ||
+                connectionString.includes('127.0.0.1') ||
+                connectionString.includes('@postgres:') ||
+                connectionString.includes('@postgres/');
 
 export const pool = new Pool({
   connectionString,
-  ssl: isProduction && !connectionString.includes('localhost') && !connectionString.includes('postgres:') ? { rejectUnauthorized: false } : false
+  ssl: (!isLocal && (isProduction || connectionString.includes('sslmode=require') || connectionString.includes('ssl=true') || connectionString.includes('.vercel-storage.com') || connectionString.includes('.neon.tech') || connectionString.includes('.supabase.co') || connectionString.includes('.render.com')))
+    ? { rejectUnauthorized: false }
+    : false,
+  connectionTimeoutMillis: 5000,
+  max: isProduction ? 10 : 20
 });
 
 export let isPgConnected = false;
