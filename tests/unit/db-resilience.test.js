@@ -25,9 +25,8 @@ describe('Unit Harness: Resiliência da Camada de Banco de Dados e Fallback', ()
     resetLocalDB({ users: [], progression: {} });
   });
 
-  after(async () => {
+  after(() => {
     resetLocalDB({ users: [], progression: {} });
-    await closeDB();
   });
 
   it('deve criar novo usuário e inicializar progressão padrão com 3 estrelas', async () => {

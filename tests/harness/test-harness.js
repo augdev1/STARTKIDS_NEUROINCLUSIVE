@@ -87,7 +87,6 @@ export class TestHarness {
    */
   async teardown() {
     this.resetDb();
-    await closeDB();
   }
 }
 
