@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { initDB, findUserByUsername, createUser, getUserProgression, saveUserProgression, isPgConnected, getEffectiveConnectionString } from './db.js';
+import { initDB, findUserByUsername, createUser, getUserProgression, saveUserProgression, isPgConnected, lastDbError, getEffectiveConnectionString } from './db.js';
 import { hashPassword, comparePassword, createSessionToken, verifySessionToken } from './auth.js';
 import { logger } from './logger.js';
 
@@ -133,9 +133,12 @@ app.get('/api/health', (req, res) => {
     app: 'StartKids',
     time: new Date().toISOString(),
     isPgConnected,
+    lastDbError: isPgConnected ? null : (lastDbError || 'Aguardando inicialização ou conexão'),
     dbInfo: {
       has_DATABASE_URL: !!process.env.DATABASE_URL,
       has_POSTGRES_URL: !!process.env.POSTGRES_URL,
+      has_POSTGRES_URL_NON_POOLING: !!process.env.POSTGRES_URL_NON_POOLING,
+      has_POSTGRES_PRISMA_URL: !!process.env.POSTGRES_PRISMA_URL,
       has_POSTGRES_HOST: !!process.env.POSTGRES_HOST,
       targetHost: sanitized
     }

@@ -22,11 +22,10 @@ export function getLocalDbFile() {
 const { Pool } = pg;
 
 export function getEffectiveConnectionString() {
-  // Prioriza o banco nativo Vercel Postgres / Neon se presente
-  if (process.env.POSTGRES_URL && (process.env.POSTGRES_URL.includes('.vercel-storage.com') || process.env.POSTGRES_URL.includes('.neon.tech') || !process.env.DATABASE_URL || process.env.DATABASE_URL.includes('render.com'))) {
-    return process.env.POSTGRES_URL;
-  }
-  if (process.env.DATABASE_URL) return process.env.DATABASE_URL;
+  // Se DATABASE_URL apontar para o Render antigo que está expirado/inativo, priorizar qualquer variável da Vercel
+  const isRenderExpired = process.env.DATABASE_URL && process.env.DATABASE_URL.includes('render.com');
+
+  if (!isRenderExpired && process.env.DATABASE_URL) return process.env.DATABASE_URL;
   if (process.env.POSTGRES_URL) return process.env.POSTGRES_URL;
   if (process.env.POSTGRES_URL_NON_POOLING) return process.env.POSTGRES_URL_NON_POOLING;
   if (process.env.POSTGRES_PRISMA_URL) return process.env.POSTGRES_PRISMA_URL;
@@ -37,6 +36,7 @@ export function getEffectiveConnectionString() {
     const db = process.env.POSTGRES_DATABASE || 'starkids_db';
     return `postgres://${user}:${pass}@${host}/${db}?sslmode=require`;
   }
+  if (process.env.DATABASE_URL) return process.env.DATABASE_URL;
   return 'postgres://starkids:starkids_pass@localhost:5432/starkids_db';
 }
 
@@ -57,6 +57,7 @@ export const pool = new Pool({
 });
 
 export let isPgConnected = false;
+export let lastDbError = null;
 
 // Helpers para persistência local de fallback
 export function getLocalDB() {
@@ -178,6 +179,7 @@ export async function initDB() {
     }
   } catch (err) {
     isPgConnected = false;
+    lastDbError = err.message;
     const sanitizedTarget = connectionString ? connectionString.replace(/\/\/[^@]+@/, '//***@').split('?')[0] : 'nenhuma';
     logger.warn('DB', `ℹ️ PostgreSQL não acessível [${sanitizedTarget}]: ${err.message}`);
     logger.info('DB', '🛡️ Ativando persistência em arquivo seguro local (em Docker ou Vercel o PostgreSQL será utilizado automaticamente).');
