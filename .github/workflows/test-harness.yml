@@ -29,5 +29,8 @@ jobs:
       - name: Executar Validação de Sintaxe
         run: npm run test:syntax
 
-      - name: Executar Test Harness
+      - name: Executar Prompt Evals e Quality Gates Pedagógicos
+        run: npm run test:evals
+
+      - name: Executar Test Harness (APIs, Unit, Security & A11y)
         run: npm test

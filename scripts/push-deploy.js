@@ -31,13 +31,13 @@ async function main() {
   console.log('   STARKIDS: COMMIT & DEPLOY INSTANTÂNEO');
   console.log('==========================================\n');
 
-  // 1. Checagem Completa via Test Harness
-  console.log('🧪 [1/4] Executando Test Harness (Sintaxe, APIs, Segurança e Acessibilidade)...');
+  // 1. Checagem Completa via Test Harness e Prompt Quality Gates
+  console.log('🧪 [1/4] Executando Test Harness & Prompt Quality Gates (Sintaxe, Prompts, APIs, Segurança)...');
   try {
     execSync('npm run test:harness', { stdio: 'inherit' });
-    console.log('✅ Suíte do Test Harness aprovada com 100% de sucesso!\n');
+    console.log('✅ Suíte do Test Harness & Quality Gates aprovada com 100% de sucesso!\n');
   } catch (err) {
-    console.error('\n❌ Falha no Test Harness! Corrija os testes antes de subir para produção.');
+    console.error('\n❌ Falha no Test Harness ou Quality Gates! Corrija os testes/prompts antes de subir para produção.');
     process.exit(1);
   }
 

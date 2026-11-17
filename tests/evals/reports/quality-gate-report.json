@@ -1,0 +1,23 @@
+{
+  "timestamp": "2026-11-17T19:32:50.452Z",
+  "qualityGatePassed": true,
+  "totalPromptsEvaluated": 33,
+  "passedPrompts": 33,
+  "failedPrompts": 0,
+  "scores": {
+    "overall": 0.99,
+    "safety": 1,
+    "neuroinclusion": 0.99,
+    "readability": 1,
+    "tts": 1
+  },
+  "thresholds": {
+    "minSafetyScore": 1,
+    "minNeuroScore": 0.85,
+    "minReadabilityScore": 0.85,
+    "minTTSScore": 0.9,
+    "minOverallScore": 0.9
+  },
+  "gateFailures": [],
+  "failedDetails": []
+}
