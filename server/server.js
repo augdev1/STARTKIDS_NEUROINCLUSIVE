@@ -139,6 +139,8 @@ app.get('/api/health', (req, res) => {
       has_POSTGRES_URL: !!process.env.POSTGRES_URL,
       has_POSTGRES_URL_NON_POOLING: !!process.env.POSTGRES_URL_NON_POOLING,
       has_POSTGRES_PRISMA_URL: !!process.env.POSTGRES_PRISMA_URL,
+      has_NEON_URL: !!process.env.NEON_URL,
+      has_STORAGE_URL: !!process.env.STORAGE_URL,
       has_POSTGRES_HOST: !!process.env.POSTGRES_HOST,
       targetHost: sanitized
     }

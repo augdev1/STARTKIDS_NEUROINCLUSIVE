@@ -41,13 +41,16 @@ export function getLocalDbFile() {
 const { Pool } = pg;
 
 export function getEffectiveConnectionString() {
-  // Se DATABASE_URL apontar para o Render antigo que está expirado/inativo, priorizar qualquer variável da Vercel
+  // Se DATABASE_URL apontar para o Render antigo que está expirado/inativo, priorizar qualquer variável da Vercel/Neon
   const isRenderExpired = process.env.DATABASE_URL && process.env.DATABASE_URL.includes('render.com');
 
   if (!isRenderExpired && process.env.DATABASE_URL) return process.env.DATABASE_URL;
   if (process.env.POSTGRES_URL) return process.env.POSTGRES_URL;
   if (process.env.POSTGRES_URL_NON_POOLING) return process.env.POSTGRES_URL_NON_POOLING;
   if (process.env.POSTGRES_PRISMA_URL) return process.env.POSTGRES_PRISMA_URL;
+  if (process.env.NEON_URL) return process.env.NEON_URL;
+  if (process.env.STORAGE_URL) return process.env.STORAGE_URL;
+  if (process.env.STORAGE_POSTGRES_URL) return process.env.STORAGE_POSTGRES_URL;
   if (process.env.POSTGRES_HOST && process.env.POSTGRES_USER) {
     const user = process.env.POSTGRES_USER;
     const pass = process.env.POSTGRES_PASSWORD || '';
